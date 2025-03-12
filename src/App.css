@@ -1,0 +1,17 @@
+#root {
+  width: 100%;
+  /* margin: 0 12px; */
+  /* padding: 0 12px; */
+  text-align: center;
+  /* font-size: 1px; */
+}
+
+body {
+  background-color: #d4dae728;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+}
+
