@@ -20,5 +20,6 @@ export default defineConfig({
         // additionalData: `@import "@/assets/styles/abstracts/variables.scss";`
       }
     }
-  }
+  },
+  base: "/SpaceZone---Social-Media/",
 })
