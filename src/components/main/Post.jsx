@@ -5,7 +5,7 @@ function Post () {
     const [posts, setPosts] = useState([]);
 
     useEffect(()=> {
-        axios.get("https://spacezone-api.onrender.com/posts")
+        axios.get("https://spacezone-api.onrender.com/posts", { cache: "no-store" }) // Đảm bảo không dùng cache
         .then((response)=>{
             setPosts(response.data);
         })
