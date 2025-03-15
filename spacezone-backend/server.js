@@ -29,3 +29,5 @@ app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/likes", likeRoutes);
 app.use("/api/shares", shareRoutes);
+app.use("/uploads", express.static("uploads"));
+

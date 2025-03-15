@@ -1,11 +1,19 @@
 const express = require("express");
 const Comment = require("../models/Comment");
 const router = express.Router();
+const upload = require("../middlewares/upload");
+
 
 // Đăng bình luận
-router.post("/", async (req, res) => {
+router.post("/", upload.single("image"), async (req, res) => {
   try {
-    const comment = await Comment.create(req.body);
+    const newComment = {
+      postId: req.body.postId,
+      userId: req.body.userId,
+      text: req.body.text,
+      image: req.file ? `/uploads/${req.file.filename}` : null, // Lưu đường dẫn ảnh
+    };
+    const comment = await Comment.create(newComment);
     res.status(201).json(comment);
   } catch (error) {
     res.status(400).json({ error: error.message });
