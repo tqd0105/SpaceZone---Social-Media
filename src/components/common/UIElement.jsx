@@ -1,6 +1,6 @@
-function Icon ({src, width, height, color, className = ""}) {
+function Icon ({src, width, height, className = "", onClick}) {
     return (
-            <img src={src} width={width} height={height} className={className} color={color} alt="" />
+            <img src={src} width={width} height={height} className={className} alt="" onClick={onClick}/>
     )
 }
 

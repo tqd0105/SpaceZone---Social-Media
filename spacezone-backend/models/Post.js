@@ -5,7 +5,7 @@ const PostSchema = new mongoose.Schema(
     title: String,
     content: String,
     image: String, // Lưu link ảnh bài đăng
-    author: String, // ID user
+    author: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
     likes: { type: Number, default: 0 },
     shares: { type: Number, default: 0 },
   },

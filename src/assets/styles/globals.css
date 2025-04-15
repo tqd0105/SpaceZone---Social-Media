@@ -28,7 +28,7 @@
 }
 
 .flex-column-start {
-    @apply flex flex-col justify-start items-center;
+    @apply flex flex-col justify-center items-start;
 }
 
 .flex-column-between {
@@ -46,4 +46,5 @@
 .input {
     @apply w-full p-2 border border-gray-300 rounded-md;
 }
+
 

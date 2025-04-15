@@ -1,0 +1,12 @@
+.search_container {
+  transition: all 0.3s ease;
+  &:hover {
+    background-color: #e5e7eb;
+  }
+}
+
+.search_input {
+  &::placeholder {
+    color: #9ca3af;
+  }
+} 

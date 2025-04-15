@@ -11,5 +11,34 @@ import NotiIcon from "./noti.png";
 
 import Avatar from "./avatar.png";
 
+import RightArrow from "./right-arrow.png";
+import Setting from "./setting.png";
+import Logout from "./logout.png";
+import Help from "./help.png";
 
-export { HomeIcon, FriendIcon, WatchIcon, GroupIcon, GameIcon, MenuIcon, ChatIcon, NotiIcon, Avatar };
+import Close from "./close.png";
+import History from "./history.png";
+import Image from "./image.png";
+import Upload from "./upload.png";
+import BackArrow from "./back_arrow.png";
+
+export {
+  HomeIcon,
+  FriendIcon,
+  WatchIcon,
+  GroupIcon,
+  GameIcon,
+  MenuIcon,
+  ChatIcon,
+  NotiIcon,
+  Avatar,
+  RightArrow,
+  Setting,
+  Logout,
+  Help,
+  Close,
+  History,
+  Image,
+    Upload,
+    BackArrow,
+};

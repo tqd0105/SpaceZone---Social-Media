@@ -14,14 +14,19 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@lottiefiles/dotlottie-react": "^0.13.2",
     "@mui/material": "^6.4.7",
+    "animate.css": "^4.1.1",
     "axios": "^1.8.3",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "lottie-react": "^2.4.1",
     "pm2": "^5.4.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-router-dom": "^7.4.0",
     "sass": "^1.85.1",
     "swiper": "^11.2.5"
   },
@@ -48,5 +53,5 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "homepage": "https://tqd0105.github.io/SpaceZone---Social-Media"
+  "homepage": "/"
 }

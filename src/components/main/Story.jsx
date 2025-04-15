@@ -12,25 +12,30 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import styled from "./Story.module.scss";
+import styled from "./Main.module.scss";
 import Button from "../common/Button.jsx";
+import defaultAvatar from '../../../spacezone-backend/uploads/avatar/default.png'
+import { useAuth } from "../../context/AuthProvider.jsx";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 
 function Story() {
+  const { user } = useAuth();
   const swiperRef = useRef(null);
-  const [isBegin, setIsBegin] = useState(true);
-  const [isEnd, setIsEnd] = useState(false);
+  const fullAvatarURL = user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatar;
+
 
   return (
-    <div className="flex-row-between gap-2 w-full overflow-hidden relative ">
+    <div className="flex-row-between gap-2 py-2 w-full overflow-hidden relative ">
       {/* Ô Tạo Tin */}
       <TwoColumns
         left={
           <div className="relative">
             <img
-              src={Avatar}
+              src={fullAvatarURL}
               width={"100%"}
               alt="avatar"
-              className="rounded-t-xl h-[160px]"
+              className="rounded-t-xl h-[150px]"
             />
             <img
               src={Add}
@@ -45,18 +50,17 @@ function Story() {
           <Text
             children={"Tạo tin"}
             size="14px"
-            className="font-bold text-center text-sm my-2"
+            className="font-semibold text-center text-sm my-2"
           />
         }
         className={
-          "flex-column-between bg-white w-1/5 h-[210px] rounded-xl shadow-sm cursor-pointer hover:scale-95 duration-500"
+          "flex-column-between bg-white w-[140px] h-[200px] rounded-xl shadow-sm cursor-pointer hover:scale-95 duration-500 border border-gray-300"
         }
       />
 
       {/* Slider Story */}
       <div className="relative w-full overflow-hidden">
-        {/* Nút Trái */}
-        {/* Nút Phải */}
+
         <img
           src={Back}
           alt="Next"
@@ -66,13 +70,13 @@ function Story() {
         {/* Slider Story */}
         <Swiper
           spaceBetween={10}
-          slidesPerView={5}
-          slidesPerGroup={5}
+          slidesPerView={4}
+          slidesPerGroup={4}
           navigation={false} // Tắt navigation mặc định
           modules={[Navigation]}
           simulateTouch={false} 
           onSwiper={(swiper) => (swiperRef.current = swiper)}
-          speed={"1000"}
+          speed={"1500"}
           className="w-full rounded-xl"
         >
           {storyDetails.map((story, index) => (
@@ -83,7 +87,7 @@ function Story() {
               <img
                 src={story.src}
                 alt="story"
-                className="rounded-lg shadow-md h-[210px] object-cover w-full "
+                className="rounded-lg shadow-md h-[200px] object-cover w-[160px]"
               />
               <TwoColumns
                 left={
@@ -99,10 +103,10 @@ function Story() {
                   <Text
                     children={story.name}
                     color={"white"}
-                    className={`   `}
+                    className={``}
                   />
                 }
-                classNameRight={`absolute text-center bottom-2 left-0 w-full font-bold ${styled.textShadow}`}
+                classNameRight={`absolute text-center bottom-2 left-0 w-full font-medium ${styled.textShadow}`}
               />
             </SwiperSlide>
           ))}

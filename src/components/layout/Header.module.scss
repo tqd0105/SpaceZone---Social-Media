@@ -2,3 +2,49 @@
     background-color: #9da0a822;
 }
 
+.menu_open {
+    transform-origin: top right;
+    animation: TopRightOpen 0.6s ease-in-out forwards;
+}
+
+.search_open {
+    transform-origin: top;
+    animation: TopRightOpen 0.4s ease-in-out forwards;
+}
+
+@keyframes TopRightOpen {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.narrow_text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 200px;
+}
+
+.text_limitLine {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 180px;
+}
+
+.hidden_scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+

@@ -1,0 +1,31 @@
+.box_shadow {
+  box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.749);
+}
+
+.textShadow {
+  text-shadow: 8px 8px 16px black;
+}
+
+.font_custom {
+  // font-family: "Inter", sans-serif;
+  font-size: medium;
+  font-weight: 400;
+  font-style: medium;
+//   word-spacing: 0.2rem;
+}
+
+.react_icon_parent {
+  position: relative;
+}
+
+.react_icon_child {
+  position: absolute;
+}
+
+.text_ellipsis_2Line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}

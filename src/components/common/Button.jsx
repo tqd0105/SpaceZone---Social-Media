@@ -8,6 +8,7 @@ function Button({
   borderRadius = "50px",
   outline = "none",
   onClick = () => {},
+  type
 }) {
   return (
     <button
@@ -23,6 +24,7 @@ function Button({
       onClick={onClick}
       onMouseEnter={(e) => (e.target.style.backgroundColor = hoverBackgroundColor)} // 👈 Đổi màu nền khi hover
       onMouseLeave={(e) => (e.target.style.backgroundColor = backgroundColor)} 
+      type={type}
     >
       {children}
     </button>
