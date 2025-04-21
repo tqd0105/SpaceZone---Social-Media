@@ -16,13 +16,16 @@ import {
 import EditProfile from "./EditProfile";
 import { useAuth } from "../../context/AuthProvider";
 import ImageDetail from "../common/ImageDetail";
+import UserTabSwitcher from "./UserTabSwitcher";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function Profile() {
+  const [posts, setPosts] = useState([]);
+  const [comments, setComments] = useState([]);
   const { username } = useParams();
   const navigate = useNavigate();
-  const {user, setUser} = useAuth();
+  const { user, setUser } = useAuth();
   const [isOpenEditProfile, setIsOpenEditProfile] = useState(false);
   const [isShowImageDetail, setIsShowImageDetail] = useState(null);
 
@@ -45,11 +48,25 @@ function Profile() {
     fetchUser();
   }, [username]);
 
+  useEffect(() => {
+    fetch("http://localhost:5000/api/posts")
+      .then((res) => res.json())
+      .then((data) => setPosts(data))
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/posts")
+      .then((res) => res.json())
+      .then((data) => setPosts(data))
+      .catch((err) => console.log(err));
+  }, []);
+
   const handleUpload = async (e, type) => {
     const file = e.target.files[0];
     if (!file || !user?._id) return;
 
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     const formData = new FormData();
     const fieldName = type === "avatar" ? "avatar" : "cover";
     formData.append(fieldName, file);
@@ -62,7 +79,7 @@ function Profile() {
         {
           method: "PUT",
           headers: {
-            'Authorization': `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
           body: formData,
         }
@@ -77,13 +94,13 @@ function Profile() {
   const handleDelete = async (type) => {
     if (!user?._id) return;
 
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
 
     try {
       const res = await fetch(`${API_URL}/api/users/${user._id}/${type}`, {
         method: "DELETE",
         headers: {
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
       });
       const updated = await res.json();
@@ -98,33 +115,132 @@ function Profile() {
   }
 
   const handleUpdateUser = async (updatedData) => {
-  setUser(prevUser => ({
-    ...prevUser,
-    ...updatedData.user // chú ý updatedData.user nếu response dạng {user, token}
-  }));
+    setUser((prevUser) => ({
+      ...prevUser,
+      ...updatedData.user, // chú ý updatedData.user nếu response dạng {user, token}
+    }));
 
-  // Cập nhật localStorage nếu có token mới
-  if (updatedData.token && updatedData.user) {
-    localStorage.setItem("token", updatedData.token);
-    localStorage.setItem("user", JSON.stringify(updatedData.user));
-    // Nếu dùng context AuthProvider, gọi hàm cập nhật context ở đây
-    // Ví dụ: authContext.setUser(updatedData.user);
-  }
+    // Cập nhật localStorage nếu có token mới
+    if (updatedData.token && updatedData.user) {
+      localStorage.setItem("token", updatedData.token);
+      localStorage.setItem("user", JSON.stringify(updatedData.user));
+      // Nếu dùng context AuthProvider, gọi hàm cập nhật context ở đây
+      // Ví dụ: authContext.setUser(updatedData.user);
+    }
 
-  if (updatedData.user?.username && updatedData.user.username !== username) {
-    navigate(`/${updatedData.user.username}`, { replace: true });
-  }
-};
+    if (updatedData.user?.username && updatedData.user.username !== username) {
+      navigate(`/${updatedData.user.username}`, { replace: true });
+    }
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/comments")
+      .then((res) => res.json())
+      .then((data) => setComments(data))
+      .catch((err) => console.log(err));
+  }, []);
+
+  const handleAddComment = async (postId, text) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.log("❌ Không có token, hãy đăng nhập lại!");
+        return;
+      }
+
+      const res = await fetch("http://localhost:5000/api/comments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ postId, text }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Lỗi khi thêm bình luận");
+      }
+
+      const newComment = await res.json();
+      setComments([...comments, newComment]); // Cập nhật state
+    } catch (err) {
+      console.log("❌ Lỗi thêm bình luận:", err.message);
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.log("❌ Không có token, hãy đăng nhập lại!");
+        return;
+      }
+
+      const res = await fetch(
+        `http://localhost:5000/api/comments/${commentId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Lỗi không xác định");
+      }
+
+      console.log("✅ Xóa bình luận thành công");
+      setComments((prev) => prev.filter((c) => c._id !== commentId)); // Cập nhật UI
+    } catch (err) {
+      console.error("❌ Lỗi xóa bình luận:", err.message);
+    }
+  };
+
+  const handleDeletePost = async (postId) => {
+    console.log("🛠 postId nhận được:", postId);
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.log("❌ Không có token, hãy đăng nhập lại!");
+        return;
+      }
+
+      const res = await fetch(`http://localhost:5000/api/posts/${postId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Lỗi không xác định");
+      }
+
+      console.log("✅ Xóa bài viết thành công");
+
+      // Cập nhật danh sách bài viết (lọc bỏ bài viết vừa xóa)
+      setPosts(posts.filter((post) => post._id !== postId));
+    } catch (err) {
+      console.error("❌ Lỗi xóa bài viết:", err.message);
+    }
+  };
 
   //   const fullCoverURL = useMemo(()=>{
   //     return user?.coverImage ? `${API_URL}${user.coverImage}` : defaultCoverURL;
   //   }, [user])
 
   return (
-    <div className="lg:w-[45%] lg:h-[500px] ">
+    <div className="lg:w-[45%]  ">
       <div className="flex-row-start gap-4 my-2 ">
-        <div className="rounded-full hover:bg-gray-300 hover:transform p-2 cursor-pointer" onClick={() => navigate(-1)}>
-        <img src={BackBlack} width={20} height={20} alt="" />
+        <div
+          className="rounded-full hover:bg-gray-300 hover:transform p-2 cursor-pointer"
+          onClick={() => navigate(-1)}
+        >
+          <img src={BackBlack} width={20} height={20} alt="" />
         </div>
         <div className="flex-column-start">
           <span className="font-bold text-lg ">{user?.name}</span>
@@ -134,27 +250,36 @@ function Profile() {
       <div className="relative ">
         <img
           src={
-            user?.coverImage ? `${API_URL}${user.coverImage}` : defaultCoverURL 
+            user?.coverImage ? `${API_URL}${user.coverImage}` : defaultCoverURL
           }
           className=" object-cover cursor-pointer w-full h-[250px] "
           alt=""
           onClick={() => setIsShowImageDetail("cover")}
         />
         <div className="flex-row-end">
-          <div className="absolute left-4 -bottom-0 transform cursor-pointer  " onClick={() => setIsShowImageDetail("avatar")}>
+          <div
+            className="absolute left-4 -bottom-0 transform cursor-pointer  "
+            onClick={() => setIsShowImageDetail("avatar")}
+          >
             <img
               src={user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatarURL}
-              
               alt=""
               className="rounded-full border-4  border-white w-[160px] h-[160px] object-cover"
             />
           </div>
           {isShowImageDetail && (
-            <ImageDetail user={user} isAvatar={isShowImageDetail === "avatar"} onClose={()=>setIsShowImageDetail(false)}/>
+            <ImageDetail
+              user={user}
+              isAvatar={isShowImageDetail === "avatar"}
+              onClose={() => setIsShowImageDetail(false)}
+            />
           )}
           <div className="flex-column-center gap-2 m-2">
             <div className="flex-row-center gap-2">
-              <button className="hover:bg-gray-200 border-2 border-gray-600" onClick={() => setIsOpenEditProfile(!isOpenEditProfile)}>
+              <button
+                className="hover:bg-gray-200 border-2 border-gray-600"
+                onClick={() => setIsOpenEditProfile(!isOpenEditProfile)}
+              >
                 Chỉnh sửa trang cá nhân
               </button>
 
@@ -169,7 +294,9 @@ function Profile() {
                 />
               )}
 
-              <button className="hover:bg-gray-200 border-2 border-gray-600">Kho lưu trữ tin</button>
+              <button className="hover:bg-gray-200 border-2 border-gray-600">
+                Kho lưu trữ tin
+              </button>
               <img
                 src={Setting}
                 width={20}
@@ -199,7 +326,7 @@ function Profile() {
         </div>
         <span className="flex-row-start text-gray-400">@{user?.username}</span>
         <p className="flex-row-start font-medium my-2">Tiểu sử</p>
-        <div className="flex-row-between gap-2"> 
+        <div className="flex-row-between gap-2">
           <div className="flex-column-start gap-1 w-3/5">
             <div className="flex-row-start gap-2">
               <img src={Work} width={20} height={20} alt="" />
@@ -211,7 +338,10 @@ function Profile() {
             <div className="flex-row-start gap-2">
               <img src={School} width={20} height={20} alt="" />
               <p className="text-left">
-                Học <span className="italic">Công nghệ thông tin</span> tại  <span className="font-bold">Trường Đại học Giao Thông Vận Tải Thành Phố Hồ Chí Minh</span>
+                Học <span className="italic">Công nghệ thông tin</span> tại{" "}
+                <span className="font-bold">
+                  Trường Đại học Giao Thông Vận Tải Thành Phố Hồ Chí Minh
+                </span>
               </p>
             </div>
           </div>
@@ -219,7 +349,8 @@ function Profile() {
             <div className="flex-row-start gap-2">
               <img src={Location2} width={20} height={20} alt="" />
               <p className="text-left">
-                Sống tại <span className="font-bold">Thành phố Hồ Chí Minh</span>
+                Sống tại{" "}
+                <span className="font-bold">Thành phố Hồ Chí Minh</span>
               </p>
             </div>
             <div className="flex-row-start gap-2">
@@ -229,7 +360,15 @@ function Profile() {
           </div>
         </div>
       </div>
-      
+
+      <UserTabSwitcher
+        posts={posts}
+        comments={comments}
+        onAddComment={handleAddComment}
+        onDeleteComment={handleDeleteComment}
+        onDelete={handleDeletePost}
+        user={user}
+      />
     </div>
   );
 }

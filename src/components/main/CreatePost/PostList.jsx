@@ -31,7 +31,7 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function PostList({
   posts,
-  comments,
+  comments ,
   onDelete,
   onAddComment,
   onDeleteComment,
@@ -180,7 +180,7 @@ function PostList({
           return (
             <div
               key={post._id}
-              className= { ` relative bg-white my-2 rounded-lg shadow-md border border-gray-300`}
+              className= { ` relative bg-white my-2 rounded-lg shadow-md border border-gray-300 `}
             >
               {isOpenCommentDetail === post._id && (
                 <div>
@@ -260,13 +260,15 @@ function PostList({
                       </p>
                     </div>
                     {fullImageURL && (
-                      <div className="flex-column-center pr-2 cursor-pointer">
+                      <div className="flex-column-center pr-2 cursor-pointer"
+                      onClick={() => !disableCommentButton && setIsOpenCommentDetail(
+                        (prev) => (prev === post._id ? null : post._id)
+                      )}
+                      >
                         <img
                           src={fullImageURL}
-                          width="100%"
-                          height="100%"
                           alt=""
-                          className="rounded-xl shadow-md border border-gray-300 "
+                          className="rounded-xl shadow-md border border-gray-300 min-w-[500px] h-full max-w-full max-h-full"
                         />
                       </div>
                     )}
@@ -414,6 +416,7 @@ function PostList({
                 </div>
               </div>
             </div>
+            
           );
         })
       )}

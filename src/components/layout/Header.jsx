@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SearchBar from "../common/SearchBar";
 import Logo from "../common/Logo";
 import ControlBar from "../common/ControlBar";
@@ -27,8 +27,27 @@ import {
 
 import styles from "./Header.module.scss";
 import defaultAvatar from "../../../spacezone-backend/uploads/avatar/default.png";
-import { BackArrow } from "../../assets/icons/header/header";
-import { Back, CloseBlack } from "../../assets/icons/main/main";
+import {
+  Add,
+  AddChat,
+  AddGroup,
+  BackArrow,
+  Call,
+  CloseBlue,
+  Edit,
+  Emotion,
+  File,
+  Gif,
+  Heart,
+  ImageColorful,
+  Microphone,
+  Minimize,
+  Search2,
+  Send,
+  VideoCall,
+} from "../../assets/icons/header/header";
+import { Back, BackBlack, CloseBlack } from "../../assets/icons/main/main";
+import { Circle, listFriends } from "../../assets/icons/rightbar/rightbar";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -42,11 +61,62 @@ function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isProfileRedirect, setIsProfileRedirect] = useState(false);
   const [activeControlCenter, setActiveControlCenter] = useState(0);
+  const [isShowChat, setIsShowChat] = useState(false);
+  const [contactSearch, setContactSearch] = useState("");
+  const [isShowListContact, setIsShowListContact] = useState(true);
+  const [selectedFriendId, setSelectedFriendId] = useState(null);
+  const [isShowMedia, setIsShowMedia] = useState(true);
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
   const menuRef = useRef(null);
   const searchRef = useRef(null);
   const postCache = useRef([]);
   const historyRef = useRef(null);
   const postRef = useRef(null);
+  const messageEndRef = useRef(null);
+
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  useEffect(()=>{
+    setMessages([]);
+  }, [selectedFriendId])
+
+  const handleSend = () => {
+    if (input.trim() === "") return;
+    const userMessage = {
+      id: Date.now(),
+      text: input,
+      from: "user",
+    };
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+
+    setTimeout(() => {
+      const replyChat = {
+        id: Date.now() + 1,
+        text: `Đây là trang cá nhân chính thức ${selectedFriend.name}. Bạn đang gặp vấn đề gì, hãy chia sẽ với tôi!`,
+        from: "bot",
+        image: selectedFriend.image,
+        name: selectedFriend.name,
+      };
+      setMessages((prev) => [...prev, replyChat]);
+    }, 1000);
+  };
+
+  const handleToggleMedia = (e) => {
+    const value = e.target.value;
+    if (value.trim() === "") {
+      setIsShowMedia(true);
+    } else {
+      setIsShowMedia(false);
+    }
+  };
+
+  const selectedFriend = listFriends.find(
+    (friends) => friends.id === selectedFriendId
+  );
 
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
@@ -164,18 +234,32 @@ function Header() {
     { icon: GameIcon, link: "/home" },
   ];
 
+  const location = useLocation();
+  const activeControlCenters = controlCenterIcons.findIndex((tab) =>
+    location.pathname.startsWith(tab.link)
+  );
+
+  const handleContactChat = (listId) => {
+    setSelectedFriendId(listId);
+    setIsShowChat(!isShowChat);
+  };
+
   const controlRightIcons = [
     { icon: MenuIcon, link: "/home" },
-    { icon: ChatIcon, link: "/home" },
+    { icon: ChatIcon, link: null },
     { icon: NotiIcon, link: "/home" },
   ];
 
   return (
     <div className="flex-row-between  bg-white px-4 py-0 fixed top-0 w-full z-50 shadow-md">
       {/* Logo + Tìm kiếm */}
-      <div className="relative flex items-center gap-2 xl:w-[25%]" >
-      <Link to="/home" className="flex items-center gap-2" onClick={closeSearch}>
-        <Logo width="50" height="50" />
+      <div className="relative flex items-center gap-2 xl:w-[25%]">
+        <Link
+          to="/home"
+          className="flex items-center gap-2"
+          onClick={closeSearch}
+        >
+          <Logo width="50" height="50" />
         </Link>
         <SearchBar
           placeholder="Tìm kiếm trên SpaceZone"
@@ -286,7 +370,9 @@ function Header() {
                               {post.content || "Không có tiêu đề"}
                             </p>
                             <p className="text-sm text-gray-500">
-                              <span className="font-bold text-blue-600">Tác giả: </span>{" "}
+                              <span className="font-bold text-blue-600">
+                                Tác giả:{" "}
+                              </span>{" "}
                               {post.author?.name}
                             </p>
                           </div>
@@ -310,7 +396,7 @@ function Header() {
         icons={controlCenterIcons}
         className="flex-row-between gap-2 xl:w-[40%]"
         classNames="py-4 px-10 my-1 rounded-lg hover:bg-gray-200 cursor-pointer "
-        active={activeControlCenter}
+        active={activeControlCenters}
         onClickControlCenter={setActiveControlCenter}
       />
 
@@ -321,6 +407,13 @@ function Header() {
           size="25"
           className="flex-row-center gap-2 "
           classNames={`rounded-full p-2 hover:bg-gray-200 cursor-pointer ${styles.bgElement}`}
+          onClickControlCenter={(index) => {
+            if (index === 1) {
+              setIsShowChat((prev) => !prev);
+            } else {
+              setActiveControlCenter(index);
+            }
+          }}
         />
 
         {user && (
@@ -331,7 +424,6 @@ function Header() {
             {/* Avatar */}
             <Icon
               src={fullAvatarURL}
-              
               className="rounded-full cursor-pointer w-[50px] h-[50px] object-cover"
               onClick={toggleMenu}
             />
@@ -344,13 +436,19 @@ function Header() {
                 } `}
               >
                 {/* Thông tin người dùng */}
-                <Link to={`/${user.username}`} onClick={()=>setIsOpen(false)} className="flex items-center gap-2 mb-4 hover:bg-gray-100 rounded-xl p-2 cursor-pointer">
+                <Link
+                  to={`/${user.username}`}
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-2 mb-4 hover:bg-gray-100 rounded-xl p-2 cursor-pointer"
+                >
                   <Icon
                     src={fullAvatarURL}
                     className="rounded-full cursor-pointer w-[50px] h-[50px] object-cover"
                   />
                   <div>
-                    <p className="font-bold">{user.name}</p>
+                    <p className="font-bold text-black whitespace-nowrap">
+                      {user.name}
+                    </p>
                     <p className="text-sm text-gray-400">@{user.username}</p>
                   </div>
                 </Link>
@@ -389,6 +487,243 @@ function Header() {
           </div>
         )}
       </div>
+      <div
+        className="fixed bottom-2 right-4 cursor-pointer"
+        onClick={() => setIsShowChat(!isShowChat)}
+      >
+        <img src={AddChat} width={60} height={60} alt="" />
+      </div>
+
+      {isShowChat && (
+        <div className="fixed bottom-0 right-[100px] h-[400px] w-[350px] bg-white shadow-2xl rounded-tr-lg rounded-tl-lg border-[1px] border-gray-300 p-1 animate__animated animate__fadeIn">
+          <div className="flex-row-between ">
+            <div className="flex-row-center gap-1">
+              <div
+                className="hover:bg-gray-300 rounded-full p-2 cursor-pointer"
+                onClick={() => setIsShowChat(false)}
+              >
+                <img src={BackBlack} width={15} height={20} alt="" />
+              </div>
+              <h3 className="font-bold text-[16px] ">
+                Bắt đầu cuộc trò chuyện mới
+              </h3>
+            </div>
+            <div className="hover:bg-gray-300 rounded-full p-2 cursor-pointer">
+              <img src={AddGroup} width={30} height={20} alt="" />
+            </div>
+          </div>
+          <div
+            className="relative flex-row-center gap-1 px-2 cursor-pointer"
+            onClick={() => setIsShowListContact(true)}
+          >
+            <img src={Search2} width={20} height={20} alt="" />
+            <input
+              type="text"
+              placeholder="Tìm kiếm liên hệ"
+              className="w-full p-2 outline-none placeholder:text-gray-800 "
+              value={contactSearch}
+              onChange={(e)=>setContactSearch(e.target.value)}
+            />
+          </div>
+          <div className="relative w-full h-[1px] bg-gray-300 my-2">
+            {isShowListContact && (
+              <div className="absolute top-full w-full overflow-y-scroll max-h-[300px] mt-1 animate__animated animate__fadeIn">
+                {listFriends.filter((list)=> 
+                  list.name.toLowerCase().includes(contactSearch.toLowerCase())
+              )
+                .map((list, index) => (
+                  <div
+                    key={index}
+                    className="flex-row-start gap-2  mx-1 cursor-pointer hover:bg-gray-200 rounded-md p-2"
+                    onClick={() => handleContactChat(list.id)}
+                  >
+                    <img
+                      src={list.image}
+                      width={40}
+                      height={50}
+                      className="rounded-full"
+                      alt=""
+                    />
+                    <span>{list.name}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {selectedFriend && (
+        <div className="fixed bottom-0 right-[100px] h-[420px] w-[350px]  bg-white shadow-2xl rounded-tr-lg rounded-tl-lg border-[1px] border-gray-300 animate__animated animate__fadeIn">
+          <div className="sticky top-0 right-0 left-0 flex-row-between  border-b-[1px] border-gray-300 p-2 shadow-md">
+            <div className="flex-row-center gap-2">
+              <div className="relative">
+                <img
+                  src={selectedFriend.image}
+                  width={40}
+                  height={20}
+                  className="rounded-full"
+                  alt=""
+                />
+                <img
+                  className="absolute bottom-0 right-0 shadow-xl"
+                  src={Circle}
+                  width={12}
+                  height={12}
+                  alt=""
+                />
+              </div>
+              <div className="flex-column-start">
+                <div className="flex-row-center gap-1">
+                  <h3 className="text-left font-bold text-[15px] text-ellipsis overflow-hidden whitespace-nowrap w-[120px]">
+                    {selectedFriend.name}
+                  </h3>
+                  <img src={Edit} width={15} alt="" />
+                </div>
+                <span className="text-gray-400 text-xs">Vừa mới truy cập</span>
+              </div>
+            </div>
+            <div className="flex-row-between gap-2">
+              <img src={Call} width={25} height={20} alt="" />
+              <img src={VideoCall} width={25} height={20} alt="" />
+              <img src={Minimize} width={25} height={20} alt="" 
+                onClick={()=>{
+                  setSelectedFriendId(false);
+                  setIsShowChat(true)
+                }}
+              />
+              <img
+                src={CloseBlue}
+                width={25}
+                height={20}
+                alt=""
+                onClick={() => setSelectedFriendId(false)}
+              />
+            </div>
+          </div>
+          {/* <div className="w-full h-[1px] bg-gray-300 "></div> */}
+          {/* {messages.map((message, index) => (
+            <div key={index} className="flex justify-end">
+              <span className=" px-4 py-2 bg-blue-600 text-white m-2 rounded-full inline-block ">
+                {message}
+              </span>
+            </div>
+          ))} */}
+          <div className="overflow-y-scroll max-h-[300px] p-2">
+            <div className="flex-column-center gap-1">
+              <div className="relative inline-block">
+                <img
+                  src={selectedFriend.image}
+                  width={70}
+                  height={70}
+                  alt=""
+                  className="rounded-full"
+                />
+                <img src={Circle} width={15} height={15} alt="" className="absolute bottom-0 right-0"/>
+              </div>
+              <h3 className="font-bold text-lg">{selectedFriend.name}</h3>
+              <p>Các bạn là bạn bè trên Facebook</p>
+              <p>Sống tại Thành Phố Hồ Chí Minh</p>
+              <button className="outline-none bg-gray-200 hover:bg-gray-100">
+                Xem trang cá nhân
+              </button>
+            </div>
+            {messages.map((message, index) => (
+              <div
+                key={message.id}
+                className={`flex   ${
+                  message.from === "user"
+                    ? "justify-end"
+                    : " justify-start items-center"
+                } animate__animated animate__fadeIn`}
+              >
+                {message.from === "bot" && (
+                  <img
+                    src={message.image}
+                    className=" w-[35px] h-[35px] rounded-full"
+                    alt=""
+                  />
+                )}
+                <span
+                  className={`px-4 py-2 ${
+                    message.from === "user"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200 text-black "
+                  } text-left max-w-[210px] m-1 rounded-xl`}
+                >
+                  {message.text}
+                </span>
+              </div>
+            ))}
+            <div ref={messageEndRef} />
+          </div>
+          <div
+            className="absolute bottom-0 right-0 left-0 flex-row-between gap-2 p-2 border-t-[1px] border-gray-300"
+            style={{
+              boxShadow:
+                "rgba(0, 0, 0, 0.1) 0px 0px 0px, rgba(0, 0, 0, 0.22) 0px 0px 6px",
+            }}
+          >
+            {isShowMedia && input.trim() === "" ? (
+              <div className="flex-row-center gap-2 cursor-pointer">
+                <img src={Microphone} width={25} height={30} alt="" />
+                <img src={ImageColorful} width={25} height={30} alt="" />
+                <img src={File} width={25} height={30} alt="" />
+                <img src={Gif} width={25} height={30} alt="" />
+              </div>
+            ) : (
+              <div>
+                <img src={Add} width={25} height={25} alt="" />
+              </div>
+            )}
+
+            <div
+              className={`flex items-center relative ${
+                isShowMedia ? "" : "w-full"
+              } transition-all duration-300 ease-in-out `}
+            >
+              <input
+                type="text"
+                className="border-[1px] shadow-lg rounded-full  w-full p-2 outline-none break-words"
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  handleToggleMedia(e);
+                }}
+                onKeyDown={(e) => e.key === "Enter" && handleSend()}
+              />
+              <img
+                src={Emotion}
+                className={`absolute right-2 cursor-pointer`}
+                width={25}
+                height={20}
+                alt=""
+              />
+            </div>
+            {isShowMedia && input.trim() === "" ? (
+              <div>
+                <img
+                  src={Heart}
+                  width={25}
+                  height={30}
+                  alt=""
+                  className="cursor-pointer"
+                />
+              </div>
+            ) : (
+              <div>
+                <img
+                  src={Send}
+                  width={25}
+                  height={30}
+                  alt=""
+                  className="cursor-pointer"
+                  onClick={handleSend}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

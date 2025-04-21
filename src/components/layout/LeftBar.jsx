@@ -7,7 +7,7 @@ import TwoColumns from "../common/TwoColumns";
 import { Icon, Text } from "../common/UIElement";
 // import styles from './Leftbar.module.scss';
 import defaultAvatar from '../../../spacezone-backend/uploads/avatar/default.png'
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function Leftbar({user}) {
@@ -26,14 +26,14 @@ function Leftbar({user}) {
               />
             </div>
           ))}
-          <div className="flex-row-center">
+          <NavLink to="/home" className={`flex-row-center `}>
           <Text
             className="w-3/4 font-semibold py-3 rounded-full bg-black cursor-pointer hover:bg-gray-900 text-center mx-3 mb-3"
             size="16px"
             color="white"
             children="Đăng"
           />
-          </div>
+          </NavLink>
         </div>
         <div className="h-[1px] bg-gray-200 "></div>
         {/* Profile section at bottom */}
@@ -45,7 +45,7 @@ function Leftbar({user}) {
                 right={
                   <TwoColumns
                     left={<Text children={user?.name} className="font-bold text-black text-left text-base" size="18px"/>}
-                    right={<Text children={user?.username} className="text-gray-500 text-left font-medium"/>}
+                    right={<Text children={`@${user?.username}`} className="text-gray-500 text-left font-medium"/>}
                     className="flex-col-start gap-2"
                   />
                 }
