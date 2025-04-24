@@ -40,12 +40,20 @@ if (!MONGO_URI) {
   process.exit(1);
 }
 
-mongoose
-  .connect(MONGO_URI)
-  .then(() => console.log("✅ MongoDB Connected"))
+// mongoose
+//   .connect(MONGO_URI)
+//   .then(() => console.log("✅ MongoDB Connected"))
+//   .catch((err) => {
+//     console.error("❌ MongoDB Connection Error:", err);
+//     process.exit(1);
+//   });
+
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('MongoDB connected successfully');
+  })
   .catch((err) => {
-    console.error("❌ MongoDB Connection Error:", err);
-    process.exit(1);
+    console.error('Error connecting to MongoDB:', err);
   });
 
 // 📌 Routes
