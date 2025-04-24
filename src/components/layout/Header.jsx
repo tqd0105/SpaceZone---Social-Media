@@ -5,6 +5,7 @@ import Logo from "../common/Logo";
 import ControlBar from "../common/ControlBar";
 import { Icon } from "../common/UIElement";
 import { useAuth } from "../../context/AuthProvider";
+import '../../styles/_mobile.scss';
 
 import {
   HomeIcon,
@@ -251,7 +252,7 @@ function Header() {
   ];
 
   return (
-    <div className="flex-row-between  bg-white px-4 py-0 fixed top-0 w-full z-50 shadow-md">
+    <div className="flex-row-between bg-white px-4 py-0 fixed top-0 w-full z-50 shadow-md">
       {/* Logo + Tìm kiếm */}
       <div className="relative flex items-center gap-2 xl:w-[25%]">
         <Link
