@@ -27,7 +27,7 @@ import {
 } from "@/assets/icons/header/header.js";
 
 import styles from "./Header.module.scss";
-import defaultAvatar from "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
+const defaultAvatar = "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
 import {
   Add,
   AddChat,

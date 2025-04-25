@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import defaultCoverURL from "https://spacezone-backend.up.railway.app/uploads/cover/default_cover.png";
-import defaultAvatarURL from "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
+const defaultCover = "https://spacezone-backend.up.railway.app/uploads/cover/default_cover.png";
+const defaultAvatar = "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
 import {
   BackBlack,
   CalendarBlack,
@@ -250,7 +250,7 @@ function Profile() {
       <div className="relative ">
         <img
           src={
-            user?.coverImage ? `${API_URL}${user.coverImage}` : defaultCoverURL
+            user?.coverImage ? `${API_URL}${user.coverImage}` : defaultCover
           }
           className=" object-cover cursor-pointer w-full h-[250px] "
           alt=""
@@ -262,7 +262,7 @@ function Profile() {
             onClick={() => setIsShowImageDetail("avatar")}
           >
             <img
-              src={user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatarURL}
+              src={user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatar}
               alt=""
               className="rounded-full border-4  border-white w-[160px] h-[160px] object-cover"
             />

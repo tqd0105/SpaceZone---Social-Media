@@ -5,8 +5,8 @@ import {
   Edit,
   User,
 } from "../../assets/icons/main/main";
-import defaultCoverURL from "https://spacezone-backend.up.railway.app/uploads/cover/default_cover.png";
-import defaultAvatarURL from "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
+const defaultCover = "https://spacezone-backend.up.railway.app/uploads/cover/default_cover.png";
+const defaultAvatar = "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
 import ToggleSwitch from "../common/ToggleSwitch";
 import PrivacySelector from "./PrivacySelector";
 import { useState } from "react";
@@ -190,9 +190,9 @@ function EditProfile({
         <div className="relative ">
           <img
             src={
-              deletedItems.cover ? defaultCoverURL :
+              deletedItems.cover ? defaultCover :
               (tempFiles.cover ? tempUser.coverImage :
-              (user?.coverImage ? `${API_URL}${user.coverImage}` : defaultCoverURL))
+              (user?.coverImage ? `${API_URL}${user.coverImage}` : defaultCover))
             }
             className=" object-cover w-full h-[200px]"
             alt=""
@@ -230,13 +230,13 @@ function EditProfile({
           >
             <img
               src={
-                deletedItems.avatar ? defaultAvatarURL :
+                deletedItems.avatar ? defaultAvatar :
               (tempFiles.avatar ? tempUser.avatar :
-              (user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatarURL))
+              (user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatar))
               }
               alt=""
               onError={(e) => {
-                e.target.src = defaultAvatarURL;
+                e.target.src = defaultAvatar;
               }}
               className="rounded-full border-4  border-white w-[150px] h-[150px] object-cover"
             />

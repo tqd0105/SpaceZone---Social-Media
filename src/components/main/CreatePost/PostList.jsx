@@ -23,7 +23,7 @@ import ReactionList from "../animation/ReactionList";
 import Lottie from "lottie-react";
 import { reactions } from "../animation/ReactionList";
 import ShareComponent from "../Share";
-import defaultAvatarURL from "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
+const defaultAvatar = "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
 // import Comments from "../Comments";
 import CommentDetail from "../CreatePost/CommentDetail";
 import { Link } from "react-router-dom";
@@ -169,7 +169,7 @@ function PostList({
         posts.map((post) => {
           const fullAvatarURL = post.author?.avatar
             ? `${API_URL}${post.author.avatar}`
-            : defaultAvatarURL;
+            : defaultAvatar;
           const fullImageURL = post.image ? `${API_URL}${post.image}` : null;
           const isLiked = likePosts[post._id] || false;
           const likeCount = randomLikes[post._id] || 0;

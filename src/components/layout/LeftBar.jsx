@@ -6,7 +6,7 @@ import {
 import TwoColumns from "../common/TwoColumns";
 import { Icon, Text } from "../common/UIElement";
 // import styles from './Leftbar.module.scss';
-import defaultAvatar from 'https://spacezone-backend.up.railway.app/uploads/avatar/default.png'
+const defaultAvatar = "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
 import { Link, NavLink } from "react-router-dom";
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
