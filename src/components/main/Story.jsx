@@ -14,7 +14,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import styled from "./Main.module.scss";
 import Button from "../common/Button.jsx";
-import defaultAvatar from '../../../spacezone-backend/uploads/avatar/default.png'
+import defaultAvatar from 'https://spacezone-backend.up.railway.app/uploads/avatar/default.png'
 import { useAuth } from "../../context/AuthProvider.jsx";
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 

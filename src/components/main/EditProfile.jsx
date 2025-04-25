@@ -5,8 +5,8 @@ import {
   Edit,
   User,
 } from "../../assets/icons/main/main";
-import defaultCoverURL from "../../../spacezone-backend/uploads/cover/default_cover.png";
-import defaultAvatarURL from "../../../spacezone-backend/uploads/avatar/default.png";
+import defaultCoverURL from "https://spacezone-backend.up.railway.app/uploads/cover/default_cover.png";
+import defaultAvatarURL from "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
 import ToggleSwitch from "../common/ToggleSwitch";
 import PrivacySelector from "./PrivacySelector";
 import { useState } from "react";

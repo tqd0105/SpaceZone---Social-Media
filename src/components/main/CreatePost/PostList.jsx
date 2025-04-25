@@ -23,7 +23,7 @@ import ReactionList from "../animation/ReactionList";
 import Lottie from "lottie-react";
 import { reactions } from "../animation/ReactionList";
 import ShareComponent from "../Share";
-import defaultAvatarURL from "../../../../spacezone-backend/uploads/avatar/default.png";
+import defaultAvatarURL from "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
 // import Comments from "../Comments";
 import CommentDetail from "../CreatePost/CommentDetail";
 import { Link } from "react-router-dom";
