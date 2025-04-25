@@ -21,7 +21,7 @@ export default defineConfig({
       },
     },
   },
-  base: '/',
+  base: '/SpaceZone---Social-Media',
   define: {
     "process.env": {},
   },
