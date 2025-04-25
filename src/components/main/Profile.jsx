@@ -33,7 +33,7 @@ function Profile() {
     const fetchUser = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/users/${username}`
+          `${API_URL}/users/${username}`,
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -49,14 +49,14 @@ function Profile() {
   }, [username]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/posts")
+    fetch(`${API_URL}/posts`)
       .then((res) => res.json())
       .then((data) => setPosts(data))
       .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/posts")
+    fetch(`${API_URL}/posts`)
       .then((res) => res.json())
       .then((data) => setPosts(data))
       .catch((err) => console.log(err));
@@ -73,7 +73,7 @@ function Profile() {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/users/${user._id}/${
+        `${API_URL}/users/${user._id}/${
           type === "avatar" ? "avatar" : "cover"
         }`,
         {
@@ -134,7 +134,7 @@ function Profile() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/comments")
+    fetch(`${API_URL}/comments`)
       .then((res) => res.json())
       .then((data) => setComments(data))
       .catch((err) => console.log(err));
@@ -148,7 +148,7 @@ function Profile() {
         return;
       }
 
-      const res = await fetch("http://localhost:5000/api/comments", {
+      const res = await fetch(`${API_URL}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -177,7 +177,7 @@ function Profile() {
       }
 
       const res = await fetch(
-        `http://localhost:5000/api/comments/${commentId}`,
+        `${API_URL}/comments/${commentId}`,
         {
           method: "DELETE",
           headers: {
@@ -208,7 +208,7 @@ function Profile() {
         return;
       }
 
-      const res = await fetch(`http://localhost:5000/api/posts/${postId}`, {
+      const res = await fetch(`${API_URL}/posts/${postId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -3,7 +3,7 @@ const updateAvatar = async (userId, file) => {
     formData.append("avatar", file);
   
     try {
-      const res = await fetch(`http://localhost:5000/api/users/${userId}/avatar`, {
+      const res = await fetch(`${API_URL}/users/${userId}/avatar`, {
         method: "PUT",
         body: formData,
       });
@@ -19,7 +19,7 @@ const updateAvatar = async (userId, file) => {
     formData.append("coverImage", file);
   
     try {
-      const res = await fetch(`http://localhost:5000/api/users/${userId}/cover`, {
+      const res = await fetch(`${API_URL}/users/${userId}/cover`, {
         method: "PUT",
         body: formData,
       });

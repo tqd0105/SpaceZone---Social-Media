@@ -2,19 +2,21 @@ import { useState, useEffect } from "react";
 import PostForm from "../main/CreatePost/PostForm";
 import PostList from "../main/CreatePost/PostList";
 import Story from "../main/Story";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+
 function Main() {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/posts")
+    fetch(`${API_URL}/posts`)
       .then((res) => res.json())
       .then((data) => setPosts(data))
       .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/comments")
+    fetch(`${API_URL}/comments`)
       .then((res) => res.json())
       .then((data) => setComments(data))
       .catch((err) => console.log(err));
@@ -28,7 +30,7 @@ function Main() {
         return;
       }
 
-      const res = await fetch("http://localhost:5000/api/posts", {
+      const res = await fetch(`${API_URL}/posts`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`, // ✅ Gửi token kèm theo
@@ -58,7 +60,7 @@ function Main() {
         return;
       }
 
-      const res = await fetch(`http://localhost:5000/api/posts/${postId}`, {
+      const res = await fetch(`${API_URL}/posts/${postId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -87,7 +89,7 @@ function Main() {
         return;
       }
 
-      const res = await fetch("http://localhost:5000/api/comments", {
+      const res = await fetch(`${API_URL}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -116,7 +118,7 @@ function Main() {
       }
 
       const res = await fetch(
-        `http://localhost:5000/api/comments/${commentId}`,
+        `${API_URL}/comments/${commentId}`,
         {
           method: "DELETE",
           headers: {
