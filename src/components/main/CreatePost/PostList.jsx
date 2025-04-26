@@ -47,6 +47,11 @@ function PostList({
   const [isOpenCommentDetail, setIsOpenCommentDetail] = useState(null);
   const [isShowShare, setIsShowShare] = useState(false);
   const [localComments, setLocalComments] = useState(comments);
+  const postEndRef = useRef(null)
+
+  useEffect(()=> {
+    postEndRef.current?.scrollIntoView({behaviour: "smooth"})
+  }, [posts])
 
   // Cập nhật localComments khi comments thay đổi
   useEffect(() => {
@@ -422,9 +427,9 @@ function PostList({
 
                   
                 </div>
+            <div ref={postEndRef}/>
               </div>
             </div>
-            
           );
         })
       )}

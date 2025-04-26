@@ -24,7 +24,7 @@ const ReactionList = ({
     <div
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`flex gap-2   bottom-full left-0 bg-white rounded-2xl px-4 py-2 shadow-2xl animate__animated animate__zoomInLeft animate__faster`}
+      className={`flex gap-2 absolute bottom-full left-0 bg-white rounded-2xl px-4 py-2 shadow-2xl animate__animated animate__zoomInLeft animate__faster`}
     >
       {reactions.map((reaction, index) => (
         <ReactionButton
