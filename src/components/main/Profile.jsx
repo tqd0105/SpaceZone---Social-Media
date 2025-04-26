@@ -18,7 +18,7 @@ import { useAuth } from "../../context/AuthProvider";
 import ImageDetail from "../common/ImageDetail";
 import UserTabSwitcher from "./UserTabSwitcher";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend.up.railway.app/api";
 
 function Profile() {
   const [posts, setPosts] = useState([]);

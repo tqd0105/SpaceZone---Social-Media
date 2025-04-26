@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import PostForm from "../main/CreatePost/PostForm";
 import PostList from "../main/CreatePost/PostList";
 import Story from "../main/Story";
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend.up.railway.app/api";
 
 function Main() {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetch(`${API_URL}/posts`)
@@ -52,6 +53,7 @@ function Main() {
 
   const handleDelete = async (postId) => {
     console.log("🛠 postId nhận được:", postId);
+    setLoading(true)
 
     try {
       const token = localStorage.getItem("token");
@@ -78,6 +80,8 @@ function Main() {
       setPosts(posts.filter((post) => post._id !== postId));
     } catch (err) {
       console.error("❌ Lỗi xóa bài viết:", err.message);
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -149,6 +153,7 @@ function Main() {
         onDelete={handleDelete}
         posts={posts}
         comments={comments}
+        loading={loading}
       />
     </div>
   );

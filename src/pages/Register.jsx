@@ -16,6 +16,7 @@ function Register() {
   const [error, setError] = useState(null);
   const [modal, setModal] = useState(false);
   const [countdown, setCountDown] = useState(3);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -24,6 +25,8 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+    setLoading(true);
 
     const { name, email, password, confirmPassword } = formData;
 
@@ -60,6 +63,8 @@ function Register() {
     } catch (error) {
       console.error("❌ Lỗi đăng ký:", error);
       setError("Lỗi đăng ký, vui lòng thử lại!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,7 +76,9 @@ function Register() {
         onSubmit={handleSubmit}
         className="bg-white py-6 my-6 rounded-lg shadow-md w-96"
       >
-        <h2 className="text-2xl font-semibold text-center">Tạo tài khoản mới</h2>
+        <h2 className="text-2xl font-semibold text-center">
+          Tạo tài khoản mới
+        </h2>
         {error && (
           <p className="text-red-500 text-center font-semibold">{error}</p>
         )}
@@ -116,12 +123,21 @@ function Register() {
           required
         />
 
-        <button
-          type="submit"
-          className={`w-[320px] p-2 mt-4 bg-blue-500 text-white rounded-md ${styled.gradient2}`}
-        >
-          Đăng ký
-        </button>
+        <div className="flex justify-center items-center">
+          <button
+            type="submit"
+            className={`w-[320px] flex-row-center gap-2 p-2 mt-4 bg-blue-500 text-white rounded-md ${styled.gradient2}`}
+          >
+            {loading ? (
+              <div className="flex-row-center gap-2">
+                <div className={`${styled.loading__spinner}`}></div>
+                <span >Đang thiết lập tài khoản</span>
+              </div>
+            ) : (
+              <span>Đăng kí</span>
+            )}
+          </button>
+        </div>
 
         <div className="w-1/2 translate-x-1/2 h-[1px] bg-gray-200 my-3"></div>
 

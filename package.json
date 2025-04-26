@@ -15,6 +15,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@lottiefiles/dotlottie-react": "^0.13.2",
+    "@mui/icons-material": "^6.4.11",
     "@mui/material": "^6.4.7",
     "animate.css": "^4.1.1",
     "axios": "^1.8.3",
@@ -23,6 +24,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "lottie-react": "^2.4.1",
+    "lottie-web": "^5.12.2",
     "mongodb": "^6.16.0",
     "pm2": "^5.4.3",
     "react": "^19.0.0",
@@ -54,5 +56,5 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "homepage": "https://tqd0105.github.io/SpaceZone---Social-Media/"
+  "homepage": "https://tqd0105.github.io/SpaceZone---Social-Media"
 }

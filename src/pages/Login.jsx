@@ -13,6 +13,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+  const [loading, setLoading] = useState(false);
   const { login: loginContext } = useAuth();
 
   const handleChange = (e) => {
@@ -22,6 +23,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
     
     try {
       const res = await login(formData.email, formData.password);
@@ -37,6 +39,8 @@ const Login = () => {
     } catch (error) {
       console.error("❌ Lỗi đăng nhập:", error);
       setError("Lỗi đăng nhập, vui lòng thử lại!");
+    } finally {
+      setLoading(false);
     }
   };
   
@@ -83,7 +87,14 @@ const Login = () => {
           type="submit" 
           className={`hover:bg-blue-700 text-white font-semibold py-2 px-4 mt-3 rounded-md outline-none w-full ${styled.gradient}`}
         >
-          Đăng nhập
+          {loading ? (
+                        <div className="flex-row-center gap-2">
+                          <div className={`${styled.loading__spinner}`}></div>
+                          <span >Đang xử lí thông tin</span>
+                        </div>
+                      ) : (
+                        <span>Đăng nhập</span>
+                      )}
         </button>
 
         <div className="w-full h-[1px] bg-gray-300 my-4"></div>

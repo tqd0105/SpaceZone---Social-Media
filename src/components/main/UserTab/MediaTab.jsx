@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CloseWhite } from "../../../assets/icons/main/main";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function MediaTab({ posts }) {
   const [selectedPostId, setSelectedPostId] = useState(null);
@@ -10,9 +10,10 @@ function MediaTab({ posts }) {
 
   return (
     <div>
-      <div className="flex-row-start gap-2 w-full">
         {Array.isArray(posts) && posts.length > 0 ? (
-          posts.map((post, index) =>
+      <div className="flex-row-start gap-2 w-full">
+          
+          {posts.map((post, index) =>
             post.image ? (
               <img
                 src={`${API_URL}${post.image}`}
@@ -22,11 +23,14 @@ function MediaTab({ posts }) {
                 onClick={() => setSelectedPostId(post._id)}
               />
             ) : null
-          )
-        ) : (
-          <span className="font-bold">Không có đa phương tiện nào</span>
-        )}
+          )}
       </div>
+
+        ) : (
+          <div className="m-4">
+            <span className="font-bold ">Chưa có đa phương tiện nào</span>
+          </div>
+        )}
 
       {selectedPost && (
         <div className="fixed inset-0 flex-row-center z-50 ">

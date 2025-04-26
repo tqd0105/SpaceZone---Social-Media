@@ -16,7 +16,7 @@ import styled from "./Main.module.scss";
 import Button from "../common/Button.jsx";
 const defaultAvatar = "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
 import { useAuth } from "../../context/AuthProvider.jsx";
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend.up.railway.app";
 
 
 function Story() {

@@ -14,7 +14,7 @@ function App() {
   const {user} = useAuth();
   return (
     <AuthProvider>
-      <Router>
+      <Router basename="/SpaceZone---Social-Media">
         <Routes>
           {/* 🟢 Layout dành cho người chưa đăng nhập */}
           <Route element={<LoginLayout />}>

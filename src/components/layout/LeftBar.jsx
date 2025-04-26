@@ -8,7 +8,7 @@ import { Icon, Text } from "../common/UIElement";
 // import styles from './Leftbar.module.scss';
 const defaultAvatar = "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
 import { Link, NavLink } from "react-router-dom";
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend.up.railway.app/api";
 
 function Leftbar({user}) {
   const fullAvatarURL = user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatar;

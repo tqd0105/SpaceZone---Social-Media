@@ -50,7 +50,7 @@ import {
 import { Back, BackBlack, CloseBlack } from "../../assets/icons/main/main";
 import { Circle, listFriends } from "../../assets/icons/rightbar/rightbar";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend.up.railway.app/api";
 
 function Header() {
   const { user, logout } = useAuth();
@@ -175,7 +175,7 @@ function Header() {
 
     try {
       if (postCache.current.length === 0) {
-        const response = await fetch(`${API_URL}/api/posts`);
+        const response = await fetch(`${API_URL}/posts`);
         console.log(response);
 
         if (!response.ok) {
@@ -432,7 +432,7 @@ function Header() {
             {/* Menu tài khoản */}
             {isOpen && (
               <div
-                className={`absolute top-full right-0 bg-white p-4 rounded-2xl shadow-2xl z-10 w-56 ${
+                className={`absolute min-w-[250px] top-full right-0 bg-white p-4 rounded-2xl shadow-2xl z-10 w-56 ${
                   isOpen ? styles.menu_open : styles.menu_close
                 } `}
               >
@@ -440,14 +440,14 @@ function Header() {
                 <Link
                   to={`/${user.username}`}
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-2 mb-4 hover:bg-gray-100 rounded-xl p-2 cursor-pointer"
+                  className="flex justify-around items-center gap-2 mb-4 hover:bg-gray-100 rounded-xl p-2 cursor-pointer"
                 >
                   <Icon
                     src={fullAvatarURL}
                     className="rounded-full cursor-pointer w-[50px] h-[50px] object-cover"
                   />
                   <div>
-                    <p className="font-bold text-black whitespace-nowrap">
+                    <p className="font-bold text-black whitespace-nowrap text-ellipsis overflow-hidden w-[150px]">
                       {user.name}
                     </p>
                     <p className="text-sm text-gray-400">@{user.username}</p>

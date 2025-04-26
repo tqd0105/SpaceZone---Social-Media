@@ -27,7 +27,7 @@ const defaultAvatar = "https://spacezone-backend.up.railway.app/uploads/avatar/d
 // import Comments from "../Comments";
 import CommentDetail from "../CreatePost/CommentDetail";
 import { Link } from "react-router-dom";
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend.up.railway.app/api";
 
 function PostList({
   posts,
@@ -37,6 +37,7 @@ function PostList({
   onDeleteComment,
   disableCommentButton = false,
   user
+  , loading
 }) {
   const [likePosts, setLikePosts] = useState({});
   const randomShares = useMemo(() => Math.floor(Math.random() * 100), []);
@@ -180,7 +181,7 @@ function PostList({
           return (
             <div
               key={post._id}
-              className= { ` relative bg-white my-2 rounded-lg shadow-md border border-gray-300 `}
+              className= { ` relative bg-white my-2 rounded-lg shadow-md border border-gray-300 animate__animated animate__fadeIn animate__slow`}
             >
               {isOpenCommentDetail === post._id && (
                 <div>
@@ -192,6 +193,7 @@ function PostList({
                     onDelete={onDelete}
                     isOpenCommentDetail={isOpenCommentDetail}
                     setIsOpenCommentDetail={setIsOpenCommentDetail}
+                    loading={loading}
                   />
                 </div>
               )}
@@ -205,7 +207,7 @@ function PostList({
               )}
 
               <div className={` flex justify-start items-start w-full`}>
-                <Link to={`/${post.author.username}`} className="flex-shrink-0">
+                <Link to={`/${post.author?.username || ""}`} className="flex-shrink-0">
                 <img
                   src={fullAvatarURL}
                   className="rounded-full m-3 cursor-pointer  w-[50px] h-[50px] object-cover "
@@ -242,7 +244,11 @@ function PostList({
                         alt=""
                         className="cursor-pointer"
                       />
-                      <img
+                      {loading ? (
+                                        <div className={`${styled.loading__spinner}`}></div>
+
+                      ):(
+<img
                         onClick={() => onDelete(post._id)}
                         src={CloseBlack}
                         width={15}
@@ -250,6 +256,8 @@ function PostList({
                         alt=""
                         className="cursor-pointer"
                       />
+                      )}
+                      
                     </div>
                   </div>
                   {/* Noi dung bai viet */}

@@ -2,7 +2,7 @@ import PostList from "./PostList";
 import Comments from "../Comments";
 import { BackBlack } from "../../../assets/icons/main/main";
 
-function CommentDetail({ posts, comments, onDeleteComment, onAddComment, onDelete, isOpenCommentDetail, setIsOpenCommentDetail }) {
+function CommentDetail({ posts, comments, onDeleteComment, onAddComment, onDelete, isOpenCommentDetail, setIsOpenCommentDetail, loading }) {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -26,6 +26,7 @@ function CommentDetail({ posts, comments, onDeleteComment, onAddComment, onDelet
             posts={[posts]} 
             onDelete={onDelete} 
             disableCommentButton={true}
+            loading={loading}
           />
           
           {/* Hiển thị bình luận của bài viết */}

@@ -10,7 +10,7 @@ const defaultAvatar = "https://spacezone-backend.up.railway.app/uploads/avatar/d
 import ToggleSwitch from "../common/ToggleSwitch";
 import PrivacySelector from "./PrivacySelector";
 import { useState } from "react";
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend.up.railway.app/api";
 
 function EditProfile({
   isOpenEditProfile,
@@ -85,7 +85,7 @@ function EditProfile({
           username: tempUser.username
         });
   
-        const userUpdateResponse = await fetch(`${API_URL}/api/users/${user._id}`, {
+        const userUpdateResponse = await fetch(`${API_URL}/users/${user._id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -128,7 +128,7 @@ function EditProfile({
           if (file) {
             const formData = new FormData();
             formData.append(type, file);
-            const response = await fetch(`${API_URL}/api/users/${user._id}/${type}`, {
+            const response = await fetch(`${API_URL}/users/${user._id}/${type}`, {
               method: "PUT",
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -142,7 +142,7 @@ function EditProfile({
         }),
         ...Object.entries(deletedItems).map(async ([type, isDeleted]) => {
           if (isDeleted) {
-            const response = await fetch(`${API_URL}/api/users/${user._id}/${type}`, {
+            const response = await fetch(`${API_URL}/users/${user._id}/${type}`, {
               method: "DELETE",
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,

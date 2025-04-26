@@ -3,11 +3,15 @@ import { Avatar, createPostItems } from "@/assets/icons/main/main.js";
 import { Icon } from "../../common/UIElement";
 import Button from "../../common/Button";
 import { Close, Photo } from "../../../assets/icons/main/main";
-const defaultAvatar = "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
+const defaultAvatar =
+  "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
 import { useAuth } from "../../../context/AuthProvider"; // ✅ Sử dụng hook useAuth
 import { Link } from "react-router-dom";
+import styled from "../../../pages/Account.module.scss";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://spacezone-backend.up.railway.app/api";
 
 function PostForm({ onUpload }) {
   const { user } = useAuth(); // ✅ Lấy user từ useAuth()
@@ -15,8 +19,11 @@ function PostForm({ onUpload }) {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const fullAvatarURL = user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatar;
+  const fullAvatarURL = user?.avatar
+    ? `${API_URL}${user.avatar}`
+    : defaultAvatar;
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -43,6 +50,7 @@ function PostForm({ onUpload }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (!user) {
       setError("Bạn cần đăng nhập để đăng bài!");
       return;
@@ -50,7 +58,7 @@ function PostForm({ onUpload }) {
 
     if (!content.trim() && !image) {
       alert("Nội dung hoặc hình ảnh không được để trống!");
-    };
+    }
 
     const formData = new FormData();
     formData.append("content", content.trim() || "");
@@ -64,6 +72,7 @@ function PostForm({ onUpload }) {
     setContent("");
     setImage(null);
     setPreview(null);
+    setLoading(false);
   };
 
   // 🔴 Nếu chưa đăng nhập, yêu cầu đăng nhập
@@ -81,12 +90,11 @@ function PostForm({ onUpload }) {
         <div className="flex flex-col gap-4 w-full">
           <div className="flex items-start gap-2 w-full">
             <Link to={`/${user.username}`} className="flex-shrink-0">
-            <img
-              src={fullAvatarURL}
-              
-              alt="avatar"
-              className="rounded-full w-[50px] h-[50px] object-cover"
-            />
+              <img
+                src={fullAvatarURL}
+                alt="avatar"
+                className="rounded-full w-[50px] h-[50px] object-cover"
+              />
             </Link>
             <div className="flex-1">
               <input
@@ -137,19 +145,38 @@ function PostForm({ onUpload }) {
                 onChange={handleImageChange}
               />
               {createPostItems.map((item, index) => (
-                <div key={index} className="p-2 hover:bg-gray-200 rounded-lg cursor-pointer">
+                <div
+                  key={index}
+                  className="p-2 hover:bg-gray-200 rounded-lg cursor-pointer"
+                >
                   <img src={item} width="25" height="25" alt="icon" />
                 </div>
               ))}
             </div>
-            <Button
-              type="submit"
-              children="Đăng"
-              color="white"
-              backgroundColor="black"
-              className="hover:bg-gray-300"
-              disabled={!content.trim() && !image}
-            />
+            <div>
+              {loading ? (
+                <div className="flex justify-center items-center ">
+                  <div
+                    type="submit"
+                    color="white"
+                    className="flex items-center gap-2 px-6 py-2 bg-black rounded-full text-white cursor-not-allowed hover:bg-gray-700"
+                    disabled={!content.trim() && !image}
+                  >
+                    <div className={`${styled.loading__spinner} `}></div>
+                    <span>Đang tạo...</span>
+                  </div>
+                </div>
+              ) : (
+                <Button
+                  type="submit"
+                  children="Đăng"
+                  color="white"
+                  backgroundColor="black"
+                  className="px-4 py-2 rounded hover:bg-gray-700"
+                  disabled={!content.trim() && !image}
+                />
+              )}
+            </div>
           </div>
           {error && <p className="text-red-500 font-bold">{error}</p>}
         </div>
