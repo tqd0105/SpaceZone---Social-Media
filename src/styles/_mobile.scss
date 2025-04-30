@@ -109,11 +109,19 @@
         width: 40px;
         height: 40px;
     }
+    .m_w-8 {
+        width: 2rem ;
+    }
+    .m_h-8 {
+        height: 2rem;
+    }
     // Mobile Customization
     .mc_addChatIcon {
         bottom: 70px;
         right: 10px;
     }
+    * {
+        font-size: 12px;}
 }
 
 @media (min-width: 1024px) {
