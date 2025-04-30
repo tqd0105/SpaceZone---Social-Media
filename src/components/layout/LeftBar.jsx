@@ -6,15 +6,16 @@ import {
 import TwoColumns from "../common/TwoColumns";
 import { Icon, Text } from "../common/UIElement";
 // import styles from './Leftbar.module.scss';
-const defaultAvatar = "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
+const defaultAvatar = "https://spacezone-backend-qy5g.onrender.com/uploads/avatar/default.png";
 import { Link, NavLink } from "react-router-dom";
-const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend.up.railway.app/api";
+import '../../styles/_mobile.scss';
+const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend-qy5g.onrender.com/api";
 
 function Leftbar({user}) {
   const fullAvatarURL = user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatar;
   
   return (
-    <div className="sticky top-[72px] h-[calc(100vh-72px)] sm:w-1/4 md:w-1/5 lg:w-1/6 xl:w-[25%]">
+    <div className="sticky top-[72px] h-[calc(100vh-72px)] sm:w-1/4 md:w-1/5 lg:w-1/6 xl:w-[25%] m_hidden">
       <div className="flex flex-col h-full"> {/* Thêm container flex để quản lý layout */}
         <div className="flex-grow flex flex-col align-center justify-between  overflow-y-auto">
           {leftbarItems.map((item, index) => (

@@ -23,21 +23,21 @@ import ReactionList from "../animation/ReactionList";
 import Lottie from "lottie-react";
 import { reactions } from "../animation/ReactionList";
 import ShareComponent from "../Share";
-const defaultAvatar = "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
+const defaultAvatar = "https://spacezone-backend-qy5g.onrender.com/uploads/avatar/default.png";
 // import Comments from "../Comments";
 import CommentDetail from "../CreatePost/CommentDetail";
 import { Link } from "react-router-dom";
-const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend.up.railway.app/api";
+const API_URL = "https://spacezone-backend-qy5g.onrender.com/api";
 
 function PostList({
   posts,
-  comments ,
+  comments,
   onDelete,
   onAddComment,
   onDeleteComment,
   disableCommentButton = false,
-  user
-  , loading
+  user,
+  loading,
 }) {
   const [likePosts, setLikePosts] = useState({});
   const randomShares = useMemo(() => Math.floor(Math.random() * 100), []);
@@ -47,11 +47,11 @@ function PostList({
   const [isOpenCommentDetail, setIsOpenCommentDetail] = useState(null);
   const [isShowShare, setIsShowShare] = useState(false);
   const [localComments, setLocalComments] = useState(comments);
-  const postEndRef = useRef(null)
+  const postEndRef = useRef(null);
 
-  useEffect(()=> {
-    postEndRef.current?.scrollIntoView({behaviour: "smooth"})
-  }, [posts])
+  useEffect(() => {
+    postEndRef.current?.scrollIntoView({ behaviour: "smooth" });
+  }, [posts]);
 
   // Cập nhật localComments khi comments thay đổi
   useEffect(() => {
@@ -139,7 +139,6 @@ function PostList({
       }
 
       return { ...prev, [postId]: !isCurrentlyLiked };
-      
     });
 
     // Cập nhật số like
@@ -186,7 +185,7 @@ function PostList({
           return (
             <div
               key={post._id}
-              className= { ` relative bg-white my-2 rounded-lg shadow-md border border-gray-300 animate__animated animate__fadeIn animate__slow`}
+              className={` relative bg-white my-2 rounded-lg shadow-md border border-gray-300 m_m-2`}
             >
               {isOpenCommentDetail === post._id && (
                 <div>
@@ -205,22 +204,23 @@ function PostList({
 
               {isShowShare === post._id && (
                 <div>
-                  <ShareComponent
-                    onClose={() => setIsShowShare(null)}
-                  />
+                  <ShareComponent onClose={() => setIsShowShare(null)} />
                 </div>
               )}
 
-              <div className={` flex justify-start items-start w-full`}>
-                <Link to={`/${post.author?.username || ""}`} className="flex-shrink-0">
-                <img
-                  src={fullAvatarURL}
-                  className="rounded-full m-3 cursor-pointer  w-[50px] h-[50px] object-cover "
-                  alt=""
-                />
+              <div className={` flex justify-start items-start m_flex-row w-full`}>
+                <Link
+                  to={`/${post.author?.username || ""}`}
+                  className="flex-shrink-0"
+                >
+                  <img
+                    src={fullAvatarURL}
+                    className="rounded-full m-3 cursor-pointer w-[50px] h-[50px] m_w-h-40 object-cover "
+                    alt=""
+                  />
                 </Link>
                 {/* Thong tin bai viet */}
-                <div >
+                <div>
                   <div className="flex-row-between pt-3">
                     <div className="flex-row-start gap-2">
                       <div className="flex flex-col items-start justify-center cursor-pointer">
@@ -250,19 +250,17 @@ function PostList({
                         className="cursor-pointer"
                       />
                       {loading ? (
-                                        <div className={`${styled.loading__spinner}`}></div>
-
-                      ):(
-<img
-                        onClick={() => onDelete(post._id)}
-                        src={CloseBlack}
-                        width={15}
-                        height={20}
-                        alt=""
-                        className="cursor-pointer"
-                      />
+                        <div className={`${styled.loading__spinner}`}></div>
+                      ) : (
+                        <img
+                          onClick={() => onDelete(post._id)}
+                          src={CloseBlack}
+                          width={15}
+                          height={20}
+                          alt=""
+                          className="cursor-pointer"
+                        />
                       )}
-                      
                     </div>
                   </div>
                   {/* Noi dung bai viet */}
@@ -273,15 +271,19 @@ function PostList({
                       </p>
                     </div>
                     {fullImageURL && (
-                      <div className="flex-column-center pr-2 cursor-pointer"
-                      onClick={() => !disableCommentButton && setIsOpenCommentDetail(
-                        (prev) => (prev === post._id ? null : post._id)
-                      )}
+                      <div
+                        className="flex-column-center pr-2 cursor-pointer"
+                        onClick={() =>
+                          !disableCommentButton &&
+                          setIsOpenCommentDetail((prev) =>
+                            prev === post._id ? null : post._id
+                          )
+                        }
                       >
                         <img
                           src={fullImageURL}
                           alt=""
-                          className="rounded-xl shadow-md border border-gray-300 min-w-[500px] h-full max-w-full max-h-full"
+                          className="rounded-xl shadow-md border border-gray-300 "
                         />
                       </div>
                     )}
@@ -330,7 +332,7 @@ function PostList({
 
                   {/* Biểu tượng cảm xúc */}
                   <div className="relative py-1 px-2 ">
-                    <div className="flex-row-between " >
+                    <div className="flex-row-between ">
                       <div
                         onClick={() => handleLike(post._id)}
                         onMouseEnter={() => handleMouseEnter(post._id)}
@@ -371,7 +373,12 @@ function PostList({
                           ) : (
                             // Khi chưa chọn gì, hiển thị Like rỗng
                             <div className="flex-row-center w-[25px] h-[25px]">
-                            <img src={Like} width={20} height={20}  alt="Like" />
+                              <img
+                                src={Like}
+                                width={20}
+                                height={20}
+                                alt="Like"
+                              />
                             </div>
                           )}
 
@@ -386,33 +393,43 @@ function PostList({
                         <div className="absolute top-0 left-0 h-[20px] bg-transparent w-[100px]"></div>
                       </div>
 
-                      <div 
-                      className="flex-row-center gap-2  hover:bg-gray-200 p-2 rounded-lg cursor-pointer w-full " 
-                      onClick={() => !disableCommentButton && setIsOpenCommentDetail(
-                        (prev) => (prev === post._id ? null : post._id)
-                      )}
+                      <div
+                        className="flex-row-center gap-2  hover:bg-gray-200 p-2 rounded-lg cursor-pointer w-full "
+                        onClick={() =>
+                          !disableCommentButton &&
+                          setIsOpenCommentDetail((prev) =>
+                            prev === post._id ? null : post._id
+                          )
+                        }
                       >
                         <img src={Comment} width={20} height={20} alt="" />
-                        <span className="font-semibold text-gray-500 whitespace-nowrap">Bình luận</span>
+                        <span className="font-semibold text-gray-500 whitespace-nowrap">
+                          Bình luận
+                        </span>
                       </div>
-                      
-                      
-                      
-                      {/* Bình luận chi tiết */}
-                     {/* <Comments posts={posts} comments={comments} onDeleteComment={onDeleteComment} onAddComment={onAddComment} onClickLike = {handleLike} likePosts={likePosts} /> */}
 
-                      <div className="flex-row-center gap-2  hover:bg-gray-200 p-2 rounded-lg cursor-pointer w-full " onClick={()=>setIsShowShare(
-                      (prev) => (prev === post._id ? null : post._id)
-                      )}>
+                      {/* Bình luận chi tiết */}
+                      {/* <Comments posts={posts} comments={comments} onDeleteComment={onDeleteComment} onAddComment={onAddComment} onClickLike = {handleLike} likePosts={likePosts} /> */}
+
+                      <div
+                        className="flex-row-center gap-2  hover:bg-gray-200 p-2 rounded-lg cursor-pointer w-full "
+                        onClick={() =>
+                          setIsShowShare((prev) =>
+                            prev === post._id ? null : post._id
+                          )
+                        }
+                      >
                         <img src={Share} width={20} height={20} alt="" />
-                        <span className="font-semibold text-gray-500 whitespace-nowrap">Chia sẻ</span>
+                        <span className="font-semibold text-gray-500 whitespace-nowrap">
+                          Chia sẻ
+                        </span>
                       </div>
                       <div className="flex-row-start gap-2 ">
                         <Save className="w-5 h-5 text-black hover:text-green-600 cursor-pointer" />
                         <Repeat className="w-5 h-5 text-black hover:text-green-600 cursor-pointer" />
                       </div>
                     </div>
-                    
+
                     {/* Emotion Options */}
                     {showEmotions === post._id && (
                       <ReactionList
@@ -424,10 +441,8 @@ function PostList({
                       />
                     )}
                   </div>
-
-                  
                 </div>
-            <div ref={postEndRef}/>
+                <div ref={postEndRef} />
               </div>
             </div>
           );

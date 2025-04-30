@@ -69,6 +69,8 @@ import DeBruyne from '@/assets/images/rightbar/kevin_debruyne.png';
 import NgoKienHuy from '@/assets/images/rightbar/ngokienhuy.png';
 import LeeMinHo from '@/assets/images/rightbar/leeminhoo.png';
 
+import NextDouble from '../../icons/main/Share/next.png';
+
 // Import Icons Share
 import ShareNearby from '../../icons/main/Share/share_nearby.png';
 import ShareStory from '../../icons/main/Share/story.png';
@@ -88,7 +90,7 @@ export const shareThrough = [
     {
         id: 2,
         src: ShareStory,
-        name: "Tin"
+        name: "Đăng tin"
     },
     {
         id: 3,
@@ -270,6 +272,7 @@ export {
     Delete,
     User,
     CloseWhite,
+    NextDouble
 };
 
 export default storyDetails;

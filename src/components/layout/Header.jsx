@@ -5,7 +5,7 @@ import Logo from "../common/Logo";
 import ControlBar from "../common/ControlBar";
 import { Icon } from "../common/UIElement";
 import { useAuth } from "../../context/AuthProvider";
-import '../../styles/_mobile.scss';
+import "../../styles/_mobile.scss";
 
 import {
   HomeIcon,
@@ -27,7 +27,8 @@ import {
 } from "@/assets/icons/header/header.js";
 
 import styles from "./Header.module.scss";
-const defaultAvatar = "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
+const defaultAvatar =
+  "https://spacezone-backend-qy5g.onrender.com/uploads/avatar/default.png";
 import {
   Add,
   AddChat,
@@ -50,7 +51,9 @@ import {
 import { Back, BackBlack, CloseBlack } from "../../assets/icons/main/main";
 import { Circle, listFriends } from "../../assets/icons/rightbar/rightbar";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend.up.railway.app/api";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://spacezone-backend-qy5g.onrender.com/api";
 
 function Header() {
   const { user, logout } = useAuth();
@@ -80,9 +83,9 @@ function Header() {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setMessages([]);
-  }, [selectedFriendId])
+  }, [selectedFriendId]);
 
   const handleSend = () => {
     if (input.trim() === "") return;
@@ -246,170 +249,276 @@ function Header() {
   };
 
   const controlRightIcons = [
-    { icon: MenuIcon, link: "/home" },
     { icon: ChatIcon, link: null },
     { icon: NotiIcon, link: "/home" },
   ];
 
   return (
-    <div className="flex-row-between bg-white px-4 py-0 fixed top-0 w-full z-50 shadow-md">
+    <div className="flex-row-between m_flex-column-center bg-white px-4 py-0 fixed top-0 w-full z-50 shadow-md">
       {/* Logo + Tìm kiếm */}
-      <div className="relative flex items-center gap-2 xl:w-[25%]">
-        <Link
-          to="/home"
-          className="flex items-center gap-2"
-          onClick={closeSearch}
-        >
-          <Logo width="50" height="50" />
-        </Link>
-        <SearchBar
-          placeholder="Tìm kiếm trên SpaceZone"
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-          onClick={toggleSearch}
-          onSubmit={handleSearch}
-          ref={searchRef}
-        />
-
-        {/* Kết quả tìm kiếm */}
-        {isSearchOpen && (
-          <div
-            className={`absolute top-full left-0 w-full bg-white py-2 px-4 rounded-b-xl shadow-2xl z-10  ${
-              isSearchOpen ? styles.search_open : styles.search_open
-            } ${styles.hidden_scrollbar} max-h-[510px] overflow-y-scroll`}
-            ref={historyRef}
+      <div
+        className={`flex-row-between gap-2 m_w-full m_m-2 ${
+          isSearchOpen ? "m_justify-center" : ""
+        }`}
+      >
+        <div className="relative flex items-center m_flex-row gap-2 ">
+          <img
+            src={MenuIcon}
+            width={20}
+            height={20}
+            className="l_hidden"
+            alt=""
+          />
+          <Link
+            to="/home"
+            className="flex items-center gap-2"
+            onClick={closeSearch}
           >
-            {showHistory ? (
-              <>
-                <div className="flex-row-between gap-2  py-2 cursor-pointer">
-                  <div className="flex-row-center gap-2">
-                    <img
-                      src={Back}
-                      width={20}
-                      height={15}
-                      onClick={closeSearch}
-                      alt=""
-                    />
-                    <h3 className="font-bold flex justify-between">
-                      Lịch sử tìm kiếm
-                    </h3>
-                  </div>
-                  <span
-                    onClick={handleClearHistory}
-                    className="text-blue-500 cursor-pointer hover:text-blue-400"
-                  >
-                    Xóa tất cả
-                  </span>
-                </div>
-                {history.length === 0 ? (
-                  <p className="text-center text-gray-400 py-2">
-                    Chưa có lịch sử tìm kiếm
-                  </p>
-                ) : (
-                  history.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex justify-between p-2 hover:bg-gray-200 rounded-xl cursor-pointer "
-                      // onClick={() => handleSelectHistoryItem(item)}
-                    >
-                      <div className="flex-row-center gap-2">
-                        <div className="p-2 bg-gray-200 rounded-full">
-                          <img src={History} alt="" width={20} height={20} />
-                        </div>
-                        <span
-                          onClick={() => setSearchValue(item)}
-                          className={`${styles.narrow_text} text-left`}
-                        >
-                          {item}
-                        </span>
-                      </div>
-                      <div
-                        onClick={() => handleDeleteItem(item)}
-                        className="flex-row-center"
-                      >
-                        <img src={Close} alt="" width={10} height={10} />
-                      </div>
-                    </div>
-                  ))
-                )}
-              </>
-            ) : (
-              <div ref={postRef}>
-                <div
-                  className="flex-row-between gap-2 px-2 py-1 cursor-pointer"
-                  onClick={() => setShowHistory(true)}
-                >
-                  <img src={BackArrow} width={20} height={20} alt="" />
-                  <h3 className="font-semibold">Kết quả tìm kiếm</h3>
-                </div>
-                {postResult.length === 0 ? (
-                  <p className="text-center text-gray-400 py-2">
-                    Không tìm thấy bài đăng nào
-                  </p>
-                ) : (
-                  postResult.map((post) => {
-                    const fullImageURL = post.image
-                      ? `${API_URL}${post.image}`
-                      : Image;
-                    return (
-                      <Link
-                        key={post._id}
-                        to={`/posts/${post._id}`}
-                        className="block p-2 hover:bg-gray-100 flex-row-between gap-2 rounded-xl cursor-pointer"
-                      >
-                        <div className="flex-row-start gap-2 ">
-                          <img
-                            src={fullImageURL}
-                            alt=""
-                            className="w-12 h-12 min-w-[48px] min-h-[48px] object-cover rounded-lg"
-                          />
+            <Logo width="50" height="50" />
+          </Link>
+          <SearchBar
+            placeholder="Tìm kiếm trên SpaceZone"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onClick={toggleSearch}
+            onSubmit={handleSearch}
+            ref={searchRef}
+            isOpenSearch={isSearchOpen}
+            setIsOpenSearch={setIsSearchOpen}
+          />
 
-                          <div className="flex flex-col items-start gap-1 ">
-                            <p
-                              className={`font-semibold text-black text-left ${styles.text_limitLine} `}
-                            >
-                              {post.content || "Không có tiêu đề"}
-                            </p>
-                            <p className="text-sm text-gray-500">
-                              <span className="font-bold text-blue-600">
-                                Tác giả:{" "}
-                              </span>{" "}
-                              {post.author?.name}
-                            </p>
+          {/* Kết quả tìm kiếm */}
+          {isSearchOpen && (
+            <div
+              className={`absolute top-full left-0 w-full bg-white py-2 px-4 rounded-b-xl shadow-2xl z-10  ${
+                isSearchOpen ? styles.search_open : styles.search_open
+              } ${styles.hidden_scrollbar} max-h-[510px] overflow-y-scroll`}
+              ref={historyRef}
+            >
+              {showHistory ? (
+                <>
+                  <div className="flex-row-between gap-2  py-2 cursor-pointer">
+                    <div className="flex-row-center gap-2">
+                      <img
+                        src={Back}
+                        width={20}
+                        height={15}
+                        onClick={closeSearch}
+                        alt=""
+                      />
+                      <h3 className="font-bold flex justify-between">
+                        Lịch sử tìm kiếm
+                      </h3>
+                    </div>
+                    <span
+                      onClick={handleClearHistory}
+                      className="text-blue-500 cursor-pointer hover:text-blue-400"
+                    >
+                      Xóa tất cả
+                    </span>
+                  </div>
+                  {history.length === 0 ? (
+                    <p className="text-center text-gray-400 py-2">
+                      Chưa có lịch sử tìm kiếm
+                    </p>
+                  ) : (
+                    history.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-between p-2 hover:bg-gray-200 rounded-xl cursor-pointer "
+                        // onClick={() => handleSelectHistoryItem(item)}
+                      >
+                        <div className="flex-row-center gap-2">
+                          <div className="p-2 bg-gray-200 rounded-full">
+                            <img src={History} alt="" width={20} height={20} />
                           </div>
+                          <span
+                            onClick={() => setSearchValue(item)}
+                            className={`${styles.narrow_text} text-left`}
+                          >
+                            {item}
+                          </span>
                         </div>
-                        <div className="w-1/4">
-                          <p className="text-green-600">Tag</p>
-                          <span className="text-gray-400">#Posts</span>
+                        <div
+                          onClick={() => handleDeleteItem(item)}
+                          className="flex-row-center"
+                        >
+                          <img src={Close} alt="" width={10} height={10} />
                         </div>
-                      </Link>
-                    );
-                  })
-                )}
-              </div>
-            )}
-          </div>
-        )}
+                      </div>
+                    ))
+                  )}
+                </>
+              ) : (
+                <div ref={postRef}>
+                  <div
+                    className="flex-row-between gap-2 px-2 py-1 cursor-pointer"
+                    onClick={() => setShowHistory(true)}
+                  >
+                    <img src={BackArrow} width={20} height={20} alt="" />
+                    <h3 className="font-semibold">Kết quả tìm kiếm</h3>
+                  </div>
+                  {postResult.length === 0 ? (
+                    <p className="text-center text-gray-400 py-2">
+                      Không tìm thấy bài đăng nào
+                    </p>
+                  ) : (
+                    postResult.map((post) => {
+                      const fullImageURL = post.image
+                        ? `${API_URL}${post.image}`
+                        : Image;
+                      return (
+                        <Link
+                          key={post._id}
+                          to={`/posts/${post._id}`}
+                          className="block p-2 hover:bg-gray-100 flex-row-between gap-2 rounded-xl cursor-pointer"
+                        >
+                          <div className="flex-row-start gap-2 ">
+                            <img
+                              src={fullImageURL}
+                              alt=""
+                              className="w-12 h-12 min-w-[48px] min-h-[48px] object-cover rounded-lg"
+                            />
+
+                            <div className="flex flex-col items-start gap-1 ">
+                              <p
+                                className={`font-semibold text-black text-left ${styles.text_limitLine} `}
+                              >
+                                {post.content || "Không có tiêu đề"}
+                              </p>
+                              <p className="text-sm text-gray-500">
+                                <span className="font-bold text-blue-600">
+                                  Tác giả:{" "}
+                                </span>{" "}
+                                {post.author?.name}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="w-1/4">
+                            <p className="text-green-600">Tag</p>
+                            <span className="text-gray-400">#Posts</span>
+                          </div>
+                        </Link>
+                      );
+                    })
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Thanh điều hướng phải */}
+        <div
+          className={`l_hidden flex-row-end gap-4 relative ${
+            isSearchOpen ? "m_hidden" : ""
+          } `}
+        >
+          <ControlBar
+            icons={controlRightIcons}
+            size="25"
+            className="flex-row-center gap-2 "
+            classNames={`rounded-full p-2 hover:bg-gray-200 cursor-pointer ${styles.bgElement}`}
+            onClickControlCenter={(index) => {
+              if (index === 0) {
+                setIsShowChat((prev) => !prev);
+              } else {
+                setActiveControlCenter(index);
+              }
+            }}
+          />
+
+          {user && (
+            <div
+              className="relative transform transition-all duration-300 ease-in-out"
+              ref={menuRef}
+            >
+              {/* Avatar */}
+              <Icon
+                src={fullAvatarURL}
+                className="rounded-full cursor-pointer w-[50px] h-[50px] object-cover"
+                onClick={toggleMenu}
+              />
+
+              {/* Menu tài khoản */}
+              {isOpen && (
+                <div
+                  className={`absolute min-w-[250px] top-full right-0 bg-white p-4 rounded-2xl shadow-2xl z-10 w-56 ${
+                    isOpen ? styles.menu_open : styles.menu_close
+                  } `}
+                >
+                  {/* Thông tin người dùng */}
+                  <Link
+                    to={`/${user.username}`}
+                    onClick={() => setIsOpen(false)}
+                    className="flex justify-around items-center gap-2 mb-4 hover:bg-gray-100 rounded-xl p-2 cursor-pointer"
+                  >
+                    <Icon
+                      src={fullAvatarURL}
+                      className="rounded-full cursor-pointer w-[50px] h-[50px] object-cover"
+                    />
+                    <div>
+                      <p className="font-bold text-black whitespace-nowrap text-ellipsis overflow-hidden w-[150px]">
+                        {user.name}
+                      </p>
+                      <p className="text-sm text-gray-400">@{user.username}</p>
+                    </div>
+                  </Link>
+
+                  <div className="w-full h-[1px] bg-gray-200 my-2"></div>
+
+                  {/* Các tùy chọn */}
+                  <div className="flex items-center justify-between py-2 cursor-pointer hover:bg-gray-100 rounded-md px-2">
+                    <div className="flex items-center gap-2">
+                      <Icon src={Setting} width={25} height={25} />
+                      <span className="font-bold">Cài đặt</span>
+                    </div>
+                    <Icon src={RightArrow} width={15} height={15} />
+                  </div>
+
+                  <div className="flex items-center justify-between py-2 cursor-pointer hover:bg-gray-100 rounded-md px-2">
+                    <div className="flex items-center gap-2">
+                      <Icon src={Help} width={25} height={25} />
+                      <span className="font-bold">Hỗ trợ</span>
+                    </div>
+                    <Icon src={RightArrow} width={15} height={15} />
+                  </div>
+
+                  <div className="w-full h-[1px] bg-gray-200 my-2"></div>
+
+                  {/* Đăng xuất */}
+                  <div
+                    onClick={logout}
+                    className="flex-row-center gap-2 cursor-pointer py-2 hover:bg-gray-100 rounded-md px-2"
+                  >
+                    <Icon src={Logout} width={25} height={25} />
+                    <span>Đăng xuất</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Thanh điều hướng trung tâm */}
       <ControlBar
         icons={controlCenterIcons}
-        className="flex-row-between gap-2 xl:w-[40%]"
-        classNames="py-4 px-10 my-1 rounded-lg hover:bg-gray-200 cursor-pointer "
+        className="flex-row-between xl:w-[40%] m_fixed-blr m_bg-white p-1"
+        classNames="py-4 px-10 m_px-6 my-1 m_m-0 rounded-lg m_br-none hover:bg-gray-200 cursor-pointer "
         active={activeControlCenters}
         onClickControlCenter={setActiveControlCenter}
       />
 
       {/* Thanh điều hướng phải */}
-      <div className="flex-row-end gap-4 relative xl:w-[25%]">
+      <div className={`m_hidden flex-row-end gap-4 relative xl:w-[25%] `}>
         <ControlBar
           icons={controlRightIcons}
           size="25"
           className="flex-row-center gap-2 "
           classNames={`rounded-full p-2 hover:bg-gray-200 cursor-pointer ${styles.bgElement}`}
           onClickControlCenter={(index) => {
-            if (index === 1) {
+            if (index === 0) {
               setIsShowChat((prev) => !prev);
             } else {
               setActiveControlCenter(index);
@@ -488,15 +597,17 @@ function Header() {
           </div>
         )}
       </div>
+
+      {/* Nhắn tin - Chat */}
       <div
-        className="fixed bottom-2 right-4 cursor-pointer"
+        className="fixed bottom-2 right-4 mc_addChatIcon m_hidden cursor-pointer"
         onClick={() => setIsShowChat(!isShowChat)}
       >
         <img src={AddChat} width={60} height={60} alt="" />
       </div>
 
       {isShowChat && (
-        <div className="fixed bottom-0 right-[100px] h-[400px] w-[350px] bg-white shadow-2xl rounded-tr-lg rounded-tl-lg border-[1px] border-gray-300 p-1 animate__animated animate__fadeIn">
+        <div className="fixed bottom-0 lg:right-[100px] h-[400px] w-[350px] m_absolute m_top-full m_w-full m_h-screen bg-white shadow-2xl rounded-tr-lg rounded-tl-lg border-[1px] border-gray-300 p-1 animate__animated animate__fadeIn">
           <div className="flex-row-between ">
             <div className="flex-row-center gap-1">
               <div
@@ -523,31 +634,34 @@ function Header() {
               placeholder="Tìm kiếm liên hệ"
               className="w-full p-2 outline-none placeholder:text-gray-800 "
               value={contactSearch}
-              onChange={(e)=>setContactSearch(e.target.value)}
+              onChange={(e) => setContactSearch(e.target.value)}
             />
           </div>
           <div className="relative w-full h-[1px] bg-gray-300 my-2">
             {isShowListContact && (
-              <div className="absolute top-full w-full overflow-y-scroll max-h-[300px] mt-1 animate__animated animate__fadeIn">
-                {listFriends.filter((list)=> 
-                  list.name.toLowerCase().includes(contactSearch.toLowerCase())
-              )
-                .map((list, index) => (
-                  <div
-                    key={index}
-                    className="flex-row-start gap-2  mx-1 cursor-pointer hover:bg-gray-200 rounded-md p-2"
-                    onClick={() => handleContactChat(list.id)}
-                  >
-                    <img
-                      src={list.image}
-                      width={40}
-                      height={50}
-                      className="rounded-full"
-                      alt=""
-                    />
-                    <span>{list.name}</span>
-                  </div>
-                ))}
+              <div className="absolute top-full w-full overflow-y-scroll lg:max-h-[300px] m_h-screen mt-1 animate__animated animate__fadeIn">
+                {listFriends
+                  .filter((list) =>
+                    list.name
+                      .toLowerCase()
+                      .includes(contactSearch.toLowerCase())
+                  )
+                  .map((list, index) => (
+                    <div
+                      key={index}
+                      className="flex-row-start gap-2  mx-1 cursor-pointer hover:bg-gray-200 rounded-md p-2"
+                      onClick={() => handleContactChat(list.id)}
+                    >
+                      <img
+                        src={list.image}
+                        width={40}
+                        height={50}
+                        className="rounded-full"
+                        alt=""
+                      />
+                      <span>{list.name}</span>
+                    </div>
+                  ))}
               </div>
             )}
           </div>
@@ -555,7 +669,7 @@ function Header() {
       )}
 
       {selectedFriend && (
-        <div className="fixed bottom-0 right-[100px] h-[420px] w-[350px]  bg-white shadow-2xl rounded-tr-lg rounded-tl-lg border-[1px] border-gray-300 animate__animated animate__fadeIn">
+        <div className="fixed bottom-0 lg:right-[100px] h-[420px] w-[350px] m_absolute m_top-full m_w-full m_h-92vh bg-white shadow-2xl rounded-tr-lg rounded-tl-lg border-[1px] border-gray-300 animate__animated animate__fadeIn">
           <div className="sticky top-0 right-0 left-0 flex-row-between  border-b-[1px] border-gray-300 p-2 shadow-md">
             <div className="flex-row-center gap-2">
               <div className="relative">
@@ -587,10 +701,14 @@ function Header() {
             <div className="flex-row-between gap-2">
               <img src={Call} width={25} height={20} alt="" />
               <img src={VideoCall} width={25} height={20} alt="" />
-              <img src={Minimize} width={25} height={20} alt="" 
-                onClick={()=>{
+              <img
+                src={Minimize}
+                width={25}
+                height={20}
+                alt=""
+                onClick={() => {
                   setSelectedFriendId(false);
-                  setIsShowChat(true)
+                  setIsShowChat(true);
                 }}
               />
               <img
@@ -610,7 +728,7 @@ function Header() {
               </span>
             </div>
           ))} */}
-          <div className="overflow-y-scroll max-h-[300px] p-2">
+          <div className="overflow-y-scroll max-h-[300px] m_max-h-screen p-2">
             <div className="flex-column-center gap-1">
               <div className="relative inline-block">
                 <img
@@ -620,7 +738,13 @@ function Header() {
                   alt=""
                   className="rounded-full"
                 />
-                <img src={Circle} width={15} height={15} alt="" className="absolute bottom-0 right-0"/>
+                <img
+                  src={Circle}
+                  width={15}
+                  height={15}
+                  alt=""
+                  className="absolute bottom-0 right-0"
+                />
               </div>
               <h3 className="font-bold text-lg">{selectedFriend.name}</h3>
               <p>Các bạn là bạn bè trên Facebook</p>
@@ -634,8 +758,8 @@ function Header() {
                 key={message.id}
                 className={`flex   ${
                   message.from === "user"
-                    ? "justify-end"
-                    : " justify-start items-center"
+                    ? "m_flex-row justify-end"
+                    : "m_flex-row justify-start items-center"
                 } animate__animated animate__fadeIn`}
               >
                 {message.from === "bot" && (
@@ -694,7 +818,7 @@ function Header() {
               />
               <img
                 src={Emotion}
-                className={`absolute right-2 cursor-pointer`}
+                className={`absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer`}
                 width={25}
                 height={20}
                 alt=""

@@ -19,7 +19,7 @@ const UserTab = [
     },
     {
         id: 3,
-        label: "Đa phương tiện",
+        label: "Media",
         render: (props) => <MediaTab {...props} />
 
     },

@@ -3,15 +3,12 @@ import { Avatar, createPostItems } from "@/assets/icons/main/main.js";
 import { Icon } from "../../common/UIElement";
 import Button from "../../common/Button";
 import { Close, Photo } from "../../../assets/icons/main/main";
-const defaultAvatar =
-  "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
+const defaultAvatar = "https://spacezone-backend-qy5g.onrender.com/uploads/avatar/default.png";
 import { useAuth } from "../../../context/AuthProvider"; // ✅ Sử dụng hook useAuth
 import { Link } from "react-router-dom";
 import styled from "../../../pages/Account.module.scss";
 
-const API_URL =
-  import.meta.env.VITE_API_URL ||
-  "https://spacezone-backend.up.railway.app/api";
+const API_URL = "https://spacezone-backend-qy5g.onrender.com/api";
 
 function PostForm({ onUpload }) {
   const { user } = useAuth(); // ✅ Lấy user từ useAuth()
@@ -86,9 +83,9 @@ function PostForm({ onUpload }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="bg-white my-3 p-4 rounded-lg shadow-md border border-gray-300">
-        <div className="flex flex-col gap-4 w-full">
-          <div className="flex items-start gap-2 w-full">
+      <div className="bg-white my-3 p-4 rounded-lg shadow-md border border-gray-300 m_m-2" >
+        <div className="md:flex md:flex-col gap-4 w-full">
+          <div className="md:flex items-start gap-2 w-full m_flex-row">
             <Link to={`/${user.username}`} className="flex-shrink-0">
               <img
                 src={fullAvatarURL}
@@ -131,7 +128,7 @@ function PostForm({ onUpload }) {
             </div>
           )}
 
-          <div className="flex justify-between items-center w-full">
+          <div className="md:flex justify-between items-center w-full m_flex-row">
             <div className="flex-row-center gap-1">
               <label htmlFor="fileUpload">
                 <div className="cursor-pointer hover:bg-gray-200 p-2 rounded-lg">
@@ -147,7 +144,15 @@ function PostForm({ onUpload }) {
               {createPostItems.map((item, index) => (
                 <div
                   key={index}
-                  className="p-2 hover:bg-gray-200 rounded-lg cursor-pointer"
+                  className="p-2 hover:bg-gray-200 rounded-lg cursor-pointer m_hidden"
+                >
+                  <img src={item} width="25" height="25" alt="icon" />
+                </div>
+              ))}
+              {createPostItems.slice(0, 4).map((item, index) => (
+                <div
+                  key={index}
+                  className="p-2 hover:bg-gray-200 rounded-lg cursor-pointer l_hidden"
                 >
                   <img src={item} width="25" height="25" alt="icon" />
                 </div>
@@ -155,11 +160,11 @@ function PostForm({ onUpload }) {
             </div>
             <div>
               {loading ? (
-                <div className="flex justify-center items-center ">
+                <div className="flex justify-center items-center  ">
                   <div
                     type="submit"
                     color="white"
-                    className="flex items-center gap-2 px-6 py-2 bg-black rounded-full text-white cursor-not-allowed hover:bg-gray-700"
+                    className="flex items-center m_flex-row gap-2 px-6 py-2 bg-black rounded-full text-white cursor-not-allowed hover:bg-gray-700"
                     disabled={!content.trim() && !image}
                   >
                     <div className={`${styled.loading__spinner} `}></div>

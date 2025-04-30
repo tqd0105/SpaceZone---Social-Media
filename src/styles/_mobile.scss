@@ -1,5 +1,124 @@
 @media (max-width: 768px) {
-    .color {
-        background-color: red;
+    .m_hidden {
+        display: none !important;
+    }
+    .m_flex-column-center {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .m_flex-row {
+        display: flex !important;
+    }
+    .m_flex-col {
+        display: flex !important;
+        flex-direction: column;
+    }
+    .m_justify-center {
+        justify-content: center !important;
+    }
+    .m_items-center {
+        align-items: center !important;
+    }
+    .flex {
+        display: block ;
+    }
+    .m_absolute {
+        position: absolute ;
+    }
+    .m_top-full {
+        top: 100% ;
+    }
+    .m_block {
+        display: block !important;
+    }
+    .m_m-0 {
+        margin: 0 ;
+    }
+    .m_m-2 {
+        margin: 0.5rem ;
+    }
+    .m_p-0 {
+        padding: 0 ;
+    }
+    .m_px-2{
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    .m_px-3{
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+    .m_px-4 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .m_px-5{
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+    .m_px-6{
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    .m_pb-80px {
+        padding-bottom: 80px ;
+    }
+    .m_bg-white{
+        background-color: #fff ;
+    }
+    .m_w-fit {
+        width: fit-content;
+    }
+    .m_w-full {
+        width: 100%;
+    }
+    .m_w-h-120px {
+        width: 120px;
+        height: 120px;
+    }
+    .m_h-full {
+        height: 100%;
+    }
+    .m_h-screen {
+        height: 100vh;
+    }
+    .m_max-h-screen {
+        max-height: 100vh;
+    }
+    .m_h-92vh {
+        height: 92vh;
+    }
+    .m_fixed-blr {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+    }
+    .m_inset-0 {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+    .m_bottom-5 {
+        bottom: 1.25rem ;
+    }
+    .m_w-h-40 {
+        width: 40px;
+        height: 40px;
+    }
+    // Mobile Customization
+    .mc_addChatIcon {
+        bottom: 70px;
+        right: 10px;
     }
 }
+
+@media (min-width: 1024px) {
+    .l_hidden {
+        display: none !important;
+    }
+}
+

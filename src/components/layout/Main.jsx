@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import PostForm from "../main/CreatePost/PostForm";
 import PostList from "../main/CreatePost/PostList";
 import Story from "../main/Story";
-const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend.up.railway.app/api";
+const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend-qy5g.onrender.com/api";
 
 function Main() {
   const [posts, setPosts] = useState([]);
@@ -144,7 +144,7 @@ function Main() {
   };
 
   return (
-    <div className="lg:w-[45%]">
+    <div className="lg:w-[45%] m_pb-80px">
       <PostForm onUpload={handleUpload} />
       <Story />
       <PostList

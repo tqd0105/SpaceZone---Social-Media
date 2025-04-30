@@ -1,10 +1,12 @@
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import searchIcon from "@/assets/icons/header/search.png"
 import styles from '../layout/Header.module.scss';
+import '../../styles/_mobile.scss';
 
-const SearchBar = forwardRef(({ placeholder, value, onChange, onSubmit, onClick }, ref) => {
+
+const SearchBar = forwardRef(({ placeholder, value, onChange, onSubmit, onClick, isOpenSearch, setIsOpenSearch }, ref) => {
     return (
-        <div className="searchBar-container">
+        <div className={`searchBar-container `} onClick={()=> setIsOpenSearch(true)}>
             <form onSubmit={onSubmit} className={`flex-row-center px-6 py-3 gap-4 border-none border-rounded ${styles.bgElement}`}>
                 <img src={searchIcon} width={20} height={20} alt="Search Icon" />
                 <input 
@@ -16,7 +18,7 @@ const SearchBar = forwardRef(({ placeholder, value, onChange, onSubmit, onClick 
                     onClick={onClick}
                     placeholder={placeholder} 
                     value={value} 
-                    className="w-full outline-none bg-transparent"
+                    className={`w-full outline-none bg-transparent ${!isOpenSearch ? "m_hidden" : "block"}`}
                 />
             </form>
         </div>

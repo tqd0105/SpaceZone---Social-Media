@@ -36,7 +36,7 @@ function Comments({
     }, {});
   });
 
-  const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend.up.railway.app/api";
+  const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend-qy5g.onrender.com/api";
 
   useEffect(() => {
     Object.entries(likeStates).forEach(

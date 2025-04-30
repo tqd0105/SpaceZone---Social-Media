@@ -1,5 +1,5 @@
 import {CloseWhite } from "../../assets/icons/main/main";
-const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend.up.railway.app";
+const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend-qy5g.onrender.com";
 
 function ImageDetail ({isAvatar, user, onClose}) {
     const imageUrl = isAvatar
@@ -12,7 +12,7 @@ function ImageDetail ({isAvatar, user, onClose}) {
                 <img src={CloseWhite} width={20} height={20} alt="" />
             </div>
             <div className={`relative  bg-white shadow-lg ${isAvatar ? "rounded-full" : "rounded-md w-11/12"} shadow-2xl flex-row-center animate__animated animate__zoomIn animate__slow`}>
-                <img src={imageUrl} className={` object-cover ${isAvatar ? "rounded-full w-[700px] h-[700px] " : " rounded-md w-full h-[600px] "} `} alt="" />
+                <img src={imageUrl} className={` object-cover ${isAvatar ? "rounded-full w-[700px] h-[700px] m_w-full m_h-full" : " rounded-md w-full h-[600px] m_w-full m_h-full"} `} alt="" />
             </div>
         </div>
     )

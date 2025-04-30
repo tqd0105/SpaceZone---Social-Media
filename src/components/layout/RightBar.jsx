@@ -26,7 +26,7 @@ import styled from "../layout/RightBar.module.scss";
 
 function RightBar() {
   return (
-    <div className="sticky top-0 right-0 h-screen overflow-y-auto lg:w-[25%] my-2 mr-3">
+    <div className="sticky top-0 right-0 h-screen overflow-y-auto lg:w-[25%] my-2 mr-3 m_hidden">
       {/* Trò chơi */}
 
       <div className="flex-row-center gap-2 py-2 px-4 hover:bg-gray-100 rounded-lg cursor-pointer">

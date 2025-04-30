@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-const defaultCover = "https://spacezone-backend.up.railway.app/uploads/cover/default_cover.png";
-const defaultAvatar = "https://spacezone-backend.up.railway.app/uploads/avatar/default.png";
+const defaultCover =
+  "https://spacezone-backend-qy5g.onrender.com/uploads/cover/default_cover.png";
+const defaultAvatar =
+  "https://spacezone-backend-qy5g.onrender.com/uploads/avatar/default.png";
 import {
   BackBlack,
   CalendarBlack,
@@ -18,7 +20,7 @@ import { useAuth } from "../../context/AuthProvider";
 import ImageDetail from "../common/ImageDetail";
 import UserTabSwitcher from "./UserTabSwitcher";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend.up.railway.app/api";
+const API_URL = "https://spacezone-backend-qy5g.onrender.com/api";
 
 function Profile() {
   const [posts, setPosts] = useState([]);
@@ -32,9 +34,7 @@ function Profile() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/users/${username}`,
-        );
+        const response = await fetch(`${API_URL}/users/${username}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -176,15 +176,12 @@ function Profile() {
         return;
       }
 
-      const res = await fetch(
-        `${API_URL}/comments/${commentId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`${API_URL}/comments/${commentId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!res.ok) {
         const errorData = await res.json();
@@ -234,7 +231,7 @@ function Profile() {
   //   }, [user])
 
   return (
-    <div className="lg:w-[45%]  ">
+    <div className="lg:w-[45%] m_pb-80px">
       <div className="flex-row-start gap-4 my-2 ">
         <div
           className="rounded-full hover:bg-gray-300 hover:transform p-2 cursor-pointer"
@@ -249,22 +246,20 @@ function Profile() {
       </div>
       <div className="relative ">
         <img
-          src={
-            user?.coverImage ? `${API_URL}${user.coverImage}` : defaultCover
-          }
+          src={user?.coverImage ? `${API_URL}${user.coverImage}` : defaultCover}
           className=" object-cover cursor-pointer w-full h-[250px] "
           alt=""
           onClick={() => setIsShowImageDetail("cover")}
         />
         <div className="flex-row-end">
           <div
-            className="absolute left-4 -bottom-0 transform cursor-pointer  "
+            className="absolute left-4 bottom-0 m_bottom-5 transform cursor-pointer  "
             onClick={() => setIsShowImageDetail("avatar")}
           >
             <img
               src={user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatar}
               alt=""
-              className="rounded-full border-4  border-white w-[160px] h-[160px] object-cover"
+              className="rounded-full border-4  border-white w-[160px] h-[160px] m_w-h-120px object-cover"
             />
           </div>
           {isShowImageDetail && (
@@ -294,7 +289,7 @@ function Profile() {
                 />
               )}
 
-              <button className="hover:bg-gray-200 border-2 border-gray-600">
+              <button className="hover:bg-gray-200 border-2 border-gray-600 m_hidden">
                 Kho lưu trữ tin
               </button>
               <img
@@ -316,8 +311,8 @@ function Profile() {
           </div>
         </div>
       </div>
-      <div>
-        <div className="flex-row-start gap-2">
+      <div className="m_m-2">
+        <div className="flex-row-start gap-2 ">
           <h3 className="font-extrabold text-2xl">{user?.name}</h3>
           <div className="flex-row-center gap-2 bg-gray-200 rounded-full px-3 py-1">
             <img src={Tick} width={20} height={20} alt="" />
@@ -326,8 +321,8 @@ function Profile() {
         </div>
         <span className="flex-row-start text-gray-400">@{user?.username}</span>
         <p className="flex-row-start font-medium my-2">Tiểu sử</p>
-        <div className="flex-row-between gap-2">
-          <div className="flex-column-start gap-1 w-3/5">
+        <div className="flex-row-between m_flex-col  gap-2 ">
+          <div className="flex-column-start gap-1 w-3/5 m_w-full">
             <div className="flex-row-start gap-2">
               <img src={Work} width={20} height={20} alt="" />
               <p>
@@ -345,7 +340,7 @@ function Profile() {
               </p>
             </div>
           </div>
-          <div className="flex-column-start gap-1 w-1/2">
+          <div className="flex-column-start gap-1 w-1/2 m_w-full">
             <div className="flex-row-start gap-2">
               <img src={Location2} width={20} height={20} alt="" />
               <p className="text-left">
