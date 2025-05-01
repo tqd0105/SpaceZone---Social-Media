@@ -25,6 +25,7 @@ function App() {
           {/* 🟢 Layout dành cho người đã đăng nhập */}
           <Route element={<RequireAuth />}>
             <Route element={<MainLayout />}>
+              <Route path="/" element={<Navigate to="/home" />} />
               <Route path="/home" element={<Main />} />
               <Route path="/post" element={<PostForm />} />
               <Route path="/:username" element={<Profile />} />
