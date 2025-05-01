@@ -53,37 +53,45 @@ function Main() {
 
   const handleDelete = async (postId) => {
     console.log("🛠 postId nhận được:", postId);
-    setLoading(true)
+    setLoading(true);
 
     try {
       const token = localStorage.getItem("token");
+      console.log("🛠 Token:", token); // Log token
       if (!token) {
         console.log("❌ Không có token, hãy đăng nhập lại!");
         return;
       }
 
+      console.log("🛠 Gọi API xóa:", `${API_URL}/posts/${postId}`); // Log API URL
       const res = await fetch(`${API_URL}/posts/${postId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log("🛠 Phản hồi từ API:", res); // Log phản hồi
 
       if (!res.ok) {
         const errorData = await res.json();
+        console.error("❌ Dữ liệu lỗi từ API:", errorData); // Log dữ liệu lỗi
         throw new Error(errorData.error || "Lỗi không xác định");
       }
 
       console.log("✅ Xóa bài viết thành công");
 
-      // Cập nhật danh sách bài viết (lọc bỏ bài viết vừa xóa)
-      setPosts(posts.filter((post) => post._id !== postId));
+      if (posts && Array.isArray(posts)) {
+        setPosts(posts.filter((post) => post._id !== postId));
+      } else {
+        console.log("❌ Danh sách bài viết không hợp lệ!");
+      }
     } catch (err) {
       console.error("❌ Lỗi xóa bài viết:", err.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
+
 
   const handleAddComment = async (postId, text) => {
     try {

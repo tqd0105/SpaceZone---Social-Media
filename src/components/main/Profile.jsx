@@ -32,14 +32,21 @@ function Profile() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        console.log("🔍 Fetching user data for username:", username);
+        console.log("🌐 API URL:", API_URL);
+        console.log("🎯 Endpoint:", `${API_URL}/users/${username}`);
+
         const response = await fetch(`${API_URL}/users/${username}`);
         if (!response.ok) {
+          const errorData = await response.json();
+          console.error("❌ Response không OK:", response.status, errorData);
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
+        console.log("✅ User data received:", data);
         setUser(data);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("❌ Error fetching user data:", error);
         setUser({});
       }
     };
@@ -95,7 +102,7 @@ function Profile() {
     const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch(`${API_URL}/api/users/${user._id}/${type}`, {
+      const res = await fetch(`${API_URL}/users/${user._id}/${type}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -203,15 +210,21 @@ function Profile() {
         return;
       }
 
+      console.log("🔑 Token:", token);
+      console.log("🌐 API URL:", API_URL);
+      console.log("�� Endpoint:", `${API_URL}/posts/${postId}`);
+
       const res = await fetch(`${API_URL}/posts/${postId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
         },
       });
 
       if (!res.ok) {
         const errorData = await res.json();
+        console.error("❌ Response không OK:", res.status, errorData);
         throw new Error(errorData.error || "Lỗi không xác định");
       }
 
