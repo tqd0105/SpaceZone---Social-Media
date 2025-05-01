@@ -23,11 +23,11 @@ import ReactionList from "../animation/ReactionList";
 import Lottie from "lottie-react";
 import { reactions } from "../animation/ReactionList";
 import ShareComponent from "../Share";
-const defaultAvatar = "https://spacezone-backend-qy5g.onrender.com/uploads/avatar/default.png";
+const defaultAvatar = `${import.meta.env.VITE_API_URL}/uploads/avatar/default.png`;
 // import Comments from "../Comments";
 import CommentDetail from "../CreatePost/CommentDetail";
 import { Link } from "react-router-dom";
-const API_URL = "https://spacezone-backend-qy5g.onrender.com/api";
+const API_URL = import.meta.env.VITE_API_URL
 
 function PostList({
   posts,
@@ -223,7 +223,7 @@ function PostList({
                 <div>
                   <div className="flex-row-between pt-3">
                     <div className="flex-row-start gap-2">
-                      <div className="flex flex-col items-start justify-center cursor-pointer">
+                      <div className="flex flex-col m_flex-row items-start justify-center cursor-pointer">
                         <div className="flex-row-center gap-2">
                           <div className="flex-row-center gap-1">
                             <p className="font-bold">{post.author.name}</p>

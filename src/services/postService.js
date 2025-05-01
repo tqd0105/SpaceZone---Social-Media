@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend-qy5g.onrender.com/api";
+const API_URL = import.meta.env.VITE_API_URL
 
 // ✅ Gửi bài viết lên server
 export const createPost = async (formData) => {

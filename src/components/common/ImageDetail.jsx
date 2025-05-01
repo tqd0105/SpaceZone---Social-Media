@@ -1,5 +1,5 @@
 import {CloseWhite } from "../../assets/icons/main/main";
-const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend-qy5g.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL;
 
 function ImageDetail ({isAvatar, user, onClose}) {
     const imageUrl = isAvatar

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CloseWhite } from "../../../assets/icons/main/main";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 function MediaTab({ posts }) {
   const [selectedPostId, setSelectedPostId] = useState(null);

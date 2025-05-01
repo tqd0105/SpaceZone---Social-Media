@@ -27,8 +27,7 @@ import {
 } from "@/assets/icons/header/header.js";
 
 import styles from "./Header.module.scss";
-const defaultAvatar =
-  "https://spacezone-backend-qy5g.onrender.com/uploads/avatar/default.png";
+const defaultAvatar = `${import.meta.env.VITE_API_URL}/uploads/avatar/default.png`;
 import {
   Add,
   AddChat,
@@ -52,8 +51,7 @@ import { Back, BackBlack, CloseBlack } from "../../assets/icons/main/main";
 import { Circle, listFriends } from "../../assets/icons/rightbar/rightbar";
 
 const API_URL =
-  import.meta.env.VITE_API_URL ||
-  "https://spacezone-backend-qy5g.onrender.com/api";
+  import.meta.env.VITE_API_URL;
 
 function Header() {
   const { user, logout } = useAuth();
@@ -325,7 +323,7 @@ function Header() {
                     history.map((item, index) => (
                       <div
                         key={index}
-                        className="flex justify-between p-2 hover:bg-gray-200 rounded-xl cursor-pointer "
+                        className="flex m_flex-row justify-between p-2 hover:bg-gray-200 rounded-xl cursor-pointer "
                         // onClick={() => handleSelectHistoryItem(item)}
                       >
                         <div className="flex-row-center gap-2">
@@ -380,7 +378,7 @@ function Header() {
                               className="w-12 h-12 min-w-[48px] min-h-[48px] object-cover rounded-lg"
                             />
 
-                            <div className="flex flex-col items-start gap-1 ">
+                            <div className="flex flex-col m_flex-row items-start gap-1 ">
                               <p
                                 className={`font-semibold text-black text-left ${styles.text_limitLine} `}
                               >
@@ -607,7 +605,7 @@ function Header() {
       </div>
 
       {isShowChat && (
-        <div className="fixed bottom-0 lg:right-[100px] h-[400px] w-[350px] m_absolute m_top-full m_w-full m_h-screen bg-white shadow-2xl rounded-tr-lg rounded-tl-lg border-[1px] border-gray-300 p-1 animate__animated animate__fadeIn">
+        <div className="fixed bottom-0 lg:right-[100px] h-[400px] w-[350px] m_absolute m_top-full m_w-full m_h-screen bg-white lg:shadow-2xl rounded-tr-lg rounded-tl-lg border-[1px] border-gray-300 p-1 animate__animated animate__fadeIn">
           <div className="flex-row-between ">
             <div className="flex-row-center gap-1">
               <div
@@ -639,7 +637,7 @@ function Header() {
           </div>
           <div className="relative w-full h-[1px] bg-gray-300 my-2">
             {isShowListContact && (
-              <div className="absolute top-full w-full overflow-y-scroll lg:max-h-[300px] m_h-screen mt-1 animate__animated animate__fadeIn">
+              <div className="absolute top-full w-full overflow-y-scroll lg:max-h-[300px] m_max-h-screen mt-1 animate__animated animate__fadeIn">
                 {listFriends
                   .filter((list) =>
                     list.name
@@ -655,8 +653,8 @@ function Header() {
                       <img
                         src={list.image}
                         width={40}
-                        height={50}
-                        className="rounded-full"
+                        height={40}
+                        className="rounded-full m_w-h-30"
                         alt=""
                       />
                       <span>{list.name}</span>
@@ -669,7 +667,7 @@ function Header() {
       )}
 
       {selectedFriend && (
-        <div className="fixed bottom-0 lg:right-[100px] h-[420px] w-[350px] m_absolute m_top-full m_w-full m_h-92vh bg-white shadow-2xl rounded-tr-lg rounded-tl-lg border-[1px] border-gray-300 animate__animated animate__fadeIn">
+        <div className="fixed bottom-0 lg:right-[100px] h-[420px] w-[350px] m_absolute m_top-full m_w-full m_h-92vh bg-white lg:shadow-2xl rounded-tr-lg rounded-tl-lg border-[1px] border-gray-300 animate__animated animate__fadeIn">
           <div className="sticky top-0 right-0 left-0 flex-row-between  border-b-[1px] border-gray-300 p-2 shadow-md">
             <div className="flex-row-center gap-2">
               <div className="relative">
@@ -688,9 +686,9 @@ function Header() {
                   alt=""
                 />
               </div>
-              <div className="flex-column-start">
-                <div className="flex-row-center gap-1">
-                  <h3 className="text-left font-bold text-[15px] text-ellipsis overflow-hidden whitespace-nowrap w-[120px]">
+              <div className="flex-column-start m_flex-row">
+                <div className="flex-row-center m_flex-row gap-1">
+                  <h3 className="text-left font-bold text-[15px] text-ellipsis overflow-hidden whitespace-nowrap max-w-[120px]">
                     {selectedFriend.name}
                   </h3>
                   <img src={Edit} width={15} alt="" />
@@ -698,7 +696,7 @@ function Header() {
                 <span className="text-gray-400 text-xs">Vừa mới truy cập</span>
               </div>
             </div>
-            <div className="flex-row-between gap-2">
+            <div className="flex-row-between m_flex-row gap-2">
               <img src={Call} width={25} height={20} alt="" />
               <img src={VideoCall} width={25} height={20} alt="" />
               <img
@@ -783,11 +781,8 @@ function Header() {
             <div ref={messageEndRef} />
           </div>
           <div
-            className="absolute bottom-0 right-0 left-0 flex-row-between gap-2 p-2 border-t-[1px] border-gray-300"
-            style={{
-              boxShadow:
-                "rgba(0, 0, 0, 0.1) 0px 0px 0px, rgba(0, 0, 0, 0.22) 0px 0px 6px",
-            }}
+            className="absolute bottom-0 right-0 left-0 flex-row-between gap-2 p-2 border-t-[1px] shadow_chatBar border-gray-300"
+            
           >
             {isShowMedia && input.trim() === "" ? (
               <div className="flex-row-center gap-2 cursor-pointer">
@@ -809,7 +804,7 @@ function Header() {
             >
               <input
                 type="text"
-                className="border-[1px] shadow-lg rounded-full  w-full p-2 outline-none break-words"
+                className="border-[1px] shadow-md rounded-full  w-full p-2 outline-none break-words"
                 onChange={(e) => {
                   setInput(e.target.value);
                   handleToggleMedia(e);

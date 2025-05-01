@@ -5,12 +5,12 @@ import {
   Edit,
   User,
 } from "../../assets/icons/main/main";
-const defaultCover = "https://spacezone-backend-qy5g.onrender.com/uploads/cover/default_cover.png";
-const defaultAvatar = "https://spacezone-backend-qy5g.onrender.com/uploads/avatar/default.png";
+const defaultCover = `${import.meta.env.VITE_API_URL}/uploads/cover/default_cover.png`;
+const defaultAvatar = `${import.meta.env.VITE_API_URL}/uploads/avatar/default.png`;
 import ToggleSwitch from "../common/ToggleSwitch";
 import PrivacySelector from "./PrivacySelector";
 import { useState } from "react";
-const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend-qy5g.onrender.com/api";
+const API_URL = import.meta.env.VITE_API_URL
 
 function EditProfile({
   isOpenEditProfile,

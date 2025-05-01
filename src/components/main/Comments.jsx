@@ -36,7 +36,7 @@ function Comments({
     }, {});
   });
 
-  const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend-qy5g.onrender.com/api";
+  const API_URL = import.meta.env.VITE_API_URL
 
   useEffect(() => {
     Object.entries(likeStates).forEach(
@@ -163,7 +163,7 @@ function Comments({
                         />
                       </div>
                       <div>
-                        <div className="flex flex-col justify-start items-start">
+                        <div className="flex flex-col m_flex-row justify-start items-start">
                           <span className="font-semibold cursor-pointer">
                             {posts.author.name}
                           </span>
@@ -205,7 +205,7 @@ function Comments({
 
                   <div className="flex-column-start gap-2 cursor-pointer ">
                     <div
-                      className="flex items-center justify-start gap-2 my-1 w-full"
+                      className="flex items-center justify-start m_flex-row gap-2 my-1 w-full"
                       onClick={() => toggleReply(comment._id)}
                     >
                       <div className="h-[1px] w-[40px] bg-gray-400"></div>
@@ -217,7 +217,7 @@ function Comments({
                     </div>
 
                     {showReply[comment._id] && (
-                      <div className="flex-row-center gap-2 ml-14 animate__animated animate__bounceIn animate__faster">
+                      <div className="flex-row-center m_flex-row gap-2 ml-14 animate__animated animate__bounceIn animate__faster">
                         <div className="min-h-[80px]">
                           <img
                             src={TranThanh}
@@ -228,7 +228,7 @@ function Comments({
                           />
                         </div>
                         <div>
-                          <div className="flex flex-col justify-start items-start">
+                          <div className="flex flex-col m_flex-row justify-start items-start">
                             <span className="font-semibold cursor-pointer">
                               Trấn Thành Official
                             </span>

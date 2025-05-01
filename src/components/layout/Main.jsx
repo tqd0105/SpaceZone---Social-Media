@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import PostForm from "../main/CreatePost/PostForm";
 import PostList from "../main/CreatePost/PostList";
 import Story from "../main/Story";
-const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend-qy5g.onrender.com/api";
+const API_URL = import.meta.env.VITE_API_URL
 
 function Main() {
   const [posts, setPosts] = useState([]);

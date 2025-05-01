@@ -82,13 +82,13 @@
         height: 100%;
     }
     .m_h-screen {
-        height: 100vh;
+        height: 82vh;
     }
     .m_max-h-screen {
-        max-height: 100vh;
+        max-height: 68vh;
     }
     .m_h-92vh {
-        height: 92vh;
+        height: 82vh;
     }
     .m_fixed-blr {
         position: fixed;
@@ -109,6 +109,10 @@
         width: 40px;
         height: 40px;
     }
+    .m_w-h-30 {
+        width: 30px;
+        height: 30px;
+    }
     .m_w-8 {
         width: 2rem ;
     }
@@ -121,12 +125,16 @@
         right: 10px;
     }
     * {
-        font-size: 12px;}
+        font-size: 12px;
+    }
 }
 
 @media (min-width: 1024px) {
     .l_hidden {
         display: none !important;
+    }
+    .shadow_chatBar {
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px, rgba(0, 0, 0, 0.22) 0px 0px 6px;
     }
 }
 

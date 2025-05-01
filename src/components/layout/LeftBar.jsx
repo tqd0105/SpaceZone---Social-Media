@@ -6,10 +6,10 @@ import {
 import TwoColumns from "../common/TwoColumns";
 import { Icon, Text } from "../common/UIElement";
 // import styles from './Leftbar.module.scss';
-const defaultAvatar = "https://spacezone-backend-qy5g.onrender.com/uploads/avatar/default.png";
+const defaultAvatar = `${import.meta.env.VITE_API_URL}/uploads/avatar/default.png`;
 import { Link, NavLink } from "react-router-dom";
 import '../../styles/_mobile.scss';
-const API_URL = import.meta.env.VITE_API_URL || "https://spacezone-backend-qy5g.onrender.com/api";
+const API_URL = import.meta.env.VITE_API_URL 
 
 function Leftbar({user}) {
   const fullAvatarURL = user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatar;

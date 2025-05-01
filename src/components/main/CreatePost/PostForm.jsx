@@ -3,12 +3,12 @@ import { Avatar, createPostItems } from "@/assets/icons/main/main.js";
 import { Icon } from "../../common/UIElement";
 import Button from "../../common/Button";
 import { Close, Photo } from "../../../assets/icons/main/main";
-const defaultAvatar = "https://spacezone-backend-qy5g.onrender.com/uploads/avatar/default.png";
+const defaultAvatar = `${import.meta.env.VITE_API_URL}/uploads/avatar/default.png`;
 import { useAuth } from "../../../context/AuthProvider"; // ✅ Sử dụng hook useAuth
 import { Link } from "react-router-dom";
 import styled from "../../../pages/Account.module.scss";
 
-const API_URL = "https://spacezone-backend-qy5g.onrender.com/api";
+const API_URL = import.meta.env.VITE_API_URL
 
 function PostForm({ onUpload }) {
   const { user } = useAuth(); // ✅ Lấy user từ useAuth()

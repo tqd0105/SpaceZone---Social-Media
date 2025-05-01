@@ -14,11 +14,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import styled from "./Main.module.scss";
 import Button from "../common/Button.jsx";
-const defaultAvatar =
-  "https://spacezone-backend-qy5g.onrender.com/uploads/avatar/default.png";
+const defaultAvatar = `${import.meta.env.VITE_API_URL}/uploads/avatar/default.png`;
 import { useAuth } from "../../context/AuthProvider.jsx";
-const API_URL =
-  import.meta.env.VITE_API_URL || "https://spacezone-backend-qy5g.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL
+
 
 function Story() {
   const { user } = useAuth();

@@ -68,7 +68,7 @@ function Share({ onClose }) {
 
         <div className=" relative flex flex-col items-start justify-start m_flex-col gap-2 w-full">
           <span className="text-base font-bold">Chia sẽ với bạn bè</span>
-          <div className="flex justify-start items-start m_flex-row gap-2 w-full overflow-hidden relative">
+          <div className="flex justify-start items-start m_flex-row gap-2 w-full overflow-scroll relative">
             <div ref={listRef} className="flex justify-start items-start m_flex-row gap-2 transition-transform duration-300" style={{ transform: `translateX(-${translateX}px)` }}>
               {shareWithFriends.map((item, index) => {
                 return (

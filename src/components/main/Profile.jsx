@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-const defaultCover =
-  "https://spacezone-backend-qy5g.onrender.com/uploads/cover/default_cover.png";
-const defaultAvatar =
-  "https://spacezone-backend-qy5g.onrender.com/uploads/avatar/default.png";
+const defaultCover = `${import.meta.env.VITE_API_URL}/uploads/cover/default_cover.png`;
+const defaultAvatar = `${import.meta.env.VITE_API_URL}/uploads/avatar/default.png`;
 import {
   BackBlack,
   CalendarBlack,
@@ -20,7 +18,7 @@ import { useAuth } from "../../context/AuthProvider";
 import ImageDetail from "../common/ImageDetail";
 import UserTabSwitcher from "./UserTabSwitcher";
 
-const API_URL = "https://spacezone-backend-qy5g.onrender.com/api";
+const API_URL = import.meta.env.VITE_API_URL
 
 function Profile() {
   const [posts, setPosts] = useState([]);
