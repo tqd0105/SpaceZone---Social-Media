@@ -1,4 +1,6 @@
-import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from "react-router-dom";
+import { HashRouter as Router, Routes, Route, Navigate, Outlet } from "react-router-dom";
+
+
 import Header from "./components/layout/Header";
 import Leftbar from "./components/layout/LeftBar";
 import RightBar from "./components/layout/RightBar";
@@ -14,7 +16,7 @@ function App() {
   const {user} = useAuth();
   return (
     <AuthProvider>
-      <Router basename="/SpaceZone---Social-Media">
+      <Router >
         <Routes>
           {/* 🟢 Layout dành cho người chưa đăng nhập */}
           <Route element={<LoginLayout />}>
