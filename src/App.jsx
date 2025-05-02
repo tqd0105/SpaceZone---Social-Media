@@ -73,7 +73,8 @@ const MainLayout = () => {
 /* ✅ Layout khi chưa đăng nhập */
 const LoginLayout = () => {
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="flex justify-center items-center h-screen bg-gray-100"
+    style={{backgroundImage: "linear-gradient(to right, #ec77ab 0%, #0906ffd1 100%)"}}>
       <Outlet /> {/* 🟢 Outlet để render Login / Register */}
     </div>
   );

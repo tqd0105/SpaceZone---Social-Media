@@ -58,7 +58,7 @@ function Story() {
               src={fullAvatarURL}
               width={"100%"}
               alt="avatar"
-              className="rounded-t-xl h-[150px]"
+              className="rounded-t-xl m_h-130px h-[150px]"
             />
             <img
               src={Add}
@@ -78,7 +78,7 @@ function Story() {
           />
         }
         className={
-          "flex-column-between bg-white w-[140px] h-[200px] rounded-xl shadow-sm cursor-pointer hover:scale-95 duration-500 border border-gray-300"
+          "flex-column-between bg-white w-[140px] h-[200px] m_w-115px m_h-180px rounded-xl shadow-sm cursor-pointer hover:scale-95 duration-500 border border-gray-300"
         }
       />
 
@@ -117,7 +117,7 @@ function Story() {
               <img
                 src={story.src}
                 alt="story"
-                className="rounded-lg shadow-md h-[200px] object-cover w-[160px]"
+                className="rounded-lg shadow-md h-[200px] m_h-180px object-cover w-[160px]"
               />
               <TwoColumns
                 left={

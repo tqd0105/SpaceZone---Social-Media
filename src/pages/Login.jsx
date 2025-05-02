@@ -24,16 +24,20 @@ const Login = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    
+  
     try {
       const res = await login(formData.email, formData.password);
       if (res.error) {
         setError(res.error);
       } else {
-        loginContext(res.user);
+        // ✅ Lưu token vào localStorage
+        localStorage.setItem("token", res.token);
+  
+        // ✅ Gọi context login
+        loginContext(res.user, res.token);
+  
         console.log("✅ Đăng nhập thành công:", res.user);
-        
-        // 🔥 CHỈ CHUYỂN ĐẾN "/home", KHÔNG PHẢI "/"
+  
         navigate("/home", { replace: true });
       }
     } catch (error) {
@@ -44,9 +48,11 @@ const Login = () => {
     }
   };
   
+  
   return (
-    <div className={`flex-column-start bg-white h-fit px-8 py-6 my-4 rounded-xl shadow-xl ${styled.animation_backInUp}`}>
-      <h2 className="font-semibold text-xl mb-4">Đăng nhập tài khoản</h2>
+    <div className={`flex-column-center bg-white h-fit px-8 py-6 my-4 rounded-xl shadow-xl mc_login ${styled.animation_backInUp}`}
+    >
+      <h2 className="font-bold text-2xl mb-4">Đăng nhập tài khoản</h2>
       <form onSubmit={handleLogin}>
         <div className="flex-column-center gap-2">
           {/* Email Input */}

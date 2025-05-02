@@ -49,6 +49,7 @@ import {
 } from "../../assets/icons/header/header";
 import { Back, BackBlack, CloseBlack } from "../../assets/icons/main/main";
 import { Circle, listFriends } from "../../assets/icons/rightbar/rightbar";
+import LeftBar from '../layout/LeftBar'
 
 const API_URL =
   import.meta.env.VITE_API_URL;
@@ -70,6 +71,7 @@ function Header() {
   const [isShowMedia, setIsShowMedia] = useState(true);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [isOpenLeftBar, setIsOpenLeftBar] = useState(false);
   const menuRef = useRef(null);
   const searchRef = useRef(null);
   const postCache = useRef([]);
@@ -120,7 +122,8 @@ function Header() {
     (friends) => friends.id === selectedFriendId
   );
 
-  const toggleMenu = () => {
+  const toggleMenu = (e) => {
+    e.stopPropagation(); 
     setIsOpen((prev) => !prev);
   };
 
@@ -266,7 +269,11 @@ function Header() {
             height={20}
             className="l_hidden"
             alt=""
+            onClick={() => setIsOpenLeftBar(!isOpenLeftBar)}
           />
+          {isOpenLeftBar && (
+            <LeftBar user={user} isOpenLeftBar={isOpenLeftBar} />
+          )}
           <Link
             to="/home"
             className="flex items-center gap-2"
@@ -449,7 +456,7 @@ function Header() {
                   <Link
                     to={`/${user.username}`}
                     onClick={() => setIsOpen(false)}
-                    className="flex justify-around items-center gap-2 mb-4 hover:bg-gray-100 rounded-xl p-2 cursor-pointer"
+                    className="flex justify-around items-center m_flex-row gap-2 mb-4 hover:bg-gray-100 rounded-xl p-2 cursor-pointer"
                   >
                     <Icon
                       src={fullAvatarURL}
@@ -466,16 +473,16 @@ function Header() {
                   <div className="w-full h-[1px] bg-gray-200 my-2"></div>
 
                   {/* Các tùy chọn */}
-                  <div className="flex items-center justify-between py-2 cursor-pointer hover:bg-gray-100 rounded-md px-2">
-                    <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-between m_flex-row py-2 cursor-pointer hover:bg-gray-100 rounded-md px-2">
+                    <div className="flex items-center m_flex-row gap-2">
                       <Icon src={Setting} width={25} height={25} />
                       <span className="font-bold">Cài đặt</span>
                     </div>
                     <Icon src={RightArrow} width={15} height={15} />
                   </div>
 
-                  <div className="flex items-center justify-between py-2 cursor-pointer hover:bg-gray-100 rounded-md px-2">
-                    <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-between m_flex-row py-2 cursor-pointer hover:bg-gray-100 rounded-md px-2">
+                    <div className="flex items-center m_flex-row gap-2">
                       <Icon src={Help} width={25} height={25} />
                       <span className="font-bold">Hỗ trợ</span>
                     </div>
@@ -780,10 +787,7 @@ function Header() {
             ))}
             <div ref={messageEndRef} />
           </div>
-          <div
-            className="absolute bottom-0 right-0 left-0 flex-row-between gap-2 p-2 border-t-[1px] shadow_chatBar border-gray-300"
-            
-          >
+          <div className="absolute bottom-0 right-0 left-0 flex-row-between gap-2 p-2 border-t-[1px] shadow_chatBar border-gray-300">
             {isShowMedia && input.trim() === "" ? (
               <div className="flex-row-center gap-2 cursor-pointer">
                 <img src={Microphone} width={25} height={30} alt="" />

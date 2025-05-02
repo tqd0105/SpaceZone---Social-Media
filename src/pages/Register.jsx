@@ -70,13 +70,13 @@ function Register() {
 
   return (
     <div
-      className={`flex-column-start  bg-gray-100 ${styled.animation_backInUp}`}
+      className={`flex-column-start rounded-lg bg-gray-100 mc_login ${styled.animation_backInUp}`}
     >
       <form
         onSubmit={handleSubmit}
-        className="bg-white py-6 my-6 rounded-lg shadow-md w-96"
+        className="bg-white py-6 rounded-lg shadow-md lg:w-96"
       >
-        <h2 className="text-2xl font-semibold text-center">
+        <h2 className="text-2xl font-bold text-center">
           Tạo tài khoản mới
         </h2>
         {error && (
@@ -126,7 +126,7 @@ function Register() {
         <div className="flex justify-center items-center">
           <button
             type="submit"
-            className={`w-[320px] flex-row-center gap-2 p-2 mt-4 bg-blue-500 text-white rounded-md ${styled.gradient2}`}
+            className={`w-[320px] lg:flex-row-center gap-2 p-2 mt-4 bg-blue-500 text-white rounded-md ${styled.gradient2}`}
           >
             {loading ? (
               <div className="flex-row-center gap-2">

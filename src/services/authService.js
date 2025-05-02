@@ -20,7 +20,7 @@ export const login = async (email, password) => {
     // Lưu token và thông tin user
     localStorage.setItem("token", data.token);
     localStorage.setItem("user", JSON.stringify(data.user));
-    return { success: true, user: data.user };
+    return { success: true, user: data.user, token: data.token };
   } catch (error) {
     console.error("❌ Lỗi đăng nhập:", error.message);
     return { error: "Tên đăng nhập hoặc mật khẩu không đúng!" };

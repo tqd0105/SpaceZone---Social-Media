@@ -24,11 +24,23 @@
     .flex {
         display: block ;
     }
+    .m_relative{
+        position: relative ;
+    }
     .m_absolute {
         position: absolute ;
     }
+    .m_fixed{
+        position: fixed ;
+    }
     .m_top-full {
         top: 100% ;
+    }
+    .m_top-62px {
+        top: 62px ;
+    }
+    .m_left-0{
+        left: 0 ;
     }
     .m_block {
         display: block !important;
@@ -38,6 +50,9 @@
     }
     .m_m-2 {
         margin: 0.5rem ;
+    }
+    .m_mb-2 {
+        margin-bottom: 0.5rem ;
     }
     .m_p-0 {
         padding: 0 ;
@@ -116,6 +131,15 @@
     .m_w-8 {
         width: 2rem ;
     }
+    .m_h-130px {
+        height: 130px;
+    }
+    .m_w-115px {
+        width: 115px;
+    }
+    .m_h-180px {
+        height: 180px;
+    }
     .m_h-8 {
         height: 2rem;
     }
@@ -123,6 +147,14 @@
     .mc_addChatIcon {
         bottom: 70px;
         right: 10px;
+    }
+    .mc_login {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 0;
+        right: 0;
+        margin: 1rem;
     }
     * {
         font-size: 12px;
