@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import PostForm from "../main/CreatePost/PostForm";
 import PostList from "../main/CreatePost/PostList";
 import Story from "../main/Story";
+import Refresh from "../../assets/icons/main/CreatePost/refresh.png";
 const API_URL = import.meta.env.VITE_API_URL
 
 function Main() {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [deletingPostId, setDeletingPostId] = useState(null); 
+  const [isShowNewPostNoti, setIsShowNewPostNoti] = useState(false); 
 
   useEffect(() => {
     fetch(`${API_URL}/posts`)
@@ -54,6 +57,7 @@ function Main() {
   const handleDelete = async (postId) => {
     console.log("🛠 postId nhận được:", postId);
     setLoading(true);
+    setDeletingPostId(postId);
 
     try {
       const token = localStorage.getItem("token");
@@ -153,7 +157,18 @@ function Main() {
 
   return (
     <div className="lg:w-[45%] m_pb-80px">
-      <PostForm onUpload={handleUpload} />
+
+        {isShowNewPostNoti && (
+        <div className="fixed flex-row-center gap-2 top-24 left-1/2 cursor-pointer -translate-x-1/2  z-50 bg-gray-900 text-white p-4 rounded-lg shadow-2xl hover:bg-gray-700 animate__animated animate__fadeIn animate_slow" onClick={()=>window.location.reload()}>
+          <img src={Refresh} width={20} height={20} alt="Refresh" className="animate__animated animate__rubberBand animate_slow animate__infinite" />
+          <span className="font-bold">Đã có cập nhật mới!</span>
+        </div>
+
+         )}
+        <PostForm
+          onUpload={handleUpload}
+          setIsShowNewPostNoti={setIsShowNewPostNoti}
+        />
       <Story />
       <PostList
         onDeleteComment={handleDeleteComment}
@@ -162,6 +177,7 @@ function Main() {
         posts={posts}
         comments={comments}
         loading={loading}
+        deletingPostId={deletingPostId}
       />
     </div>
   );

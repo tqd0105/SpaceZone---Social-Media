@@ -38,6 +38,7 @@ function PostList({
   disableCommentButton = false,
   user,
   loading,
+  deletingPostId,
 }) {
   const [likePosts, setLikePosts] = useState({});
   const randomShares = useMemo(() => Math.floor(Math.random() * 100), []);
@@ -263,7 +264,7 @@ function PostList({
                         alt=""
                         className="cursor-pointer"
                       />
-                      {loading ? (
+                      {deletingPostId === post._id ? (
                         <div className={`${styled.loading__spinner}`}></div>
                       ) : (
                         <img

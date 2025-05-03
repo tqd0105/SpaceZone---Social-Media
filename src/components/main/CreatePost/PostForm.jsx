@@ -10,7 +10,7 @@ import styled from "../../../pages/Account.module.scss";
 
 const API_URL = import.meta.env.VITE_API_URL
 
-function PostForm({ onUpload }) {
+function PostForm({ onUpload, setIsShowNewPostNoti }) {
   const { user } = useAuth(); // ✅ Lấy user từ useAuth()
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
@@ -70,6 +70,10 @@ function PostForm({ onUpload }) {
     setImage(null);
     setPreview(null);
     setLoading(false);
+    setIsShowNewPostNoti(true);
+    setTimeout(()=>{
+      setIsShowNewPostNoti(false);
+    }, 5000)
   };
 
   // 🔴 Nếu chưa đăng nhập, yêu cầu đăng nhập
@@ -83,7 +87,7 @@ function PostForm({ onUpload }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="bg-white my-3 p-4 rounded-lg shadow-md border border-gray-300 m_m-2" >
+      <div className="bg-white my-3 p-4 rounded-lg shadow-md border border-gray-300 m_m-2">
         <div className="md:flex md:flex-col gap-4 w-full">
           <div className="md:flex items-center m_mb-2 gap-2 w-full m_flex-row">
             <Link to={`/${user.username}`} className="flex-shrink-0">

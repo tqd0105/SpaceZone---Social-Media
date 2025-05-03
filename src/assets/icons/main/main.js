@@ -40,6 +40,7 @@ import BackBlack from '../main/Profile/back.png';
 import Delete from '../main/Profile/delete.png';
 import User from '../main/Profile/user.png';
 import CloseWhite from '../main/Profile/close_white.png';
+import Refresh from "../main/CreatePost/refresh.png";
 
 
 // Import Story UI
@@ -272,7 +273,8 @@ export {
     Delete,
     User,
     CloseWhite,
-    NextDouble
+    NextDouble,
+    Refresh,
 };
 
 export default storyDetails;
