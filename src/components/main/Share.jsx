@@ -3,7 +3,7 @@ import shareWithFriends, {
   CloseBlack,
   ShareLink,
   shareThrough,
-  NextDouble
+  NextDouble,
 } from "../../assets/icons/main/main";
 import styles from "./Main.module.scss";
 
@@ -14,7 +14,10 @@ function Share({ onClose }) {
   const listRef = useRef(null);
   const longUrl = "http://spacezone.com/zaggfhh12uuufhfss88";
   const maxLength = 30;
-  const displayUrl = longUrl.length > maxLength ? `${longUrl.substring(0, maxLength)}...` : longUrl;
+  const displayUrl =
+    longUrl.length > maxLength
+      ? `${longUrl.substring(0, maxLength)}...`
+      : longUrl;
 
   useEffect(() => {
     if (listRef.current) {
@@ -34,10 +37,10 @@ function Share({ onClose }) {
 
   const handleTranslate = (direction) => {
     if (listRef.current) {
-      if (direction === 'next' && translateX < maxTranslate) {
-        setTranslateX(prev => Math.min(prev + 100, maxTranslate));
-      } else if (direction === 'prev' && translateX > 0) {
-        setTranslateX(prev => Math.max(prev - 100, 0));
+      if (direction === "next" && translateX < maxTranslate) {
+        setTranslateX((prev) => Math.min(prev + 100, maxTranslate));
+      } else if (direction === "prev" && translateX > 0) {
+        setTranslateX((prev) => Math.max(prev - 100, 0));
       }
     }
   };
@@ -48,7 +51,7 @@ function Share({ onClose }) {
         className="absolute inset-0 bg-black opacity-50 z-10"
         onClick={onClose}
       ></div>
-      <div className="relative top-0 left-0 w-[600px] max-h-[80vh] m_w-full bg-white p-4 z-10 rounded-xl shadow-xl animate__animated animate__bounceIn">
+      <div className="relative top-0 left-0 w-[600px] max-h-[80vh] m_w-full bg-white p-4  z-10 rounded-xl shadow-xl animate__animated animate__bounceIn">
         <div className="flex-row-center m_flex-row w-full">
           <h3 className="text-lg font-bold">Chia sẽ ngay</h3>
         </div>
@@ -69,7 +72,11 @@ function Share({ onClose }) {
         <div className=" relative flex flex-col items-start justify-start m_flex-col gap-2 w-full">
           <span className="text-base font-bold">Chia sẽ với bạn bè</span>
           <div className="flex justify-start items-start m_flex-row gap-2 w-full overflow-scroll relative">
-            <div ref={listRef} className="flex justify-start items-start m_flex-row gap-2 transition-transform duration-300" style={{ transform: `translateX(-${translateX}px)` }}>
+            <div
+              ref={listRef}
+              className="flex justify-start items-start m_flex-row gap-2 transition-transform duration-300"
+              style={{ transform: `translateX(-${translateX}px)` }}
+            >
               {shareWithFriends.map((item, index) => {
                 return (
                   <div
@@ -91,12 +98,24 @@ function Share({ onClose }) {
               })}
             </div>
             {translateX > 0 && (
-              <div className="absolute top-1/2 left-0 m_hidden cursor-pointer" onClick={() => handleTranslate('prev')}>
-                <img src={NextDouble} width={20} height={20} alt="previous" className="rotate-180" />
+              <div
+                className="absolute top-1/2 left-0 m_hidden cursor-pointer"
+                onClick={() => handleTranslate("prev")}
+              >
+                <img
+                  src={NextDouble}
+                  width={20}
+                  height={20}
+                  alt="previous"
+                  className="rotate-180"
+                />
               </div>
             )}
             {translateX < maxTranslate && (
-              <div className="absolute top-1/2 right-0 m_hidden cursor-pointer" onClick={() => handleTranslate('next')}>
+              <div
+                className="absolute top-1/2 right-0 m_hidden cursor-pointer"
+                onClick={() => handleTranslate("next")}
+              >
                 <img src={NextDouble} width={20} height={20} alt="next" />
               </div>
             )}

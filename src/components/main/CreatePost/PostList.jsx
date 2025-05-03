@@ -42,12 +42,26 @@ function PostList({
   const [likePosts, setLikePosts] = useState({});
   const randomShares = useMemo(() => Math.floor(Math.random() * 100), []);
   const [showEmotions, setShowEmotions] = useState(false);
+  const pressTimer = useRef(null);
   const timeoutRef = useRef(null);
   const [selectedReaction, setSelectedReaction] = useState({});
   const [isOpenCommentDetail, setIsOpenCommentDetail] = useState(null);
   const [isShowShare, setIsShowShare] = useState(false);
   const [localComments, setLocalComments] = useState(comments);
   const postEndRef = useRef(null);
+
+  const handlePressStart = (postId) => {
+    pressTimer.current = setTimeout(()=>{
+      setShowEmotions(postId);
+    }, 500);
+  }
+
+  const handlePressEnd = () => {
+    if (pressTimer.current) {
+      clearTimeout(pressTimer.current)
+      pressTimer.current = null;
+    }
+  }
 
   useEffect(() => {
     postEndRef.current?.scrollIntoView({ behaviour: "smooth" });
@@ -220,7 +234,7 @@ function PostList({
                   />
                 </Link>
                 {/* Thong tin bai viet */}
-                <div>
+                <div className="w-full">
                   <div className="flex-row-between pt-3">
                     <div className="flex-row-start gap-2">
                       <div className="flex flex-col m_flex-row items-start justify-center cursor-pointer">
@@ -335,6 +349,10 @@ function PostList({
                     <div className="flex-row-between ">
                       <div
                         onClick={() => handleLike(post._id)}
+                        onTouchStart={() => handlePressStart(post._id)}
+                        onTouchEnd={handlePressEnd}
+                        onMouseDown={() => handlePressStart(post._id)}
+                        onMouseUp={handlePressEnd}
                         onMouseEnter={() => handleMouseEnter(post._id)}
                         onMouseLeave={() => handleMouseLeave(post._id)}
                         className="flex-row-center gap-2  hover:bg-gray-200 p-2 rounded-lg cursor-pointer w-full "
@@ -433,6 +451,7 @@ function PostList({
                     {/* Emotion Options */}
                     {showEmotions === post._id && (
                       <ReactionList
+                        
                         handleMouseEnter={() => handleMouseEnter(post._id)}
                         handleMouseLeave={() => handleMouseLeave(post._id)}
                         onSelectReaction={(reaction) =>

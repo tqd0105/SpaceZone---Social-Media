@@ -78,7 +78,7 @@ function Story() {
           />
         }
         className={
-          "flex-column-between bg-white w-[140px] h-[200px] m_w-115px m_h-180px rounded-xl shadow-sm cursor-pointer hover:scale-95 duration-500 border border-gray-300"
+          "flex-column-between bg-white w-[160px] h-[200px] m_w-115px m_h-180px rounded-xl shadow-sm cursor-pointer hover:scale-95 duration-500 border border-gray-300"
         }
       />
 

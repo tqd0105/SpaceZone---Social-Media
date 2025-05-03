@@ -105,7 +105,7 @@ function PostForm({ onUpload }) {
           </div>
 
           {preview && (
-            <div className="flex-row-center">
+            <div className="flex-row-center w-full">
               <div className="relative">
                 <img
                   src={preview}
