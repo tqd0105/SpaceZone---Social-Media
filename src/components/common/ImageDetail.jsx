@@ -1,10 +1,17 @@
 import {CloseWhite } from "../../assets/icons/main/main";
+const defaultCover = `${import.meta.env.VITE_API_URL}/uploads/cover/default_cover.png`;
+const defaultAvatar = `${import.meta.env.VITE_API_URL}/uploads/avatar/default.png`;
 const API_URL = import.meta.env.VITE_API_URL;
 
 function ImageDetail ({isAvatar, user, onClose}) {
     const imageUrl = isAvatar
-    ? `${API_URL}${user?.avatar}`
-    : `${API_URL}${user?.coverImage}`;
+    ? (user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatar)
+    : (user?.coverImage ? `${API_URL}${user.coverImage}` : defaultCover);
+    if (imageUrl) {
+        console.log(imageUrl);
+        console.log(user);
+        
+    }
     return (
         <div className="fixed inset-0 flex-row-center z-50">
             <div className="absolute inset-0 bg-black bg-opacity-80" onClick={onClose}></div>

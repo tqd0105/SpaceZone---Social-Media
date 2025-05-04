@@ -58,7 +58,7 @@ function Story() {
               src={fullAvatarURL}
               width={"100%"}
               alt="avatar"
-              className="rounded-t-xl m_h-130px h-[150px]"
+              className="rounded-t-xl m_h-130px h-[150px] lg:min-w-[130px] object-cover "
             />
             <img
               src={Add}
