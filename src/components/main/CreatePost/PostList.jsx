@@ -104,7 +104,7 @@ function PostList({
       ...prev,
       [postId]: true,
     }));
-    setShowEmotions(false);
+    setShowEmotions(null);
   };
 
   // Khởi tạo số lượt thích ngẫu nhiên cho mỗi bài post
@@ -452,9 +452,6 @@ function PostList({
                     {/* Emotion Options */}
                     {showEmotions === post._id && (
                       <ReactionList
-                        
-                        handleMouseEnter={() => handleMouseEnter(post._id)}
-                        handleMouseLeave={() => handleMouseLeave(post._id)}
                         onSelectReaction={(reaction) =>
                           handleSelectReaction(post._id, reaction)
                         }

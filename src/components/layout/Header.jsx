@@ -78,6 +78,7 @@ function Header() {
   const historyRef = useRef(null);
   const postRef = useRef(null);
   const messageEndRef = useRef(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -95,7 +96,6 @@ function Header() {
       from: "user",
     };
     setMessages((prev) => [...prev, userMessage]);
-    setInput("");
 
     setTimeout(() => {
       const replyChat = {
@@ -107,6 +107,8 @@ function Header() {
       };
       setMessages((prev) => [...prev, replyChat]);
     }, 1000);
+    setInput("");
+    inputRef.current?.focus();
   };
 
   const handleToggleMedia = (e) => {
@@ -807,7 +809,9 @@ function Header() {
               } transition-all duration-300 ease-in-out `}
             >
               <input
+                ref={inputRef}
                 type="text"
+                value={input}
                 className="border-[1px] shadow-md rounded-full  w-full p-2 outline-none break-words"
                 onChange={(e) => {
                   setInput(e.target.value);

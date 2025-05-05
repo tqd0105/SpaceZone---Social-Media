@@ -15,8 +15,8 @@ function CommentDetail({ posts, comments, onDeleteComment, onAddComment, onDelet
         <img src={BackBlack} width={20} height={20} alt=""/>
 
           </div>
-          <span className="font-bold text-2xl flex-row-center gap-2">Bài viết từ          
-            <span className="text-blue-600 ">  { posts.author.name}</span>
+          <span className="font-bold text-xl flex-row-center gap-2">Bài viết từ          
+            <span className=" text-blue-600 ">  { posts.author.name}</span>
           </span>
           {/* <div className="h-[1px] w-full bg-slate-200 my-2"></div> */}
         </div>
