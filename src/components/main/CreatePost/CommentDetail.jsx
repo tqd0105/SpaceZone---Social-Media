@@ -2,7 +2,7 @@ import PostList from "./PostList";
 import Comments from "../Comments";
 import { BackBlack } from "../../../assets/icons/main/main";
 
-function CommentDetail({ posts, comments, onDeleteComment, onAddComment, onDelete, isOpenCommentDetail, setIsOpenCommentDetail, loading }) {
+function CommentDetail({ posts, comments, onDeleteComment, onAddComment, onDelete, isOpenCommentDetail, setIsOpenCommentDetail, loading, setComments }) {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center m_flex-row z-50">
@@ -24,6 +24,7 @@ function CommentDetail({ posts, comments, onDeleteComment, onAddComment, onDelet
           {/* Hiển thị bài viết được chọn */}
           <PostList 
             posts={[posts]} 
+            comments={comments}
             onDelete={onDelete} 
             disableCommentButton={true}
             loading={loading}
@@ -35,6 +36,7 @@ function CommentDetail({ posts, comments, onDeleteComment, onAddComment, onDelet
             comments={comments.filter(comment => comment.postId === posts._id)} 
             onDeleteComment={onDeleteComment} 
             onAddComment={onAddComment}
+            setComments={setComments}
           />
         </div>
       </div>

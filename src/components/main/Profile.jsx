@@ -43,7 +43,6 @@ function Profile() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log("✅ User data received:", data);
         setUser(data);
       } catch (error) {
         console.error("❌ Error fetching user data:", error);

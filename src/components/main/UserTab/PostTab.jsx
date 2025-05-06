@@ -5,11 +5,11 @@ function PostTab ({posts, comments, onAddComment, onDeleteComment, onDelete, use
         <div>
             <PostList 
                 posts={posts}
-                comments={comments} // nếu có
-                onAddComment={onAddComment} // nếu có
-                onDeleteComment={onDeleteComment} // nếu có
-                onDelete={onDelete} // nếu có
-                user={user} // nếu cần
+                comments={comments} 
+                onAddComment={onAddComment}
+                onDeleteComment={onDeleteComment} 
+                onDelete={onDelete} 
+                user={user} 
             />
         </div>
     )

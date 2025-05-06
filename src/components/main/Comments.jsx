@@ -38,7 +38,7 @@ function Comments({
       return acc;
     }, {});
   });
-
+  
   const API_URL = import.meta.env.VITE_API_URL
 
   useEffect(() => {
@@ -52,6 +52,8 @@ function Comments({
       }
     );
   }, [likeStates]);
+
+  
 
   const toggleComments = (postId) => {
     setOpenComments((prev) => ({
@@ -103,7 +105,6 @@ function Comments({
         [commentId]: { isLiked, likeCount },
       };
     });
-    onClickLike(commentId);
   };
 
   const handleLikeCountReply = (commentId) => {
@@ -150,7 +151,7 @@ function Comments({
         </div> */}
 
         {/* {openComments[posts._id] && ( */}
-        <div>
+        <div key={posts._id}>
           {postComments.length === 0 ? (
             <p className="font-bold text-gray-400 mb-4">
               Chưa có bình luận nào
@@ -301,7 +302,7 @@ function Comments({
               placeholder="Viết bình luận ..."
               className="w-full border-2 border-gray-300 outline-none p-2 rounded-lg"
             />
-            <button onClick={() => handleAddComment(posts._id)} className="bg-blue-600 text-white hover:bg-blue-500">Gửi</button>
+            <button onClick={() => handleAddComment(posts._id, comments.text)} className="bg-blue-600 text-white hover:bg-blue-500">Gửi</button>
           </div>
         </div>
       </div>
@@ -310,3 +311,5 @@ function Comments({
 }
 
 export default Comments;
+
+ 

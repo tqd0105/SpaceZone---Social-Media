@@ -104,7 +104,7 @@ function Main() {
         console.log("❌ Không có token, hãy đăng nhập lại!");
         return;
       }
-
+  
       const res = await fetch(`${API_URL}/comments`, {
         method: "POST",
         headers: {
@@ -113,17 +113,46 @@ function Main() {
         },
         body: JSON.stringify({ postId, text }),
       });
-
+  
       if (!res.ok) {
         throw new Error("Lỗi khi thêm bình luận");
       }
-
+  
       const newComment = await res.json();
-      setComments([...comments, newComment]); // Cập nhật state
+  
+      // Cập nhật bình luận mới vào state và lưu lại vào localStorage
+      const updatedComments = [...comments, newComment];
+      setComments(updatedComments);
+      localStorage.setItem(`comments_${postId}`, JSON.stringify(updatedComments)); // Lưu vào localStorage
+      console.log("✅ Thêm bình luận thành công");
+  
     } catch (err) {
       console.log("❌ Lỗi thêm bình luận:", err.message);
     }
   };
+
+  useEffect(() => {
+    const fetchAllComments = async () => {
+      try {
+        const commentPromises = posts.map((post) =>
+          fetch(`${API_URL}/comments/${post._id}`).then((res) => {
+            if (!res.ok) throw new Error("Lỗi khi lấy bình luận");
+            return res.json();
+          })
+        );
+  
+        const allCommentsArrays = await Promise.all(commentPromises);
+        const allComments = allCommentsArrays.flat(); // Gộp thành 1 mảng duy nhất
+  
+        setComments(allComments); // Cập nhật 1 lần
+      } catch (err) {
+        console.error("❌ Lỗi khi fetch bình luận:", err.message);
+      }
+    };
+  
+    if (posts.length > 0) fetchAllComments();
+  }, [posts]);
+  
 
   const handleDeleteComment = async (commentId) => {
     try {
@@ -171,13 +200,15 @@ function Main() {
         />
       <Story />
       <PostList
+      posts={posts}
+      comments={comments}
         onDeleteComment={handleDeleteComment}
         onAddComment={handleAddComment}
         onDelete={handleDelete}
-        posts={posts}
-        comments={comments}
+        
         loading={loading}
         deletingPostId={deletingPostId}
+        setComments={setComments}
       />
     </div>
   );

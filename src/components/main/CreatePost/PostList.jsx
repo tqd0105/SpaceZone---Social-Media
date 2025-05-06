@@ -39,7 +39,9 @@ function PostList({
   user,
   loading,
   deletingPostId,
+  setComments
 }) {
+  
   const [likePosts, setLikePosts] = useState({});
   const randomShares = useMemo(() => Math.floor(Math.random() * 100), []);
   const [showEmotions, setShowEmotions] = useState(false);
@@ -48,8 +50,15 @@ function PostList({
   const [selectedReaction, setSelectedReaction] = useState({});
   const [isOpenCommentDetail, setIsOpenCommentDetail] = useState(null);
   const [isShowShare, setIsShowShare] = useState(false);
-  const [localComments, setLocalComments] = useState(comments);
   const postEndRef = useRef(null);
+
+  useEffect(() => {
+    // Lấy bình luận từ localStorage nếu có
+    const storedComments = localStorage.getItem(`comments_${posts[0]?.id}`);
+    if (storedComments) {
+      setComments(JSON.parse(storedComments)); // Set bình luận từ localStorage vào state
+    }
+  }, [posts, setComments]);
 
   const handlePressStart = (postId) => {
     pressTimer.current = setTimeout(()=>{
@@ -69,9 +78,7 @@ function PostList({
   }, [posts]);
 
   // Cập nhật localComments khi comments thay đổi
-  useEffect(() => {
-    setLocalComments(comments);
-  }, [comments]);
+  
 
   const handleMouseEnter = (postId) => {
     // Hủy bỏ setTimeout nếu có
@@ -206,13 +213,14 @@ function PostList({
                 <div>
                   <CommentDetail
                     posts={post}
-                    comments={localComments}
+                    comments={comments}
                     onDeleteComment={onDeleteComment}
                     onAddComment={onAddComment}
                     onDelete={onDelete}
                     isOpenCommentDetail={isOpenCommentDetail}
                     setIsOpenCommentDetail={setIsOpenCommentDetail}
                     loading={loading}
+                    setComments={setComments}
                   />
                 </div>
               )}
@@ -241,12 +249,18 @@ function PostList({
                       <div className="flex flex-col m_flex-row items-start justify-center cursor-pointer">
                         <div className="flex-row-center gap-2">
                           <div className="flex-row-center gap-1">
-                            <p className="font-bold">{post.author.name}</p>
+                          <Link to={`/${post.author?.username}`}>
+                            <p className="font-bold text-black">{post.author.name}</p>
+                          
+                          </Link>
                             <img src={Tick} width={15} height={15} alt="" />
                           </div>
-                          <p className="font-medium text-gray-600">
+                          <Link to={`/${post.author?.username}`}>
+                          
+                         <p className="font-medium text-gray-600">
                             @{post.author.username}
-                          </p>
+                          </p> 
+                          </Link>
                         </div>
                         <div className="flex-row-center gap-1">
                           <img src={Time} width={15} height={15} alt="" />
