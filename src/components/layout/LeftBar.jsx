@@ -11,19 +11,19 @@ import { Link, NavLink } from "react-router-dom";
 import '../../styles/_mobile.scss';
 const API_URL = import.meta.env.VITE_API_URL 
 
-function Leftbar({user,isOpenLeftBar}) {
+function Leftbar({user,isOpenLeftBar, setIsOpenLeftBar}) {
   const fullAvatarURL = user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatar;
   
   return (
-    <div className={`sticky top-[72px] h-[calc(100vh-72px)] sm:w-1/4 md:w-1/5 lg:w-1/6 xl:w-[25%]  ${isOpenLeftBar  ? "m_fixed m_top-62px m_left-0 m_bg-white m_w-full animate__animated animate__fadeInLeft" : "m_hidden"}`}>
-      <div className="flex flex-col h-full"> {/* Thêm container flex để quản lý layout */}
-        <div className="flex-grow flex flex-col align-center justify-between  overflow-y-auto">
+    <div className={`sticky top-[72px] h-[calc(100vh-72px)] sm:w-1/4 md:w-1/5 lg:w-1/6 xl:w-[25%]  ${isOpenLeftBar  ? "m_fixed m_top-62px m_left-0 m_bg-white m_w-full animate__animated animate__fadeInLeft" : "m_hidden"}`} onClick={()=>setIsOpenLeftBar(false)}>
+      <div className="flex flex-col m_flex-row m_justify-between m_pb-50px h-full"> {/* Thêm container flex để quản lý layout */}
+        <div className="flex-grow flex flex-col m_flex-row m_justify-between align-center justify-between  overflow-y-auto">
           {leftbarItems.map((item, index) => (
             <div key={index}>
               <TwoColumns
                 left={<img src={item.icon} width={36} height={36} />}
                 right={<span className="text-base font-semibold">{item.text}</span>}
-                className="flex-row-start gap-4 px-3 py-3 lg:rounded-lg cursor-pointer hover:bg-gray-200 "
+                className="flex-row-start  gap-4 px-3 py-3 lg:rounded-lg cursor-pointer hover:bg-gray-200 "
               />
             </div>
           ))}
@@ -38,7 +38,7 @@ function Leftbar({user,isOpenLeftBar}) {
         </div>
         <div className="h-[1px] bg-gray-200 "></div>
         {/* Profile section at bottom */}
-        <Link to={`/${user?.username}`} className="mt-auto"> {/* Đẩy profile xuống dưới cùng */}
+        <Link to={`/${user?.username}`} className="mt-auto"> 
           <TwoColumns
             left={
               <TwoColumns

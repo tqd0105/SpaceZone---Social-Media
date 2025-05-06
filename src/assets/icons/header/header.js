@@ -38,6 +38,7 @@ import Add from "./add.png";
 import Edit from "./edit.png";
 import Emotion from "./emotion.png";
 import Send from "./send.png";
+import Options from "./options.png"
 
 export {
   HomeIcon,
@@ -73,5 +74,6 @@ export {
   Add,
   Edit,
   Emotion,
-  Send
+  Send,
+  Options
 };

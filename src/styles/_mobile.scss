@@ -18,6 +18,9 @@
     .m_justify-center {
         justify-content: center !important;
     }
+    .m_justify-between {
+        justify-content: space-between !important;
+    }
     .m_items-center {
         align-items: center !important;
     }
@@ -77,8 +80,14 @@
         padding-left: 1.5rem;
         padding-right: 1.5rem;
     }
+    .m_pb-50px{
+        padding-bottom: 50px;
+    }
     .m_pb-80px {
         padding-bottom: 80px ;
+    }
+    .m_pb-135px{
+        padding-bottom: 135px;
     }
     .m_bg-white{
         background-color: #fff ;
@@ -159,6 +168,10 @@
     * {
         font-size: 12px;
     }
+}
+
+@media (max-width: 1025px) {
+    
 }
 
 @media (min-width: 1024px) {

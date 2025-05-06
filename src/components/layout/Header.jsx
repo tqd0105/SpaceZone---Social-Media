@@ -43,6 +43,7 @@ import {
   ImageColorful,
   Microphone,
   Minimize,
+  Options,
   Search2,
   Send,
   VideoCall,
@@ -50,6 +51,8 @@ import {
 import { Back, BackBlack, CloseBlack } from "../../assets/icons/main/main";
 import { Circle, listFriends } from "../../assets/icons/rightbar/rightbar";
 import LeftBar from '../layout/LeftBar'
+import RightBar from '../layout/RightBar'
+
 
 const API_URL =
   import.meta.env.VITE_API_URL;
@@ -72,6 +75,7 @@ function Header() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isOpenLeftBar, setIsOpenLeftBar] = useState(false);
+  const [isShowRightBar, setIsShowRightBar] = useState(false);
   const menuRef = useRef(null);
   const searchRef = useRef(null);
   const postCache = useRef([]);
@@ -239,6 +243,7 @@ function Header() {
     { icon: WatchIcon, link: "/home" },
     { icon: GroupIcon, link: "/home" },
     { icon: GameIcon, link: "/home" },
+    { icon: Options }
   ];
 
   const location = useLocation();
@@ -255,9 +260,10 @@ function Header() {
     { icon: ChatIcon, link: null },
     { icon: NotiIcon, link: "/home" },
   ];
+  
 
   return (
-    <div className="flex-row-between m_flex-column-center bg-white px-4 py-0 fixed top-0 w-full z-50 shadow-md">
+    <div className="flex-row-between abc m_flex-column-center bg-white px-4 py-0 fixed top-0 w-full z-50 shadow-md">
       {/* Logo + Tìm kiếm */}
       <div
         className={`flex-row-between gap-2 m_w-full m_m-2 ${
@@ -274,7 +280,7 @@ function Header() {
             onClick={() => setIsOpenLeftBar(!isOpenLeftBar)}
           />
           {isOpenLeftBar && (
-            <LeftBar user={user} isOpenLeftBar={isOpenLeftBar} />
+            <LeftBar user={user} isOpenLeftBar={isOpenLeftBar} setIsOpenLeftBar={setIsOpenLeftBar} />
           )}
           <Link
             to="/home"
@@ -515,7 +521,14 @@ function Header() {
         classNames="py-4 px-10 m_px-6 my-1 m_m-0 rounded-lg m_br-none hover:bg-gray-200 cursor-pointer "
         active={activeControlCenters}
         onClickControlCenter={setActiveControlCenter}
+        onClickRightBar={()=>setIsShowRightBar(!isShowRightBar)}
+        setIsShowRightBar={setIsShowRightBar}
       />
+
+      <div className="w-full l_hidden">
+        <RightBar isShowRightBar={isShowRightBar} />
+      </div>
+
 
       {/* Thanh điều hướng phải */}
       <div className={`m_hidden flex-row-end gap-4 relative xl:w-[25%] `}>

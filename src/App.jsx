@@ -11,6 +11,7 @@ import "./App.css";
 import { AuthProvider, useAuth } from "./context/AuthProvider";
 import PostForm from "./components/main/CreatePost/PostForm";
 import Profile from "./components/main/Profile";
+// import RightBarPage from "./components/main/RightBarPage";
 
 function App() {
   const {user} = useAuth();
@@ -31,6 +32,7 @@ function App() {
               <Route path="/home" element={<Main />} />
               <Route path="/post" element={<PostForm />} />
               <Route path="/:username" element={<Profile />} />
+              <Route path="/header" element={<Header />} />
             </Route>
           </Route>
 

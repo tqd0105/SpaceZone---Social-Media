@@ -23,10 +23,14 @@ import { Icon, Text } from "../common/UIElement";
 import "@/assets/styles/globals.css";
 import Button from "../common/Button";
 import styled from "../layout/RightBar.module.scss";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import '../../styles/_mobile.scss'
 
-function RightBar() {
+function RightBar({isShowRightBar}) {
+  
   return (
-    <div className="sticky top-0 right-0 h-screen overflow-y-auto lg:w-[25%] my-2 mr-3 m_hidden">
+    <div className={`lg:sticky top-0 right-0 h-screen overflow-y-auto lg:w-[25%] m_pb-135px my-2 mr-3 ${isShowRightBar ? "": "m_hidden"}`}>
       {/* Trò chơi */}
 
       <div className="flex-row-center gap-2 py-2 px-4 hover:bg-gray-100 rounded-lg cursor-pointer">
