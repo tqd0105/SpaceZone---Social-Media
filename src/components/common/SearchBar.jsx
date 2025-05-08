@@ -1,7 +1,7 @@
 import { forwardRef, useState } from "react";
 import searchIcon from "@/assets/icons/header/search.png"
 import styles from '../layout/Header.module.scss';
-import '../../styles/_mobile.scss';
+import '../../styles/responsive.scss';
 
 
 const SearchBar = forwardRef(({ placeholder, value, onChange, onSubmit, onClick, isOpenSearch, setIsOpenSearch }, ref) => {
@@ -18,7 +18,7 @@ const SearchBar = forwardRef(({ placeholder, value, onChange, onSubmit, onClick,
                     onClick={onClick}
                     placeholder={placeholder} 
                     value={value} 
-                    className={`w-full outline-none bg-transparent ${!isOpenSearch ? "m_hidden" : "block"}`}
+                    className={`w-full outline-none bg-transparent ${!isOpenSearch ? "m_hidden t_hidden" : "block"}`}
                 />
             </form>
         </div>

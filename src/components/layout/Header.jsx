@@ -5,7 +5,7 @@ import Logo from "../common/Logo";
 import ControlBar from "../common/ControlBar";
 import { Icon } from "../common/UIElement";
 import { useAuth } from "../../context/AuthProvider";
-import "../../styles/_mobile.scss";
+import "../../styles/responsive.scss";
 
 import {
   HomeIcon,
@@ -263,7 +263,7 @@ function Header() {
   
 
   return (
-    <div className="flex-row-between abc m_flex-column-center bg-white px-4 py-0 fixed top-0 w-full z-50 shadow-md">
+    <div className="flex-row-between m_flex-column-center t_justify-between bg-white px-4 py-0 fixed top-0 w-full z-50 shadow-md">
       {/* Logo + Tìm kiếm */}
       <div
         className={`flex-row-between gap-2 m_w-full m_m-2 ${
@@ -275,10 +275,13 @@ function Header() {
             src={MenuIcon}
             width={20}
             height={20}
-            className="l_hidden"
+            className="l_hidden  "
             alt=""
             onClick={() => setIsOpenLeftBar(!isOpenLeftBar)}
           />
+
+
+
           {isOpenLeftBar && (
             <LeftBar user={user} isOpenLeftBar={isOpenLeftBar} setIsOpenLeftBar={setIsOpenLeftBar} />
           )}
@@ -423,7 +426,7 @@ function Header() {
 
         {/* Thanh điều hướng phải */}
         <div
-          className={`l_hidden flex-row-end gap-4 relative ${
+          className={`l_hidden t_hidden flex-row-end gap-4 relative ${
             isSearchOpen ? "m_hidden" : ""
           } `}
         >
@@ -525,7 +528,7 @@ function Header() {
         setIsShowRightBar={setIsShowRightBar}
       />
 
-      <div className="w-full l_hidden">
+      <div className="w-full l_hidden"t_hidden >
         <RightBar isShowRightBar={isShowRightBar} />
       </div>
 
@@ -627,7 +630,7 @@ function Header() {
       </div>
 
       {isShowChat && (
-        <div className="fixed bottom-0 lg:right-[100px] h-[400px] w-[350px] m_absolute m_top-full m_w-full m_h-screen bg-white lg:shadow-2xl rounded-tr-lg rounded-tl-lg border-[1px] border-gray-300 p-1 animate__animated animate__fadeIn">
+        <div className="fixed bottom-0 lg:right-[100px] h-[400px] w-[350px] m_absolute m_top-full m_w-full m_h-screen z-50 t_h-849px bg-white lg:shadow-2xl rounded-tr-lg rounded-tl-lg border-[1px] border-gray-300 p-1 animate__animated animate__fadeIn">
           <div className="flex-row-between ">
             <div className="flex-row-center gap-1">
               <div
@@ -689,7 +692,7 @@ function Header() {
       )}
 
       {selectedFriend && (
-        <div className="fixed bottom-0 lg:right-[100px] h-[420px] w-[350px] m_absolute m_top-full m_w-full m_h-92vh bg-white lg:shadow-2xl rounded-tr-lg rounded-tl-lg border-[1px] border-gray-300 animate__animated animate__fadeIn">
+        <div className="fixed bottom-0 lg:right-[100px] h-[420px] w-[350px] m_absolute m_top-full m_w-full m_h-82vh bg-white lg:shadow-2xl rounded-tr-lg rounded-tl-lg border-[1px] border-gray-300 animate__animated animate__fadeIn">
           <div className="sticky top-0 right-0 left-0 flex-row-between  border-b-[1px] border-gray-300 p-2 shadow-md">
             <div className="flex-row-center gap-2">
               <div className="relative">

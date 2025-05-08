@@ -129,7 +129,7 @@ function Share({ onClose }) {
             Chia sẽ qua
           </span>
           <div>
-            <div className="relative gap-2 my-4 l_hidden">
+            <div className="relative gap-2 my-4 l_hidden t_hidden">
               <input
                 type="text"
                 value={displayUrl}

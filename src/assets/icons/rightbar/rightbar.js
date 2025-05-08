@@ -9,6 +9,8 @@ import Interactive from "./interactive.png";
 import AddUser from "./add_user.png";
 import Game from "./game.png";
 import Next from "./next.png";
+import Check from "./check.png";
+import Cancel from "./cancel.png";
 
 // Import các ảnh danh sách bạn bè đang hoạt động
 import Ronaldo from "@/assets/images/rightbar/ronaldo_4k.png";
@@ -164,5 +166,7 @@ export {
   AddUser,
   Game,
   Next,
-  TranThanh
+  TranThanh,
+  Check,
+  Cancel
 };

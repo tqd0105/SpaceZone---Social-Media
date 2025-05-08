@@ -15,6 +15,7 @@ import Profile from "./components/main/Profile";
 
 function App() {
   const {user} = useAuth();
+  console.log(window.innerWidth);
   return (
     <AuthProvider>
       <Router >
@@ -32,7 +33,6 @@ function App() {
               <Route path="/home" element={<Main />} />
               <Route path="/post" element={<PostForm />} />
               <Route path="/:username" element={<Profile />} />
-              <Route path="/header" element={<Header />} />
             </Route>
           </Route>
 

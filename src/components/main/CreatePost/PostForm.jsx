@@ -86,8 +86,8 @@ function PostForm({ onUpload, setIsShowNewPostNoti }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="bg-white my-3 p-4 rounded-lg shadow-md border border-gray-300 m_m-2">
+    <form onSubmit={handleSubmit} >
+      <div className="bg-white my-3 p-4 rounded-lg shadow-md border border-gray-300 m_m-2 t_m-10px">
         <div className="md:flex md:flex-col gap-4 w-full">
           <div className="md:flex items-center m_mb-2 gap-2 w-full m_flex-row">
             <Link to={`/${user.username}`} className="flex-shrink-0">
@@ -156,7 +156,7 @@ function PostForm({ onUpload, setIsShowNewPostNoti }) {
               {createPostItems.slice(0, 4).map((item, index) => (
                 <div
                   key={index}
-                  className="p-2 hover:bg-gray-200 rounded-lg cursor-pointer l_hidden"
+                  className="p-2 hover:bg-gray-200 rounded-lg cursor-pointer l_hidden "
                 >
                   <img src={item} width="25" height="25" alt="icon" />
                 </div>

@@ -207,7 +207,7 @@ function PostList({
           return (
             <div
               key={post._id}
-              className={` relative bg-white my-2 rounded-lg shadow-md border border-gray-300 m_m-2`}
+              className={` relative bg-white my-2 rounded-lg shadow-md border border-gray-300 m_m-2 `}
             >
               {isOpenCommentDetail === post._id && (
                 <div>
@@ -250,21 +250,21 @@ function PostList({
                         <div className="flex-row-center gap-2">
                           <div className="flex-row-center gap-1">
                           <Link to={`/${post.author?.username}`}>
-                            <p className="font-bold text-black">{post.author.name}</p>
+                            <p className="font-bold text-black ms_text-10px">{post.author.name}</p>
                           
                           </Link>
                             <img src={Tick} width={15} height={15} alt="" />
                           </div>
                           <Link to={`/${post.author?.username}`}>
                           
-                         <p className="font-medium text-gray-600">
+                         <p className="font-medium text-gray-600 ms_text-10px">
                             @{post.author.username}
                           </p> 
                           </Link>
                         </div>
                         <div className="flex-row-center gap-1">
                           <img src={Time} width={15} height={15} alt="" />
-                          <span className="text-gray-500">
+                          <span className="text-gray-500 ms_text-10px">
                             {formatDate(post.createdAt)}
                           </span>
                         </div>
@@ -295,7 +295,7 @@ function PostList({
                   {/* Noi dung bai viet */}
                   <div className="flex flex-col">
                     <div className="text-left pb-3">
-                      <p className={`${styled.font_custom} pr-4 py-2`}>
+                      <p className={`${styled.font_custom} pr-4 py-2 ms_text-10px`}>
                         {post.content}
                       </p>
                     </div>
@@ -343,16 +343,16 @@ function PostList({
                           className="rounded-full absolute top-0 left-[28px]"
                         />
                       </div>
-                      <span className="font-medium text-gray-500">
+                      <span className="font-medium text-gray-500 ms_text-10px">
                         {likeCount.toLocaleString()}K
                       </span>
                     </div>
                     <div className="flex-row-center gap-2">
-                      <span className="font-medium text-gray-500">
+                      <span className="font-medium text-gray-500 ms_text-10px">
                         {(comments?.length || 0).toLocaleString()} bình luận
                       </span>
                       <div className="h-[12px] w-[2px] tranlate-y-1/2 bg-gray-300"></div>
-                      <span className="font-medium text-gray-500 cursor-pointer">
+                      <span className="font-medium text-gray-500 cursor-pointer ms_text-10px">
                         {randomShares.toLocaleString()} lượt chia sẻ
                       </span>
                     </div>
@@ -417,7 +417,7 @@ function PostList({
 
                           <span
                             className={`font-bold  ${
-                              isLiked ? "text-blue-500" : "text-gray-500"
+                              isLiked ? "text-blue-500 ms_text-10px" : "text-gray-500 ms_text-10px"
                             }`}
                           >
                             {selectedReaction[post._id]?.name || "Like"}
@@ -436,7 +436,7 @@ function PostList({
                         }
                       >
                         <img src={Comment} width={20} height={20} alt="" />
-                        <span className="font-semibold text-gray-500 whitespace-nowrap">
+                        <span className="font-semibold text-gray-500 whitespace-nowrap ms_text-10px">
                           Bình luận
                         </span>
                       </div>
@@ -453,7 +453,7 @@ function PostList({
                         }
                       >
                         <img src={Share} width={20} height={20} alt="" />
-                        <span className="font-semibold text-gray-500 whitespace-nowrap">
+                        <span className="font-semibold text-gray-500 whitespace-nowrap ms_text-10px">
                           Chia sẻ
                         </span>
                       </div>

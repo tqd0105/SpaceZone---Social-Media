@@ -40,13 +40,6 @@ function Story() {
     };
   }, []);
 
-  const handleNavigation = () => {
-    if (isMobile) {
-      window.location.href = '/mobile-link';
-    } else {
-      window.location.href = '/laptop-link';
-    }
-  };
 
   return (
     <div className="flex-row-between gap-2 py-2 w-full overflow-x-auto relative px-2">
@@ -58,7 +51,7 @@ function Story() {
               src={fullAvatarURL}
               width={"100%"}
               alt="avatar"
-              className="rounded-t-xl m_h-130px h-[150px] lg:min-w-[130px] object-cover "
+              className="rounded-t-xl h-[150px] lg:min-w-[130px] object-cover "
             />
             <img
               src={Add}
@@ -66,7 +59,6 @@ function Story() {
               height={"40px"}
               alt="add-icon"
               className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-full border-4 rounded-full border-white cursor-pointer"
-              onClick={handleNavigation}
             />
           </div>
         }
@@ -78,7 +70,7 @@ function Story() {
           />
         }
         className={
-          "flex-column-between bg-white w-[160px] h-[200px] m_w-115px m_h-180px rounded-xl shadow-sm cursor-pointer hover:scale-95 duration-500 border border-gray-300"
+          "flex-column-between bg-white w-[160px] h-[200px]  rounded-xl shadow-sm cursor-pointer hover:scale-95 duration-500 border border-gray-300"
         }
       />
 
@@ -102,11 +94,17 @@ function Story() {
           className="w-full rounded-xl"
           breakpoints={{
             0: {
-              slidesPerView: 3,
+              slidesPerView: 2,
             },
-            768: {
+            600: {
               slidesPerView: 4,
             },
+            1024: {
+              slidesPerView: 4,
+            },
+            1980: {
+              slidesPerView: 5,
+            }
           }}
         >
           {storyDetails.map((story, index) => (

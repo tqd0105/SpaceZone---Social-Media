@@ -18,6 +18,8 @@ import {
   Game,
   gameSuggests,
   Next,
+  Check,
+  Cancel,
 } from "../../assets/icons/rightbar/rightbar";
 import { Icon, Text } from "../common/UIElement";
 import "@/assets/styles/globals.css";
@@ -25,12 +27,12 @@ import Button from "../common/Button";
 import styled from "../layout/RightBar.module.scss";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import '../../styles/_mobile.scss'
+import '../../styles/responsive.scss'
 
 function RightBar({isShowRightBar}) {
   
   return (
-    <div className={`lg:sticky top-0 right-0 h-screen overflow-y-auto lg:w-[25%] m_pb-135px my-2 mr-3 ${isShowRightBar ? "": "m_hidden"}`}>
+    <div className={`lg:sticky top-0 right-0 h-screen overflow-y-auto lg:w-[25%]  m_pb-135px  my-2 mr-3 ${isShowRightBar ? "": "m_hidden"}`}>
       {/* Trò chơi */}
 
       <div className="flex-row-center gap-2 py-2 px-4 hover:bg-gray-100 rounded-lg cursor-pointer">
@@ -44,8 +46,8 @@ function RightBar({isShowRightBar}) {
               <img src={gameSuggest.image} width={60} height={100} className="rounded-xl shadow-lg border-2 border-black" alt="" />
             </div>
             <div className="flex flex-col justify-start items-start">
-              <h3 className="font-bold text-base hover:underline cursor-pointer">{gameSuggest.name}</h3>
-              <span className="font-medium text-gray-400">{gameSuggest.type}</span>
+              <h3 className="font-bold text-base t_text-left hover:underline cursor-pointer">{gameSuggest.name}</h3>
+              <span className="font-medium t_text-left text-gray-400">{gameSuggest.type}</span>
             </div>
           </div>
           <div>
@@ -64,12 +66,12 @@ function RightBar({isShowRightBar}) {
         <div key={index} className="flex-row-between gap-2 py-2 px-4 hover:bg-gray-100 rounded-lg cursor-pointer"> 
           <div>
             <div className="flex flex-col justify-start items-start "> 
-              <p className="font-semibold text-green-600 ">{featuredEvent.title}</p>
-              <h2 className={`${styled.LexendDeca_font} truncate max-w-[300px] text-left hover:underline`}>{featuredEvent.content}</h2>
+              <p className="font-semibold t_text-left text-green-600 ">{featuredEvent.title}</p>
+              <h2 className={`${styled.LexendDeca_font} truncate t_whitespace-normal max-w-[300px] text-left hover:underline`}>{featuredEvent.content}</h2>
             </div>
             <div className="flex-row-start gap-1">
               {/* <img src={Interactive} width={20} height={20} alt="" /> */}
-              <span className=" font-normal text-gray-600">{featuredEvent.quantity}</span>
+              <span className=" font-normal  text-gray-600">{featuredEvent.quantity}</span>
             </div>
           </div>
           <div>
@@ -91,7 +93,7 @@ function RightBar({isShowRightBar}) {
               <img src={friendSuggestion.image} width={50} height={50} className="rounded-full max-w-[50px] max-h-[50px]" alt="" />
             </div>
             <div className="flex flex-col justify-start items-start">
-              <span className="font-semibold hover:underline">{friendSuggestion.name} </span>
+              <span className="font-semibold t_text-left hover:underline">{friendSuggestion.name} </span>
               <span className="text-gray-400">@{friendSuggestion.username}</span>
             </div>
           </div>
@@ -142,11 +144,15 @@ function RightBar({isShowRightBar}) {
                     className={"flex-column-startItems"}
                   />
                 }
-                right={<Text children="5 ngày trước" className="break-normal"/>}
-                className={"flex-row-between gap-2"}
+                right={
+                <Text children="5 ngày trước" className="break-normal t_color-gray-600"
+                />}
+                className={"flex-row-between t_flex-col t_items_start t_gap-5px gap-2"}
+                
               />
             }
             right={
+              <div>
               <div className="flex-row-between gap-1 ">
                 <Button
                   children={"Xác nhận"}
@@ -154,6 +160,7 @@ function RightBar({isShowRightBar}) {
                   backgroundColor="#0661F2"
                   hoverBackgroundColor="rgb(6, 97, 242, 0.92)"
                   width="100%"
+                  className="t_text-12px"
                 />
                 <Button
                   children={"Huỷ"}
@@ -161,7 +168,9 @@ function RightBar({isShowRightBar}) {
                   backgroundColor="#d8d9da"
                   hoverBackgroundColor="#d8d9da80"
                   width="70%"
+                  className="t_text-12px t_w-60pc"
                 />
+              </div>
               </div>
             }
             className={"flex flex-col w-full gap-2"}

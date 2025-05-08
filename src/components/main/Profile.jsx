@@ -241,7 +241,7 @@ function Profile() {
   //   }, [user])
 
   return (
-    <div className="lg:w-[45%] m_pb-80px">
+    <div className="lg:w-[45%] t_w-60pc m_pb-80px">
       <div className="flex-row-start gap-4 my-2 ">
         <div
           className="rounded-full hover:bg-gray-300 hover:transform p-2 cursor-pointer"
@@ -280,12 +280,12 @@ function Profile() {
             />
           )}
           <div className="flex-column-center gap-2 m-2">
-            <div className="flex-row-center gap-2">
+            <div className="flex-row-center ms_justify-end ms_w-full gap-2">
               <button
                 className="hover:bg-gray-200 border-2 border-gray-600"
                 onClick={() => setIsOpenEditProfile(!isOpenEditProfile)}
               >
-                Chỉnh sửa trang cá nhân
+                Chỉnh sửa <span className="ms_hidden">trang cá nhân</span>
               </button>
 
               {isOpenEditProfile && (
@@ -310,9 +310,9 @@ function Profile() {
                 className="cursor-pointer"
               />
             </div>
-            <div className="flex-row-center gap-4">
+            <div className="flex-row-center gap-2">
               <p>
-                <span className="font-bold">2.5k</span> người theo dõi
+                <span className="font-bold">2.5k</span> <span className="ms_hidden">nguời</span> theo dõi
               </p>
               <p>
                 <span className="font-bold">3.1k</span> đang theo dõi

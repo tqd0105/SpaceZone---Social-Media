@@ -14,6 +14,7 @@ import Time from './time.png';
 import Home from './home.png';
 import Avatar from './avatar.png';
 import MoreRight from './more-right.png';
+import Menu from './list.png'
 
 
 // Tạo mảng leftbarItems chứa các object với icon và tên
@@ -75,5 +76,6 @@ export {
     Save,
     Time,
     Avatar,
-    MoreRight
+    MoreRight,
+    Menu
 };

@@ -28,7 +28,7 @@ function Main() {
 
   const handleUpload = async (formData) => {
     try {
-      const token = localStorage.getItem("token"); // 🔹 Lấy token từ localStorage
+      const token = sessionStorage.getItem("token"); // 
       if (!token) {
         console.log("❌ Không có token, hãy đăng nhập lại!");
         return;
@@ -60,7 +60,7 @@ function Main() {
     setDeletingPostId(postId);
 
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       console.log("🛠 Token:", token); // Log token
       if (!token) {
         console.log("❌ Không có token, hãy đăng nhập lại!");
@@ -99,7 +99,7 @@ function Main() {
 
   const handleAddComment = async (postId, text) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       if (!token) {
         console.log("❌ Không có token, hãy đăng nhập lại!");
         return;
@@ -120,10 +120,9 @@ function Main() {
   
       const newComment = await res.json();
   
-      // Cập nhật bình luận mới vào state và lưu lại vào localStorage
       const updatedComments = [...comments, newComment];
       setComments(updatedComments);
-      localStorage.setItem(`comments_${postId}`, JSON.stringify(updatedComments)); // Lưu vào localStorage
+      sessionStorage.setItem(`comments_${postId}`, JSON.stringify(updatedComments)); // Lưu vào localStorage
       console.log("✅ Thêm bình luận thành công");
   
     } catch (err) {
@@ -156,7 +155,7 @@ function Main() {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       if (!token) {
         console.log("❌ Không có token, hãy đăng nhập lại!");
         return;
@@ -185,7 +184,7 @@ function Main() {
   };
 
   return (
-    <div className="lg:w-[45%] m_pb-80px">
+    <div className="lg:w-[45%] t_w-60pc m_pb-80px">
 
         {isShowNewPostNoti && (
         <div className="fixed flex-row-center gap-2 top-24 left-1/2 cursor-pointer -translate-x-1/2  z-50 bg-gray-900 text-white p-4 rounded-lg shadow-2xl hover:bg-gray-700 animate__animated animate__fadeIn animate_slow" onClick={()=>window.location.reload()}>
