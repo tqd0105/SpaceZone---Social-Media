@@ -1,0 +1,134 @@
+/* Dark mode styles */
+.dark {
+    color-scheme: dark;
+}
+
+.dark body {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.dark .bg-white {
+    background-color: #0d0d0d !important;
+}
+
+.dark .bg-black {
+    background-color: #ffffff !important;
+}
+
+.dark .text-white {
+    color: #000000 !important;
+}
+
+.dark .text-black {
+    color: #ffffff !important;
+}
+
+.dark .text-gray-300 {
+    color: #ffffff ;
+}
+
+
+.dark .border-gray-300 {
+    border-color: #a4a4a4 !important;
+}
+
+.dark .border-gray-600 {
+    border-color: #d7d7d7 !important;
+}
+
+.dark .hover\:bg-gray-300:hover {
+    background-color: #818181 !important;
+}
+
+.dark .hover\:bg-gray-200:hover {
+    background-color: #6b6b6b !important;
+}
+
+.dark .hover\:bg-gray-100:hover {
+    background-color: #3f3f3f !important;
+}
+
+.dark .hover\:bg-gray-900:hover {
+    background-color: #d0d0d0 !important;
+}
+
+.dark .bg-gray-100 {
+    background-color: #2d2d2d !important;
+}
+
+.dark .text-gray-400 {
+    color: #ffffff !important;
+}
+
+.dark .text-gray-500 {
+    color: #dcdcdce7 !important;
+} 
+
+.dark .shadow-md {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dark .shadow-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dark .shadow-xl {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dark .shadow-2xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dark .border-gray-200 {
+    border-color: #404040 !important;
+}
+
+.dark .bg-gray-50 {
+    background-color: #1a1a1a !important;
+}
+
+.dark .bg-gray-900 {
+    background-color: #d1d1d1b1 !important;
+}
+
+.dark .bg-gray-800 {
+    background-color: #1a1a1a !important;
+}
+
+.dark .bg-gray-700 {
+    background-color: #2d2d2d !important;
+}
+
+.dark .bg-gray-600 {
+    background-color: #404040 !important;
+}
+
+.dark .bg-gray-500 {
+    background-color: #4d4d4d !important;
+}
+
+.dark .bg-gray-400 {
+    background-color: #666666 !important;
+}
+
+.dark .bg-gray-300 {
+    background-color: #efefef !important;
+}
+
+.dark .bg-gray-200 {
+    background-color: #ddddddea !important;
+}
+
+.dark .bg-gray-100 {
+    background-color: #272727 !important;
+}
+
+.dark .bg-gray-50 {
+    background-color: #cccccc !important;
+} 
+
+.dark .shadow-md {
+    box-shadow: 3px 3px 8px 1px rgba(255, 255, 255, 0.3), 3px 3px 3px -3px rgba(250, 250, 250, 0.2) !important;
+}

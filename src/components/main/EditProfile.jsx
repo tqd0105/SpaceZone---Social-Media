@@ -167,7 +167,8 @@ function EditProfile({
   return (
     <div className="fixed inset-0 flex-row-center z-50 animate__animated animate__fadeIn">
       <div
-        className="absolute inset-0 bg-black bg-opacity-50"
+        className="absolute inset-0 "
+        style={{backgroundColor: "gray", opacity: "0.5"}}
         onClick={() => setIsOpenEditProfile(null)}
       ></div>
       <div className="relative top-0 left-0 w-[600px] max-h-[80vh] overflow-auto bg-white rounded-lg shadow-2xl">
@@ -340,14 +341,16 @@ function EditProfile({
 
         <div className="flex-row-center sticky bottom-0 py-3 mt-3 border-t-[1px] border-gray-200 bg-white gap-2">
           <button
-            className="bg-blue-500 text-white px-4 rounded-md w-[80px]"
+            className="bg-blue-500  px-4 rounded-md w-[80px]"
             onClick={handleSave}
+            style={{color: "white"}}
           >
             Lưu
           </button>
           <button
             className="bg-gray-300 hover:bg-gray-200"
             onClick={() => setIsOpenEditProfile(null)}
+            style={{color: "black"}}
           >
             Huỷ
           </button>

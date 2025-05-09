@@ -38,7 +38,7 @@ function PrivacySelector() {
         className="flex-row-center gap-1 w-full rounded-md border border-gray-400 p-2 hover:bg-gray-100 text-sm font-semibold"
       >
          <img src={selectedOption?.icon} width={16} height={16} alt="" />
-         <span>{selectedOption?.label}</span>
+         <span className="text-white">{selectedOption?.label}</span>
       </button>
 
       {showOptions && (

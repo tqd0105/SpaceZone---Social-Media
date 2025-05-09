@@ -5,7 +5,7 @@ import Story from "../main/Story";
 import Refresh from "../../assets/icons/main/CreatePost/refresh.png";
 const API_URL = import.meta.env.VITE_API_URL
 
-function Main() {
+const Main = () => {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -184,7 +184,7 @@ function Main() {
   };
 
   return (
-    <div className="lg:w-[45%] t_w-60pc m_pb-80px">
+    <div className="lg:w-[45%] t_w-60pc m_pb-80px bg-white text-black dark:bg-gray-900 dark:text-white">
 
         {isShowNewPostNoti && (
         <div className="fixed flex-row-center gap-2 top-24 left-1/2 cursor-pointer -translate-x-1/2  z-50 bg-gray-900 text-white p-4 rounded-lg shadow-2xl hover:bg-gray-700 animate__animated animate__fadeIn animate_slow" onClick={()=>window.location.reload()}>
@@ -211,6 +211,7 @@ function Main() {
       />
     </div>
   );
-}
+};
 
+export { Main };
 export default Main;

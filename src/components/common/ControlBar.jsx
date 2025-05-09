@@ -11,7 +11,7 @@ function ControlBar({ icons, size = "30", className, classNames, active, onClick
           return (
             <div
               key={index}
-              className={`flex items-center justify-center ${classNames} p-4 rounded-lg l_hidden t_hiddenhover:bg-gray-200 cursor-pointer`}
+              className={`flex items-center justify-center ${classNames} p-4 rounded-lg l_hidden t_hidden hover:bg-gray-300 cursor-pointer`}
               onClick={() => {
                 onClickControlCenter(index);
                 onClickRightBar(); // Toggle class ẩn hiện RightBar
@@ -27,7 +27,7 @@ function ControlBar({ icons, size = "30", className, classNames, active, onClick
           <Link
             key={index}
             to={item.link}
-            className={`flex items-center justify-center ${classNames} p-4 rounded-lg hover:bg-gray-200 cursor-pointer
+            className={`flex items-center justify-center ${classNames} p-4 rounded-lg hover:bg-gray-300 cursor-pointer
               ${active === index ? "bg-gray-200" : ""}
             `}
             onClick={() => {

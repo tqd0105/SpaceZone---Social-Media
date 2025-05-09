@@ -6,17 +6,19 @@ function CommentDetail({ posts, comments, onDeleteComment, onAddComment, onDelet
 
   return (
     <div className="fixed inset-0 flex items-center justify-center m_flex-row z-50">
-      <div className="absolute inset-0 bg-black bg-opacity-50" onClick={()=>setIsOpenCommentDetail(null)}></div>
+      <div className="absolute inset-0 " onClick={()=>setIsOpenCommentDetail(null)}
+        style={{backgroundColor: "gray", opacity: "0.5"}}
+        ></div>
       <div className="relative top-0 left-0 bg-white rounded-xl px-4 pt-4 w-[700px] max-h-[90vh] m_w-full overflow-y-auto animate__animated animate__bounceIn">
         <div className="flex-row-center gap-2 my-1">
-          <div className="hover:bg-gray-200 bg-gray-300 p-2 rounded-full cursor-pointer" 
+          <div className="hover:bg-gray-900 bg-gray-300 p-2 rounded-full cursor-pointer" 
           onClick={()=>setIsOpenCommentDetail(null)}
           >
         <img src={BackBlack} width={20} height={20} alt=""/>
 
           </div>
           <span className="font-bold text-xl flex-row-center gap-2">Bài viết từ          
-            <span className=" text-blue-600 ">  { posts.author.name}</span>
+            <span className=" text-blue-500 ">  { posts.author.name}</span>
           </span>
           {/* <div className="h-[1px] w-full bg-slate-200 my-2"></div> */}
         </div>

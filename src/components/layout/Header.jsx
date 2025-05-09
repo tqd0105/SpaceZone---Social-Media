@@ -52,6 +52,7 @@ import { Back, BackBlack, CloseBlack } from "../../assets/icons/main/main";
 import { Circle, listFriends } from "../../assets/icons/rightbar/rightbar";
 import LeftBar from '../layout/LeftBar'
 import RightBar from '../layout/RightBar'
+import DarkModeToggle from "../common/DarkModeToggle";  
 
 
 const API_URL =
@@ -510,8 +511,14 @@ function Header() {
                     <Icon src={Logout} width={25} height={25} />
                     <span>Đăng xuất</span>
                   </div>
+
+                <DarkModeToggle />
+
                 </div>
+
               )}
+
+
             </div>
           )}
         </div>
@@ -521,7 +528,7 @@ function Header() {
       <ControlBar
         icons={controlCenterIcons}
         className="flex-row-between xl:w-[40%] m_fixed-blr m_bg-white p-1"
-        classNames="py-4 px-10 m_px-6 my-1 m_m-0 rounded-lg m_br-none hover:bg-gray-200 cursor-pointer "
+        classNames="py-4 px-10 m_px-6 my-1 m_m-0 rounded-lg m_br-none cursor-pointer "
         active={activeControlCenters}
         onClickControlCenter={setActiveControlCenter}
         onClickRightBar={()=>setIsShowRightBar(!isShowRightBar)}
@@ -605,6 +612,8 @@ function Header() {
                   <Icon src={RightArrow} width={15} height={15} />
                 </div>
 
+                <DarkModeToggle />
+
                 <div className="w-full h-[1px] bg-gray-200 my-2"></div>
 
                 {/* Đăng xuất */}
@@ -655,7 +664,7 @@ function Header() {
             <input
               type="text"
               placeholder="Tìm kiếm liên hệ"
-              className="w-full p-2 outline-none placeholder:text-gray-800 "
+              className="w-full p-2 outline-none text-black placeholder:text-gray-500"
               value={contactSearch}
               onChange={(e) => setContactSearch(e.target.value)}
             />
@@ -718,7 +727,7 @@ function Header() {
                   </h3>
                   <img src={Edit} width={15} alt="" />
                 </div>
-                <span className="text-gray-400 text-xs">Vừa mới truy cập</span>
+                <span className="text-gray-500 text-xs">Vừa mới truy cập</span>
               </div>
             </div>
             <div className="flex-row-between m_flex-row gap-2">
@@ -772,7 +781,7 @@ function Header() {
               <h3 className="font-bold text-lg">{selectedFriend.name}</h3>
               <p>Các bạn là bạn bè trên Facebook</p>
               <p>Sống tại Thành Phố Hồ Chí Minh</p>
-              <button className="outline-none bg-gray-200 hover:bg-gray-100">
+              <button className="outline-none bg-gray-100 hover:bg-gray-100">
                 Xem trang cá nhân
               </button>
             </div>
@@ -795,8 +804,8 @@ function Header() {
                 <span
                   className={`px-4 py-2 ${
                     message.from === "user"
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 text-black "
+                      ? "bg-blue-500 text-gray-400"
+                      : "bg-gray-300 text-white "
                   } text-left max-w-[210px] m-1 rounded-xl`}
                 >
                   {message.text}

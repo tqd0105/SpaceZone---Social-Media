@@ -4,9 +4,9 @@ function Icon ({src, width, height, className = "", onClick}) {
     )
 }
 
-function Text ({color, size, className = "", children}) {
+function Text ({ size, className = "", children}) {
     return (
-            <p className={className} style={{color: color, fontSize: size}}>{children}</p>
+            <p className={className} style={{ fontSize: size}}>{children}</p>
     )
 
 }

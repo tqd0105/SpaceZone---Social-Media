@@ -30,9 +30,8 @@ function Leftbar({user,isOpenLeftBar, setIsOpenLeftBar}) {
           ))}
           <NavLink to="/home" className={`flex-row-center `}>
           <Text
-            className="w-3/4 font-semibold py-3 rounded-full bg-black cursor-pointer t_hidden hover:bg-gray-900 text-center mx-3 mb-3"
+            className="w-3/4 font-semibold py-3 rounded-full bg-black text-white cursor-pointer t_hidden hover:bg-gray-900 text-center mx-3 mb-3"
             size="16px"
-            color="white"
             children="Đăng"
           />
           </NavLink>

@@ -103,7 +103,9 @@ function PostForm({ onUpload, setIsShowNewPostNoti }) {
                 placeholder="Hôm nay của bạn có ổn không?"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                className="w-full outline-none bg-gray-200 hover:bg-gray-300 p-3 rounded-full"
+                className="w-full outline-none bg-gray-200 hover:bg-gray-300 p-3 rounded-full
+                  text-white placeholder:text-gray-500
+                "
               />
             </div>
           </div>
@@ -179,9 +181,7 @@ function PostForm({ onUpload, setIsShowNewPostNoti }) {
                 <Button
                   type="submit"
                   children="Đăng"
-                  color="white"
-                  backgroundColor="black"
-                  className="px-4 py-2 rounded hover:bg-gray-700"
+                  className="px-4 py-2 rounded bg-black text-white hover:bg-gray-900"
                   disabled={!content.trim() && !image}
                 />
               )}

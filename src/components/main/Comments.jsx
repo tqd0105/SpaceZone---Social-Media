@@ -206,7 +206,8 @@ function Comments({
                     </div>
                     <button
                       onClick={() => onDeleteComment(comment._id)}
-                      className="bg-red-500 text-white shadow-xl hover:bg-[rgb(255,0,0)]"
+                      className="bg-red-500 shadow-xl hover:bg-[rgb(255,0,0)]"
+                      style={{color: "white"}}
                     >
                       Xoá
                     </button>
@@ -302,7 +303,9 @@ function Comments({
               placeholder="Viết bình luận ..."
               className="w-full border-2 border-gray-300 outline-none p-2 rounded-lg"
             />
-            <button onClick={() => handleAddComment(posts._id, comments.text)} className="bg-blue-600 text-white hover:bg-blue-500">Gửi</button>
+            <button onClick={() => handleAddComment(posts._id, comments.text)} className="bg-blue-600 hover:bg-blue-500"
+              style={{color: "white"}}
+              >Gửi</button>
           </div>
         </div>
       </div>

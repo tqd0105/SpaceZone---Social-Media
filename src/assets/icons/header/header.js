@@ -14,6 +14,9 @@ import Search2 from "./search2.png";
 
 import Avatar from "./avatar.png";
 
+import DarkMode from "./darkMode.png";
+import LightMode from "./lightMode.png";
+
 import RightArrow from "./right-arrow.png";
 import Setting from "./setting.png";
 import Logout from "./logout.png";
@@ -75,5 +78,7 @@ export {
   Edit,
   Emotion,
   Send,
-  Options
+  Options,
+  DarkMode,
+  LightMode
 };

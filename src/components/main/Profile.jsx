@@ -280,9 +280,9 @@ function Profile() {
             />
           )}
           <div className="flex-column-center gap-2 m-2">
-            <div className="flex-row-center ms_justify-end ms_w-full gap-2">
+            <div className="flex-row-center  ms_justify-end ms_w-full gap-2">
               <button
-                className="hover:bg-gray-200 border-2 border-gray-600"
+                className="hover:bg-gray-200 border-2 bg-white text-black border-gray-600"
                 onClick={() => setIsOpenEditProfile(!isOpenEditProfile)}
               >
                 Chỉnh sửa <span className="ms_hidden">trang cá nhân</span>
@@ -299,7 +299,7 @@ function Profile() {
                 />
               )}
 
-              <button className="hover:bg-gray-200 border-2 border-gray-600 m_hidden">
+              <button className="hover:bg-gray-200 border-2 bg-white text-black border-gray-600 m_hidden">
                 Kho lưu trữ tin
               </button>
               <img
@@ -324,12 +324,12 @@ function Profile() {
       <div className="m_m-2">
         <div className="flex-row-start gap-2 ">
           <h3 className="font-extrabold text-2xl">{user?.name}</h3>
-          <div className="flex-row-center gap-2 bg-gray-200 rounded-full px-3 py-1">
+          <div className="flex-row-center gap-2 text-gray-600 bg-gray-200 rounded-full px-3 py-1">
             <img src={Tick} width={20} height={20} alt="" />
             <span>Đã xác minh</span>
           </div>
         </div>
-        <span className="flex-row-start text-gray-400">@{user?.username}</span>
+        <span className="flex-row-start text-gray-500">@{user?.username}</span>
         <p className="flex-row-start font-medium my-2">Tiểu sử</p>
         <div className="flex-row-between m_flex-col  gap-2 ">
           <div className="flex-column-start gap-1 w-3/5 m_w-full">

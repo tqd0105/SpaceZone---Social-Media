@@ -47,7 +47,7 @@ function RightBar({isShowRightBar}) {
             </div>
             <div className="flex flex-col justify-start items-start">
               <h3 className="font-bold text-base t_text-left hover:underline cursor-pointer">{gameSuggest.name}</h3>
-              <span className="font-medium t_text-left text-gray-400">{gameSuggest.type}</span>
+              <span className="font-medium t_text-left text-gray-500">{gameSuggest.type}</span>
             </div>
           </div>
           <div>
@@ -71,7 +71,7 @@ function RightBar({isShowRightBar}) {
             </div>
             <div className="flex-row-start gap-1">
               {/* <img src={Interactive} width={20} height={20} alt="" /> */}
-              <span className=" font-normal  text-gray-600">{featuredEvent.quantity}</span>
+              <span className=" font-normal  text-gray-500">{featuredEvent.quantity}</span>
             </div>
           </div>
           <div>

@@ -1,7 +1,7 @@
 function Button({
   children,
-  color = "black",
-  backgroundColor = "white",
+  color = "",
+  backgroundColor = "",
   hoverBackgroundColor = "rgb(35, 35, 35)",
   size = "14px",
   width = "150px",

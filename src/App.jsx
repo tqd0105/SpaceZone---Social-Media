@@ -4,19 +4,22 @@ import { HashRouter as Router, Routes, Route, Navigate, Outlet } from "react-rou
 import Header from "./components/layout/Header";
 import Leftbar from "./components/layout/LeftBar";
 import RightBar from "./components/layout/RightBar";
-import Main from "./components/layout/Main";
+import Main from "./components/layout/Main.jsx";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import "./App.css";
+import "./styles/dark-mode.scss";
 import { AuthProvider, useAuth } from "./context/AuthProvider";
 import PostForm from "./components/main/CreatePost/PostForm";
 import Profile from "./components/main/Profile";
+import { DarkModeProvider } from "./components/context/DarkModeContext";
 // import RightBarPage from "./components/main/RightBarPage";
 
 function App() {
   const {user} = useAuth();
-  console.log(window.innerWidth);
   return (
+    <DarkModeProvider>
+
     <AuthProvider>
       <Router >
         <Routes>
@@ -41,6 +44,8 @@ function App() {
         </Routes>
       </Router>
     </AuthProvider>
+
+    </DarkModeProvider>
   );
 }
 
@@ -61,7 +66,7 @@ const RequireAuth = () => {
 const MainLayout = () => {
   const { user } = useAuth();
   return (
-    <div className="min-h-screen bg-[#ffffff]">
+    <div className="min-h-screen bg-white ">
       <Header />
       <div className="flex justify-between w-full pt-[75px]">
         <Leftbar user={user}/>
