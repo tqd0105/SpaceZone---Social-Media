@@ -70,10 +70,10 @@ const Login = () => {
       className={`flex-column-center bg-white h-fit px-8 py-6 my-4  rounded-xl shadow-xl mc_login  ${styled.animation_backInUp}`}
     >
       <h2 className="font-bold text-2xl mb-4">Đăng nhập tài khoản</h2>
-      <form onSubmit={handleLogin} className="ms_w-full">
+      <form onSubmit={handleLogin} className="ms_w-full min-w-[320px]">
         <div className="flex-column-center gap-2 ">
           {/* Email Input */}
-          <div className={`  ${styled.input_container} ms_w-full `} >
+          <div className={`  ${styled.input_container} ms_w-full w-full`} >
             <div className="text-left mb-2">
               <label className="font-semibold">Tên đăng nhập</label>
             </div>
@@ -83,13 +83,13 @@ const Login = () => {
               value={formData.email}
               onChange={handleChange}
               placeholder="Vui lòng nhập tên đăng nhập"
-              className={styled.input_transition}
+              className={`${styled.input_transition} w-full`}
               required
             />
           </div>
 
           {/* Password Input */}
-          <div className={`  ${styled.input_container} ms_w-full `} >
+          <div className={`  ${styled.input_container} ms_w-full w-full `} >
             <div className="text-left mb-2">
               <label className="font-semibold">Mật khẩu</label>
             </div>
@@ -99,7 +99,7 @@ const Login = () => {
               value={formData.password}
               onChange={handleChange}
               placeholder="Vui lòng nhập mật khẩu của bạn"
-              className={styled.input_transition}
+              className={`${styled.input_transition} w-full`}
               required
             />
           </div>
@@ -130,7 +130,7 @@ const Login = () => {
           </p>
           <Link to="/register">
             <button
-              className={`w-1/2 p-2 mt-2 bg-blue-500  rounded-md ${styled.gradient2}`}
+              className={`w-1/2 p-2 mt-2 bg-blue-500  rounded-md ${styled.gradient2} `}
               style={{ color: "white" }}
             >
               Tạo tài khoản mới
