@@ -2,6 +2,7 @@ import {
   Close,
   CloseBlack,
   Delete,
+  DeleteAccount,
   Edit,
   User,
 } from "../../assets/icons/main/main";
@@ -10,6 +11,7 @@ const defaultAvatar = `${import.meta.env.VITE_API_URL}/uploads/avatar/default.pn
 import ToggleSwitch from "../common/ToggleSwitch";
 import PrivacySelector from "./PrivacySelector";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 const API_URL = import.meta.env.VITE_API_URL
 
 function EditProfile({
@@ -20,6 +22,7 @@ function EditProfile({
   handleDelete,
   handleUpdateUser
 }) {
+  const navigate = useNavigate();
   const [isShowOptionsAvatar, setIsShowOptionsAvatar] = useState(false);
   const [tempUser, setTempUser] = useState({
     name: user?.name || "",
@@ -161,6 +164,49 @@ function EditProfile({
     } catch (error) {
       console.error("Error saving profile:", error);
       alert(`Failed to save changes: ${error.message}`);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    // Hiển thị hộp thoại xác nhận
+    const isConfirmed = window.confirm(
+      "Bạn có chắc chắn muốn xóa tài khoản? Tất cả dữ liệu quan trọng sẽ bị xóa vĩnh viễn!"
+    );
+
+    if (!isConfirmed) return;
+
+    try {
+      const token = sessionStorage.getItem("token");
+      
+      if (!token) {
+        alert("Vui lòng đăng nhập lại!");
+        return;
+      }
+
+      console.log("Sending delete request for user:", user._id);
+      const response = await fetch(`${API_URL}/users/${user._id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Không thể xóa tài khoản");
+      }
+
+      console.log("Account deleted successfully, clearing storage...");
+      
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("user");
+
+      // Đóng modal và chuyển về trang login
+      setIsOpenEditProfile(false);
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.error("Lỗi xóa tài khoản:", error);
+      alert(error.message || "Có lỗi xảy ra khi xóa tài khoản");
     }
   };
 
@@ -339,6 +385,15 @@ function EditProfile({
           </div>
         </div>
 
+        <div className="flex-row-center my-2 w-full">
+              <button 
+                className="bg-red-500 text-white px-4 py-2 rounded-md w-1/2 hover:bg-red-600 transition-colors"
+                onClick={handleDeleteAccount}
+              >
+                Xoá tài khoản
+              </button>
+        </div>
+
         <div className="flex-row-center sticky bottom-0 py-3 mt-3 border-t-[1px] border-gray-200 bg-white gap-2">
           <button
             className="bg-blue-500  px-4 rounded-md w-[80px]"
@@ -355,6 +410,8 @@ function EditProfile({
             Huỷ
           </button>
         </div>
+
+        
       </div>
     </div>
   );
