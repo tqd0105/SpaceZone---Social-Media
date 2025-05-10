@@ -37,8 +37,6 @@ const Login = () => {
         body: JSON.stringify({
           email: formData.email,
           password: formData.password,
-          ip: ipData.ip,
-          userAgent,
         }),
       });
   

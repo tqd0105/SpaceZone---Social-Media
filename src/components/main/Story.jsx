@@ -128,7 +128,7 @@ function Story() {
                   />
                 }
                 right={
-                  <Text children={story.name} color={"white"} className={``} />
+                  <Text children={story.name}  className={`text-gray-100 text-shadow-lg`} />
                 }
                 classNameRight={`absolute text-center bottom-2 left-0 w-full font-medium ${styled.textShadow}`}
               />
