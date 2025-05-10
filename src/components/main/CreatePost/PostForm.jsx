@@ -104,7 +104,7 @@ function PostForm({ onUpload, setIsShowNewPostNoti }) {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 className="w-full outline-none bg-gray-200 hover:bg-gray-300 p-3 rounded-full
-                  text-white placeholder:text-gray-500
+                  text-black placeholder:text-gray-500
                 "
               />
             </div>

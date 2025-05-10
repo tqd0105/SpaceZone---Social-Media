@@ -53,7 +53,7 @@ import { Circle, listFriends } from "../../assets/icons/rightbar/rightbar";
 import LeftBar from '../layout/LeftBar'
 import RightBar from '../layout/RightBar'
 import DarkModeToggle from "../common/DarkModeToggle";  
-
+import { DarkModeProvider } from "../../context/DarkModeContext";
 
 const API_URL =
   import.meta.env.VITE_API_URL;
@@ -501,7 +501,12 @@ function Header() {
                     <Icon src={RightArrow} width={15} height={15} />
                   </div>
 
+                  <DarkModeProvider>
+                    <DarkModeToggle />
+                  </DarkModeProvider>
+
                   <div className="w-full h-[1px] bg-gray-200 my-2"></div>
+
 
                   {/* Đăng xuất */}
                   <div
@@ -512,7 +517,7 @@ function Header() {
                     <span>Đăng xuất</span>
                   </div>
 
-                <DarkModeToggle />
+                
 
                 </div>
 
@@ -612,7 +617,9 @@ function Header() {
                   <Icon src={RightArrow} width={15} height={15} />
                 </div>
 
+                <DarkModeProvider>
                 <DarkModeToggle />
+                </DarkModeProvider>
 
                 <div className="w-full h-[1px] bg-gray-200 my-2"></div>
 

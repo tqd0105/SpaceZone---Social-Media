@@ -276,7 +276,7 @@ function PostList({
                         width={20}
                         height={20}
                         alt=""
-                        className="cursor-pointer"
+                        className="cursor-pointer m_w-10px m_h-10px"
                       />
                       {deletingPostId === post._id ? (
                         <div className={`${styled.loading__spinner}`}></div>
@@ -287,7 +287,7 @@ function PostList({
                           width={15}
                           height={20}
                           alt=""
-                          className="cursor-pointer"
+                          className="cursor-pointer m_w-10px m_h-10px"
                         />
                       )}
                     </div>

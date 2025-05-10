@@ -70,7 +70,7 @@ function Register() {
 
   return (
     <div
-      className={`flex-column-start rounded-lg bg-gray-100 mc_login ${styled.animation_backInUp}`}
+      className={`flex-column-start rounded-lg bg-gray-100 mc_login m_w-90pc ${styled.animation_backInUp}`}
     >
       <form
         onSubmit={handleSubmit}
@@ -89,7 +89,7 @@ function Register() {
           placeholder="Họ và Tên"
           value={formData.name}
           onChange={handleChange}
-          className={`w-full p-2 mt-4 border rounded-md ${styled.input_transition}`}
+          className={`w-full p-2 mt-4 border rounded-md m_w-90pc  ${styled.input_transition}`}
           required
         />
 
@@ -99,7 +99,7 @@ function Register() {
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
-          className={`w-full p-2 mt-4 border rounded-md ${styled.input_transition}`}
+          className={`w-full p-2 mt-4 border rounded-md m_w-90pc ${styled.input_transition}`}
           required
         />
 
@@ -109,7 +109,7 @@ function Register() {
           placeholder="Mật khẩu"
           value={formData.password}
           onChange={handleChange}
-          className={`w-full p-2 mt-4 border rounded-md ${styled.input_transition}`}
+          className={`w-full p-2 mt-4 border rounded-md m_w-90pc ${styled.input_transition}`}
           required
         />
 
@@ -119,17 +119,18 @@ function Register() {
           placeholder="Xác nhận mật khẩu"
           value={formData.confirmPassword}
           onChange={handleChange}
-          className={`w-full p-2 mt-4 border rounded-md ${styled.input_transition}`}
+          className={`w-full p-2 mt-4 border rounded-md  m_w-90pc ${styled.input_transition}`}
           required
         />
 
         <div className="flex justify-center items-center">
           <button
             type="submit"
-            className={`w-[320px] lg:flex-row-center gap-2 p-2 mt-4 bg-blue-500 text-white rounded-md ${styled.gradient2}`}
+            className={`w-[320px] lg:flex-row-center gap-2 p-2 mt-4 bg-blue-500  rounded-md m_w-90pc ${styled.gradient2}`}
+            style={{ color: "white" }}
           >
             {loading ? (
-              <div className="flex-row-center gap-2">
+              <div className="flex-row-center gap-2 ">
                 <div className={`${styled.loading__spinner}`}></div>
                 <span >Đang thiết lập tài khoản</span>
               </div>
@@ -147,7 +148,8 @@ function Register() {
           </p>
           <Link to="/login">
             <button
-              className={`w-1/2 hover:bg-blue-700 text-white font-semibold py-2 px-4 mt-2 rounded-md outline-none ${styled.gradient}`}
+              className={`w-1/2 hover:bg-blue-700  font-semibold py-2 px-4 mt-2 rounded-md outline-none  ${styled.gradient}`}
+              style={{ color: "white" }}
             >
               Đăng nhập
             </button>

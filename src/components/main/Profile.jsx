@@ -33,8 +33,6 @@ function Profile() {
     const fetchUser = async () => {
       try {
         console.log("🔍 Fetching user data for username:", username);
-        console.log("🌐 API URL:", API_URL);
-        console.log("🎯 Endpoint:", `${API_URL}/users/${username}`);
 
         const response = await fetch(`${API_URL}/users/${username}`);
         if (!response.ok) {
@@ -53,16 +51,39 @@ function Profile() {
   }, [username]);
 
   useEffect(() => {
-    fetch(`${API_URL}/posts`)
-      .then((res) => res.json())
-      .then((data) => setPosts(data))
-      .catch((err) => console.log(err));
-  }, []);
+    const fetchPosts = async () => {
+      try {
+        // 1. Lấy tất cả bài viết
+        const response = await fetch(`${API_URL}/posts`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch posts');
+        }
+        const allPosts = await response.json();
+
+        // 2. Lọc bài viết theo username
+        const userPosts = allPosts.filter(post => {
+          // Kiểm tra xem bài viết có thông tin tác giả không
+          if (!post.author) return false;
+          
+          // So sánh username của tác giả với username của profile đang xem
+          return post.author.username === username;
+        });
+
+        // 3. Cập nhật state với danh sách bài viết đã lọc
+        setPosts(userPosts);
+      } catch (error) {
+        console.error("❌ Lỗi lấy bài viết:", error);
+        setPosts([]);
+      }
+    };
+
+    fetchPosts();
+  }, [username]);
 
   useEffect(() => {
-    fetch(`${API_URL}/posts`)
+    fetch(`${API_URL}/comments`)
       .then((res) => res.json())
-      .then((data) => setPosts(data))
+      .then((data) => setComments(data))
       .catch((err) => console.log(err));
   }, []);
 
@@ -137,13 +158,6 @@ function Profile() {
     }
   };
 
-  useEffect(() => {
-    fetch(`${API_URL}/comments`)
-      .then((res) => res.json())
-      .then((data) => setComments(data))
-      .catch((err) => console.log(err));
-  }, []);
-
   const handleAddComment = async (postId, text) => {
     try {
       const token = localStorage.getItem("token");
@@ -211,7 +225,7 @@ function Profile() {
 
       console.log("🔑 Token:", token);
       console.log("🌐 API URL:", API_URL);
-      console.log("�� Endpoint:", `${API_URL}/posts/${postId}`);
+      console.log("🎯 Endpoint:", `${API_URL}/posts/${postId}`);
 
       const res = await fetch(`${API_URL}/posts/${postId}`, {
         method: "DELETE",

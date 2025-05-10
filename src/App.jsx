@@ -12,7 +12,7 @@ import "./styles/dark-mode.scss";
 import { AuthProvider, useAuth } from "./context/AuthProvider";
 import PostForm from "./components/main/CreatePost/PostForm";
 import Profile from "./components/main/Profile";
-import { DarkModeProvider } from "./components/context/DarkModeContext";
+import { DarkModeProvider } from "./context/DarkModeContext.jsx";
 // import RightBarPage from "./components/main/RightBarPage";
 
 function App() {

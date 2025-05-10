@@ -1,8 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDarkMode } from "../../context/DarkModeContext";
 
 function ToggleSwitch() {
   const [isOn, setIsOn] = useState(false);
+  const { darkMode, toggleDarkMode } = useDarkMode();
 
+  const darkModeLocalStorage = localStorage.getItem("darkModeStatus");
+
+  useEffect(()=>{
+    if (darkModeLocalStorage === "true") {
+      setIsOn(true);
+    }
+  }, [darkModeLocalStorage])
+
+  console.log(isOn);
+  
+  console.log(darkModeLocalStorage);
+  
   return (
     <div
       onClick={() => setIsOn(!isOn)}

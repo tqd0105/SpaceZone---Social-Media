@@ -7,11 +7,6 @@ function ImageDetail ({isAvatar, user, onClose}) {
     const imageUrl = isAvatar
     ? (user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatar)
     : (user?.coverImage ? `${API_URL}${user.coverImage}` : defaultCover);
-    if (imageUrl) {
-        console.log(imageUrl);
-        console.log(user);
-        
-    }
     return (
         <div className="fixed inset-0 flex-row-center z-50">
             <div className="absolute inset-0 bg-black bg-opacity-80" onClick={onClose}></div>

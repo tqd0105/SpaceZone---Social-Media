@@ -18,8 +18,8 @@ export const login = async (email, password) => {
     }
 
     // Lưu token và thông tin user
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("user", JSON.stringify(data.user));
+    sessionStorage.setItem("token", data.token);
+    sessionStorage.setItem("user", JSON.stringify(data.user));
     return { success: true, user: data.user, token: data.token };
   } catch (error) {
     console.error("❌ Lỗi đăng nhập:", error.message);
@@ -28,13 +28,13 @@ export const login = async (email, password) => {
 };
 
 export const getUserInfo = async () => {
-  const token = localStorage.getItem("token");
-  const userStr = localStorage.getItem("user");
+  const token = sessionStorage.getItem("token");
+  const userStr = sessionStorage.getItem("user");
 
   if (!token) return null;
 
   try {
-    // Nếu có thông tin user trong localStorage, trả về ngay
+    // Nếu có thông tin user trong sessionStorage, trả về ngay
     if (userStr) {
       return JSON.parse(userStr);
     }
@@ -51,18 +51,18 @@ export const getUserInfo = async () => {
     const data = await res.json();
     
     if (!res.ok) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("user");
       return null;
     }
 
     // Lưu thông tin user mới
-    localStorage.setItem("user", JSON.stringify(data));
+    sessionStorage.setItem("user", JSON.stringify(data));
     return data;
   } catch (error) {
     console.error("❌ Lỗi lấy thông tin user:", error);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
     return null;
   }
 };
@@ -88,8 +88,8 @@ export const register = async (name, email, password, confirmPassword) => {
     }
 
     // ✅ Lưu token và thông tin user sau khi đăng ký thành công
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("user", JSON.stringify(data.user));
+    sessionStorage.setItem("token", data.token);
+    sessionStorage.setItem("user", JSON.stringify(data.user));
     return { success: true, user: data.user };
   } catch (error) {
     console.error("❌ Lỗi đăng ký:", error);

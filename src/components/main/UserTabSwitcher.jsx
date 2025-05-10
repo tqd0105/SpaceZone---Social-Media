@@ -4,7 +4,6 @@ import CommentTab from "./UserTab/CommentTab";
 import MediaTab from "./UserTab/MediaTab";
 import EventTab from "./UserTab/EventTab";
 import StoreTab from "./UserTab/StoreTab";
-import PostList from "./CreatePost/PostList";
 
 const UserTab = [
     {
