@@ -51,7 +51,7 @@ const Login = () => {
         // ✅ Gọi context login
         loginContext(res.user, res.token);
   
-        console.log("✅ Đăng nhập thành công:", res.user);
+        console.log("✅ Đăng nhập thành công - Tên: ", res.user.name);
         navigate("/home", { replace: true });
       }
     } catch (error) {

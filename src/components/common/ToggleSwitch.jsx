@@ -7,15 +7,11 @@ function ToggleSwitch() {
 
   const darkModeLocalStorage = localStorage.getItem("darkModeStatus");
 
-  useEffect(()=>{
-    if (darkModeLocalStorage === "true") {
-      setIsOn(true);
-    }
-  }, [darkModeLocalStorage])
-
-  console.log(isOn);
-  
-  console.log(darkModeLocalStorage);
+  // useEffect(()=>{
+  //   if (darkModeLocalStorage === "true") {
+  //     setIsOn(!isOn);
+  //   }
+  // }, [darkModeLocalStorage])
   
   return (
     <div

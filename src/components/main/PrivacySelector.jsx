@@ -35,10 +35,12 @@ function PrivacySelector() {
     <div className="relative  flex-column-center w-[130px]" ref={dropdownRef}>
       <button
         onClick={() => setShowOptions(!showOptions)}
-        className="flex-row-center gap-1 w-full rounded-md border border-gray-400 p-2 hover:bg-gray-100 text-sm font-semibold"
+        className="flex-row-center gap-1 w-full rounded-md border border-gray-400 p-2 hover:bg-gray-900 text-sm font-semibold"
       >
-         <img src={selectedOption?.icon} width={16} height={16} alt="" />
-         <span className="text-black">{selectedOption?.label}</span>
+        <img src={selectedOption?.icon} width={16} height={16} alt="" />
+        <span style={{ color: "black" }}>
+          {selectedOption?.label}
+        </span>
       </button>
 
       {showOptions && (
@@ -52,8 +54,8 @@ function PrivacySelector() {
                 setShowOptions(false);
               }}
             >
-                <img src={opt.icon} width={20} height={20} alt="" />
-                <span >{opt.label}</span>
+              <img src={opt.icon} width={20} height={20} alt="" />
+              <span>{opt.label}</span>
             </div>
           ))}
         </div>
