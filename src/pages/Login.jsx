@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { login } from "../services/authService";
+import { login as loginService } from "../services/authService";
 import { useAuth } from "../context/AuthProvider";
 import { Link } from "react-router-dom";
 import styled from "./Account.module.scss";
@@ -26,36 +26,14 @@ const Login = () => {
     setLoading(true);
   
     try {
-      // 👉 Lấy địa chỉ IP
-      const ipData = await fetch("https://api.ipify.org?format=json").then(res => res.json());
-      const userAgent = navigator.userAgent;
-  
-      // 👉 Gửi login request với IP và userAgent
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
-  
-      const res = await response.json();
-  
+      const res = await loginService(formData.email, formData.password);
       if (res.error) {
         setError(res.error);
       } else {
-        // ✅ Lưu token vào sessionStorage (sẽ mất khi tắt trình duyệt)
-        sessionStorage.setItem("token", res.token);
-  
-        // ✅ Gọi context login
         loginContext(res.user, res.token);
-  
-        console.log("✅ Đăng nhập thành công - Tên: ", res.user.name);
         navigate("/home", { replace: true });
       }
     } catch (error) {
-      console.error("❌ Lỗi đăng nhập:", error);
       setError("Lỗi đăng nhập, vui lòng thử lại!");
     } finally {
       setLoading(false);
