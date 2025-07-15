@@ -76,7 +76,7 @@ function Register() {
         onSubmit={handleSubmit}
         className="bg-white py-6 rounded-lg shadow-md lg:w-96"
       >
-        <h2 className="text-2xl font-bold text-center">
+        <h2 className="text-2xl font-bold text-center text-black ">
           Tạo tài khoản mới
         </h2>
         {error && (
@@ -89,7 +89,7 @@ function Register() {
           placeholder="Họ và Tên"
           value={formData.name}
           onChange={handleChange}
-          className={`w-[90%] p-2 mt-4 border rounded-md m_w-90pc  ${styled.input_transition}`}
+          className={`w-[90%] p-2 mt-4 border rounded-md m_w-90pc text-black  ${styled.input_transition}`}
           required
         />
 
@@ -99,7 +99,7 @@ function Register() {
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
-          className={`w-[90%] p-2 mt-4 border rounded-md m_w-90pc ${styled.input_transition}`}
+          className={`w-[90%] p-2 mt-4 border rounded-md m_w-90pc text-black  ${styled.input_transition}`}
           required
         />
 
@@ -109,7 +109,7 @@ function Register() {
           placeholder="Mật khẩu"
           value={formData.password}
           onChange={handleChange}
-          className={`w-[90%] p-2 mt-4 border rounded-md m_w-90pc ${styled.input_transition}`}
+          className={`w-[90%] p-2 mt-4 border rounded-md m_w-90pc text-black  ${styled.input_transition}`}
           required
         />
 
@@ -119,7 +119,7 @@ function Register() {
           placeholder="Xác nhận mật khẩu"
           value={formData.confirmPassword}
           onChange={handleChange}
-          className={`w-[90%] p-2 mt-4 border rounded-md  m_w-90pc ${styled.input_transition}`}
+          className={`w-[90%] p-2 mt-4 border rounded-md  m_w-90pc text-black  ${styled.input_transition}`}
           required
         />
 
