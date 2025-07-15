@@ -17,12 +17,17 @@ export const login = async (email, password) => {
       throw new Error(data.error || data.message || "Đăng nhập thất bại");
     }
 
-    // Lưu token và thông tin user
+    // Lưu token và chỉ các trường user cần thiết
     sessionStorage.setItem("token", data.token);
-    sessionStorage.setItem("user", JSON.stringify(data.user));
+    if (data.user) {
+      // Chỉ lấy các trường cần thiết, ví dụ: id, name, email, avatar
+      const { id, _id, name, email, avatar } = data.user;
+      const userToStore = { id: id || _id, name, email, avatar };
+      sessionStorage.setItem("user", JSON.stringify(userToStore));
+    }
     return { success: true, user: data.user, token: data.token };
   } catch (error) {
-    console.error("❌ Lỗi đăng nhập:", error.message);
+    // Bỏ console.error để giảm log không cần thiết
     return { error: "Tên đăng nhập hoặc mật khẩu không đúng!" };
   }
 };

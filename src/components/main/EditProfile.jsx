@@ -12,6 +12,7 @@ import ToggleSwitch from "../common/ToggleSwitch";
 import PrivacySelector from "./PrivacySelector";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthProvider";
 const API_URL = import.meta.env.VITE_API_URL
 
 function EditProfile({
@@ -40,6 +41,8 @@ function EditProfile({
     avatar: false,
     cover: false
   });
+
+  const { setUser } = useAuth();
 
   const handleTempDelete = (type) => {
     setDeletedItems(prev => ({
@@ -157,7 +160,37 @@ function EditProfile({
           }
         })
       ]);
-  
+
+      // Sau khi upload avatar/cover xong, gọi lại /auth/me để lấy user mới nhất
+      try {
+        const token = sessionStorage.getItem("token");
+        const res = await fetch(`${API_URL}/auth/me`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (res.ok) {
+          const userData = await res.json();
+          // Lưu lại user mới vào sessionStorage
+          sessionStorage.setItem("user", JSON.stringify({
+            id: userData.id || userData._id,
+            name: userData.name,
+            email: userData.email,
+            avatar: userData.avatar,
+            username: userData.username
+          }));
+          // Nếu có hàm setUser từ context, gọi để cập nhật context
+          if (typeof handleUpdateUser === "function") {
+            handleUpdateUser(userData);
+          }
+          setUser(userData); // Cập nhật context AuthProvider
+        }
+      } catch (err) {
+        // Nếu lỗi thì bỏ qua, không làm crash FE
+      }
+
       // Close the modal
       setIsOpenEditProfile(false);
       window.location.reload();
