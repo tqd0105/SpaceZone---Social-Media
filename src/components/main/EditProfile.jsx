@@ -92,7 +92,7 @@ function EditProfile({
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
           body: JSON.stringify({
             name: tempUser.name,
@@ -134,7 +134,7 @@ function EditProfile({
             const response = await fetch(`${API_URL}/users/${user._id}/${type}`, {
               method: "PUT",
               headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${sessionStorage.getItem("token")}`,
               },
               body: formData,
             });
@@ -148,7 +148,7 @@ function EditProfile({
             const response = await fetch(`${API_URL}/users/${user._id}/${type}`, {
               method: "DELETE",
               headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${sessionStorage.getItem("token")}`,
               },
             });
             if (!response.ok) {
@@ -211,7 +211,7 @@ function EditProfile({
   };
 
   return (
-    <div className="fixed inset-0 flex-row-center z-50 animate__animated animate__fadeIn">
+    <div className="fixed inset-0 flex-row-center z-50 animate__animated animate__fadeIn ">
       <div
         className="absolute inset-0 "
         style={{backgroundColor: "gray", opacity: "0.5"}}
@@ -315,13 +315,13 @@ function EditProfile({
 
         <div className="flex flex-col gap-1 ">
           <div className="flex-column-start gap-2 mx-4 my-2">
-            <label htmlFor="name" className="font-bold">
+            <label htmlFor="name" className="font-bold ">
               Họ và tên
             </label>
             <input
               type="text"
               id="name"
-              className=" w-full rounded-lg px-4 py-2 border-[1px] border-gray-400"
+              className=" w-full rounded-lg px-4 py-2 border-[1px] border-gray-400 bg-white text-black"
               value={tempUser.name}
               onChange={(e) =>
                 setTempUser((prev) => ({ ...prev, name: e.target.value }))
@@ -335,7 +335,7 @@ function EditProfile({
             <input
               type="text"
               id="name"
-              className=" w-full rounded-lg px-4 py-2 border-[1px] border-gray-400"
+              className=" w-full rounded-lg px-4 py-2 border-[1px] border-gray-400 bg-white text-black"
               value={tempUser.username}
               onChange={(e) =>
                 setTempUser((prev) => ({ ...prev, username: e.target.value }))

@@ -22,7 +22,7 @@ function Leftbar({user,isOpenLeftBar, setIsOpenLeftBar}) {
             <div key={index}>
               <TwoColumns
                 left={<img src={item.icon} width={36} height={36} />}
-                right={<span className="text-base font-semibold">{item.text}</span>}
+                right={<span className="text-base font-semibold text-black">{item.text}</span>}
                 className="flex-row-start t_justify-center gap-4 px-3 py-3 lg:rounded-lg cursor-pointer hover:bg-gray-200 "
                 classNameRight="t_hidden"
               />

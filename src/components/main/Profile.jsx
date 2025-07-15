@@ -255,7 +255,7 @@ function Profile() {
   //   }, [user])
 
   return (
-    <div className="lg:w-[45%] t_w-60pc m_pb-80px">
+    <div className="lg:w-[45%] t_w-60pc m_pb-80px text-black">
       <div className="flex-row-start gap-4 my-2 ">
         <div
           className="rounded-full hover:bg-gray-300 hover:transform p-2 cursor-pointer"

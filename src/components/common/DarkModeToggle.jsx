@@ -12,7 +12,7 @@ function DarkModeToggle() {
         >
             <div className="flex items-center m_flex-row gap-2">
                 <img src={`${darkMode ? DarkMode : LightMode}`} width={25} height={25} alt="" />
-                <span>Chế độ tối</span>
+                <span className="text-black">Chế độ tối</span>
             </div>
             <div onClick={toggleDarkMode}>
                 <ToggleSwitch />

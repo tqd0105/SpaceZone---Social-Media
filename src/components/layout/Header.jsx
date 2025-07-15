@@ -488,7 +488,7 @@ function Header() {
                   <div className="flex items-center justify-between m_flex-row py-2 cursor-pointer hover:bg-gray-100 rounded-md px-2">
                     <div className="flex items-center m_flex-row gap-2">
                       <Icon src={Setting} width={25} height={25} />
-                      <span className="font-bold">Cài đặt</span>
+                      <span className="font-bold text-black">Cài đặt</span>
                     </div>
                     <Icon src={RightArrow} width={15} height={15} />
                   </div>
@@ -514,7 +514,7 @@ function Header() {
                     className="flex-row-center gap-2 cursor-pointer py-2 hover:bg-gray-100 rounded-md px-2"
                   >
                     <Icon src={Logout} width={25} height={25} />
-                    <span>Đăng xuất</span>
+                    <span className="text-black">Đăng xuất</span>
                   </div>
 
                 
@@ -604,7 +604,7 @@ function Header() {
                 <div className="flex items-center justify-between py-2 cursor-pointer hover:bg-gray-100 rounded-md px-2">
                   <div className="flex items-center gap-2">
                     <Icon src={Setting} width={25} height={25} />
-                    <span className="font-bold">Cài đặt</span>
+                    <span className="font-bold text-black">Cài đặt</span>
                   </div>
                   <Icon src={RightArrow} width={15} height={15} />
                 </div>
@@ -612,7 +612,7 @@ function Header() {
                 <div className="flex items-center justify-between py-2 cursor-pointer hover:bg-gray-100 rounded-md px-2">
                   <div className="flex items-center gap-2">
                     <Icon src={Help} width={25} height={25} />
-                    <span className="font-bold">Hỗ trợ</span>
+                    <span className="font-bold text-black" >Hỗ trợ</span>
                   </div>
                   <Icon src={RightArrow} width={15} height={15} />
                 </div>
@@ -629,7 +629,7 @@ function Header() {
                   className="flex-row-center gap-2 cursor-pointer py-2 hover:bg-gray-100 rounded-md px-2"
                 >
                   <Icon src={Logout} width={25} height={25} />
-                  <span>Đăng xuất</span>
+                  <span className="text-black">Đăng xuất</span>
                 </div>
               </div>
             )}

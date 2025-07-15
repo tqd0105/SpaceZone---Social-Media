@@ -24,7 +24,7 @@ const UserTab = [
     },
     {
         id: 4,
-        label: "Sự kiên",
+        label: "Sự kiện",
         render: (props) => <EventTab {...props} />
 
     },

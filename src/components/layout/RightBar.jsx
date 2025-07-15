@@ -45,8 +45,8 @@ function RightBar({isShowRightBar}) {
             <div>
               <img src={gameSuggest.image} width={60} height={100} className="rounded-xl shadow-lg border-2 border-black" alt="" />
             </div>
-            <div className="flex flex-col justify-start items-start">
-              <h3 className="font-bold text-base t_text-left hover:underline cursor-pointer">{gameSuggest.name}</h3>
+            <div className="flex flex-col justify-start items-start " >
+              <h3 className="font-bold text-base text-left hover:underline cursor-pointer text-black">{gameSuggest.name}</h3>
               <span className="font-medium t_text-left text-gray-500">{gameSuggest.type}</span>
             </div>
           </div>
@@ -60,13 +60,13 @@ function RightBar({isShowRightBar}) {
 
       {/* Chủ đề nổi bật */}
       <div >
-        <h3 className="text-left text-lg font-extrabold px-4">Chủ đề nổi bật</h3>
+        <h3 className="text-left text-lg font-extrabold px-4 text-black">Chủ đề nổi bật</h3>
       </div>
       {featuredEvents.map((featuredEvent, index) => (
         <div key={index} className="flex-row-between gap-2 py-2 px-4 hover:bg-gray-100 rounded-lg cursor-pointer"> 
           <div>
-            <div className="flex flex-col justify-start items-start "> 
-              <p className="font-semibold t_text-left text-green-600 ">{featuredEvent.title}</p>
+            <div className="flex flex-col justify-start items-start text-black"> 
+              <p className="font-semibold text-left text-green-600 ">{featuredEvent.title}</p>
               <h2 className={`${styled.LexendDeca_font} truncate t_whitespace-normal max-w-[300px] text-left hover:underline`}>{featuredEvent.content}</h2>
             </div>
             <div className="flex-row-start gap-1">
@@ -84,7 +84,7 @@ function RightBar({isShowRightBar}) {
 
       {/* Gợi ý kết bạn */}
       <div>
-        <h3 className="text-left text-lg font-extrabold px-4">Gợi ý kết bạn</h3>
+        <h3 className="text-left text-lg font-extrabold px-4 text-black">Gợi ý kết bạn</h3>
       </div>
       {friendSuggestions.map((friendSuggestion, index) => (
         <div key={index} className="flex-row-between gap-2 py-2 px-4 hover:bg-gray-100 rounded-lg cursor-pointer">
@@ -92,8 +92,8 @@ function RightBar({isShowRightBar}) {
             <div >
               <img src={friendSuggestion.image} width={50} height={50} className="rounded-full max-w-[50px] max-h-[50px]" alt="" />
             </div>
-            <div className="flex flex-col justify-start items-start">
-              <span className="font-semibold t_text-left hover:underline">{friendSuggestion.name} </span>
+            <div className="flex flex-col justify-start items-start flex-column-start">
+              <span className="font-semibold t_text-left hover:underline text-black">{friendSuggestion.name} </span>
               <span className="text-gray-400">@{friendSuggestion.username}</span>
             </div>
           </div>
@@ -120,8 +120,8 @@ function RightBar({isShowRightBar}) {
                   <TwoColumns
                     left={
                       <Text
-                        children="Cristiano Ronaldo asd dsd s ssdasd s s"
-                        className="font-semibold hover:underline cursor-pointer overflow-hidden whitespace-nowrap text-ellipsis w-[150px]"
+                        children="Cristiano Ronaldo"
+                        className="font-semibold text-black hover:underline cursor-pointer overflow-hidden whitespace-nowrap text-ellipsis text-left w-[150px]"
                       />
                     }
                     right={
@@ -138,14 +138,14 @@ function RightBar({isShowRightBar}) {
                           </div>
                         }
                         right={<Text children="2 bạn chung" />}
-                        className={"flex-row-start gap-2"}
+                        className={"flex-row-start gap-2 text-black"}
                       />
                     }
                     className={"flex-column-startItems"}
                   />
                 }
                 right={
-                <Text children="5 ngày trước" className="break-normal t_color-gray-600"
+                <Text children="5 ngày trước" className="break-normal t_color-gray-600 text-black l_hidden"
                 />}
                 className={"flex-row-between t_flex-col t_items_start t_gap-5px gap-2"}
                 
@@ -235,7 +235,7 @@ function RightBar({isShowRightBar}) {
                 className="rounded-full"
               />
             }
-            right={<Text children={friend.name} className="font-semibold" />}
+            right={<Text children={friend.name} className="font-semibold text-black" />}
             className="flex-row-start gap-4 rounded-md hover:bg-gray-100 pl-6 py-2 cursor-pointer"
           />
         ))}
@@ -280,7 +280,7 @@ function RightBar({isShowRightBar}) {
                 className="rounded-full"
               />
             }
-            right={<Text children={group.name} className="font-semibold text-left" />}
+            right={<Text children={group.name} className="font-semibold text-left text-black" />}
             className={
               "flex-row-start gap-4 hover:bg-gray-100 rounded-md pl-6 py-2 cursor-pointer"
             }
