@@ -1,0 +1,38 @@
+name: 🔄 Full Stack Deploy
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  # Build và deploy Frontend
+  frontend:
+    uses: ./.github/workflows/frontend-deploy.yml
+    secrets: inherit
+
+  # Build và test Backend  
+  backend:
+    uses: ./.github/workflows/backend-deploy.yml
+    secrets: inherit
+
+  # Notification job
+  notify:
+    runs-on: ubuntu-latest
+    needs: [frontend, backend]
+    if: always()
+    
+    steps:
+      - name: 📢 Deployment Status
+        run: |
+          if [[ "${{ needs.frontend.result }}" == "success" && "${{ needs.backend.result }}" == "success" ]]; then
+            echo "✅ Both Frontend và Backend deployed successfully!"
+          elif [[ "${{ needs.frontend.result }}" == "success" ]]; then
+            echo "✅ Frontend deployed successfully!"
+            echo "❌ Backend deployment failed!"
+          elif [[ "${{ needs.backend.result }}" == "success" ]]; then
+            echo "❌ Frontend deployment failed!"
+            echo "✅ Backend deployed successfully!"
+          else
+            echo "❌ Both deployments failed!"
+          fi
