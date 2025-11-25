@@ -30,7 +30,8 @@ const Login = () => {
       if (res.error) {
         setError(res.error);
       } else {
-        loginContext(res.user, res.token);
+        // 📌 Cập nhật để hỗ trợ session timeout
+        loginContext(res.user, res.token, res.refreshToken, res.sessionExpiration);
         navigate("/home", { replace: true });
       }
     } catch (error) {

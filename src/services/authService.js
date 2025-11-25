@@ -3,6 +3,59 @@
 const API_URL = import.meta.env.VITE_API_URL
 // console.log("📌 API_URL:", API_URL);  
 
+// 📌 Session timeout handler
+let sessionTimeoutId = null;
+let refreshTimeoutId = null;
+
+// 📌 Auto-logout callback (sẽ được set từ AuthProvider)
+let onAutoLogout = null;
+
+export const setAutoLogoutCallback = (callback) => {
+  onAutoLogout = callback;
+};
+
+// 📌 Clear all timers
+const clearSessionTimers = () => {
+  if (sessionTimeoutId) {
+    clearTimeout(sessionTimeoutId);
+    sessionTimeoutId = null;
+  }
+  if (refreshTimeoutId) {
+    clearTimeout(refreshTimeoutId);
+    refreshTimeoutId = null;
+  }
+};
+
+// 📌 Setup session timers
+const setupSessionTimers = (sessionExpiration) => {
+  clearSessionTimers();
+  
+  const now = new Date().getTime();
+  const expirationTime = new Date(sessionExpiration).getTime();
+  const timeUntilExpiration = expirationTime - now;
+  
+  if (timeUntilExpiration <= 0) {
+    // Session đã hết hạn
+    if (onAutoLogout) onAutoLogout();
+    return;
+  }
+  
+  // Refresh token sau 1 tiếng 45 phút (15 phút trước khi hết hạn)
+  const refreshTime = Math.max(0, timeUntilExpiration - 15 * 60 * 1000);
+  if (refreshTime > 0) {
+    refreshTimeoutId = setTimeout(async () => {
+      console.log("🔄 Tự động refresh token...");
+      await refreshToken();
+    }, refreshTime);
+  }
+  
+  // Auto-logout khi hết hạn
+  sessionTimeoutId = setTimeout(() => {
+    console.log("⏰ Session hết hạn - tự động đăng xuất");
+    if (onAutoLogout) onAutoLogout();
+  }, timeUntilExpiration);
+};
+
 export const login = async (email, password) => {
   try {
     const res = await fetch(`${API_URL}/auth/login`, {
@@ -17,29 +70,71 @@ export const login = async (email, password) => {
       throw new Error(data.error || data.message || "Đăng nhập thất bại");
     }
 
-    // Lưu token và chỉ các trường user cần thiết
-    sessionStorage.setItem("token", data.token);
+    // 📌 Lưu tokens và session info
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("refreshToken", data.refreshToken);
+    localStorage.setItem("sessionExpiration", data.sessionExpiration);
+    
     if (data.user) {
-      // Chỉ lấy các trường cần thiết, ví dụ: id, name, email, avatar
       const { id, _id, name, email, avatar } = data.user;
       const userToStore = { id: id || _id, name, email, avatar };
-      sessionStorage.setItem("user", JSON.stringify(userToStore));
+      localStorage.setItem("user", JSON.stringify(userToStore));
     }
+    
+    // 📌 Setup auto-logout timers
+    setupSessionTimers(data.sessionExpiration);
+    
     return { success: true, user: data.user, token: data.token };
   } catch (error) {
-    // Bỏ console.error để giảm log không cần thiết
     return { error: "Tên đăng nhập hoặc mật khẩu không đúng!" };
   }
 };
 
+// 📌 Refresh Token
+export const refreshToken = async () => {
+  try {
+    const refreshTokenValue = localStorage.getItem("refreshToken");
+    if (!refreshTokenValue) {
+      throw new Error("Không có refresh token");
+    }
+
+    const res = await fetch(`${API_URL}/auth/refresh-token`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refreshToken: refreshTokenValue }),
+    });
+
+    const data = await res.json();
+    
+    if (!res.ok) {
+      throw new Error(data.error || "Không thể refresh token");
+    }
+
+    // 📌 Cập nhật token và session mới
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("sessionExpiration", data.sessionExpiration);
+    
+    // 📌 Setup lại timers với session mới
+    setupSessionTimers(data.sessionExpiration);
+    
+    console.log("✅ Token đã được refresh thành công");
+    return { success: true };
+  } catch (err) {
+    console.error("❌ Lỗi refresh token:", err);
+    // Nếu refresh thất bại, logout
+    if (onAutoLogout) onAutoLogout();
+    return { error: err.message };
+  }
+};
+
 export const getUserInfo = async () => {
-  const token = sessionStorage.getItem("token");
-  const userStr = sessionStorage.getItem("user");
+  const token = localStorage.getItem("token");
+  const userStr = localStorage.getItem("user");
 
   if (!token) return null;
 
   try {
-    // Nếu có thông tin user trong sessionStorage, trả về ngay
+    // Nếu có thông tin user trong localStorage, trả về ngay
     if (userStr) {
       return JSON.parse(userStr);
     }
@@ -56,26 +151,78 @@ export const getUserInfo = async () => {
     const data = await res.json();
     
     if (!res.ok) {
-      sessionStorage.removeItem("token");
-      sessionStorage.removeItem("user");
+      // 📌 Nếu token hết hạn, thử refresh
+      if (data.isSessionExpired) {
+        const refreshResult = await refreshToken();
+        if (refreshResult.success) {
+          // Thử lại với token mới
+          return await getUserInfo();
+        }
+      }
+      
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("sessionExpiration");
       return null;
     }
 
     // Lưu thông tin user mới
-    sessionStorage.setItem("user", JSON.stringify(data));
+    localStorage.setItem("user", JSON.stringify(data));
     return data;
   } catch (error) {
     console.error("❌ Lỗi lấy thông tin user:", error);
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("user");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("sessionExpiration");
     return null;
   }
 };
 
 export const logout = async () => {
-  await logoutService();
-  setUser(null);  // ❌ Lỗi, vì setUser chỉ có trong `AuthProvider`
-  navigate("/login", { replace: true });
+  try {
+    const token = localStorage.getItem("token");
+    if (token) {
+      // Gọi API logout để xóa session trên server
+      await fetch(`${API_URL}/auth/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    }
+  } catch (error) {
+    console.error("❌ Lỗi logout:", error);
+  } finally {
+    // 📌 Xóa tất cả thông tin local và clear timers
+    clearSessionTimers();
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("user");
+    localStorage.removeItem("sessionExpiration");
+  }
+};
+
+// 📌 Check session on app startup
+export const checkSession = () => {
+  const sessionExpiration = localStorage.getItem("sessionExpiration");
+  if (sessionExpiration) {
+    const now = new Date().getTime();
+    const expirationTime = new Date(sessionExpiration).getTime();
+    
+    if (now >= expirationTime) {
+      // Session đã hết hạn
+      if (onAutoLogout) onAutoLogout();
+      return false;
+    }
+    
+    // Setup timers cho session hiện tại
+    setupSessionTimers(sessionExpiration);
+    return true;
+  }
+  return false;
 };
 
 export const register = async (name, email, password, confirmPassword) => {
@@ -83,7 +230,7 @@ export const register = async (name, email, password, confirmPassword) => {
     const res = await fetch(`${API_URL}/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password, confirmPassword }), // ✅ Gửi confirmPassword
+      body: JSON.stringify({ name, email, password, confirmPassword }),
     });
 
     const data = await res.json();
@@ -92,9 +239,15 @@ export const register = async (name, email, password, confirmPassword) => {
       return { error: data.error || "Đăng ký thất bại. Hãy kiểm tra lại thông tin!" };
     }
 
-    // ✅ Lưu token và thông tin user sau khi đăng ký thành công
-    sessionStorage.setItem("token", data.token);
-    sessionStorage.setItem("user", JSON.stringify(data.user));
+    // 📌 Lưu tokens và session info
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("refreshToken", data.refreshToken);
+    localStorage.setItem("sessionExpiration", data.sessionExpiration);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    
+    // 📌 Setup auto-logout timers
+    setupSessionTimers(data.sessionExpiration);
+    
     return { success: true, user: data.user };
   } catch (error) {
     console.error("❌ Lỗi đăng ký:", error);

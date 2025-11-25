@@ -5,7 +5,11 @@ import Logo from "../common/Logo";
 import ControlBar from "../common/ControlBar";
 import { Icon } from "../common/UIElement";
 import { useAuth } from "../../context/AuthProvider";
+import { useChat } from "../../hooks/useChat";
+import { useRealTimeUser } from "../../hooks/useRealTimeUser";
+import { FriendRequestsList } from "../friends";
 import "../../styles/responsive.scss";
+import ChatContainer from "../chat/ChatContainer";
 
 import {
   HomeIcon,
@@ -50,8 +54,8 @@ import {
 } from "../../assets/icons/header/header";
 import { Back, BackBlack, CloseBlack } from "../../assets/icons/main/main";
 import { Circle, listFriends } from "../../assets/icons/rightbar/rightbar";
-import LeftBar from '../layout/LeftBar'
-import RightBar from '../layout/RightBar'
+import LeftBar from '../layout/LeftBar';
+import RightBar from '../layout/RightBar';
 import DarkModeToggle from "../common/DarkModeToggle";  
 import { DarkModeProvider } from "../../context/DarkModeContext";
 
@@ -60,6 +64,8 @@ const API_URL =
 
 function Header() {
   const { user, logout } = useAuth();
+  const currentUser = useRealTimeUser(user);
+  const { toggleChat } = useChat();
   const [searchValue, setSearchValue] = useState("");
   const [history, setHistory] = useState([]);
   const [showHistory, setShowHistory] = useState(true);
@@ -77,6 +83,7 @@ function Header() {
   const [input, setInput] = useState("");
   const [isOpenLeftBar, setIsOpenLeftBar] = useState(false);
   const [isShowRightBar, setIsShowRightBar] = useState(false);
+  const [isShowFriendRequests, setIsShowFriendRequests] = useState(false);
   const menuRef = useRef(null);
   const searchRef = useRef(null);
   const postCache = useRef([]);
@@ -235,8 +242,8 @@ function Header() {
   };
 
   const fullAvatarURL = useMemo(() => {
-    return user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatar;
-  }, [user]);
+    return currentUser?.avatar ? `${API_URL}${currentUser.avatar}` : defaultAvatar;
+  }, [currentUser]);
 
   const controlCenterIcons = [
     { icon: HomeIcon, link: "/home" },
@@ -259,6 +266,7 @@ function Header() {
 
   const controlRightIcons = [
     { icon: ChatIcon, link: null },
+    { icon: FriendIcon, link: null }, 
     { icon: NotiIcon, link: "/home" },
   ];
   
@@ -437,9 +445,16 @@ function Header() {
             className="flex-row-center gap-2 "
             classNames={`rounded-full p-2 hover:bg-gray-200 cursor-pointer ${styles.bgElement}`}
             onClickControlCenter={(index) => {
+              console.log('🖥️ [Header] Desktop ControlBar clicked, index:', index);
               if (index === 0) {
-                setIsShowChat((prev) => !prev);
+                console.log('💬 [Header] Chat icon clicked');
+                toggleChat();
+              } else if (index === 1) {
+                console.log('👥 [Header] Friend requests icon clicked');
+                console.log('🔧 [Debug] Setting isShowFriendRequests to true');
+                setIsShowFriendRequests(true);
               } else {
+                console.log('🔧 [Debug] Other icon clicked, index:', index);
                 setActiveControlCenter(index);
               }
             }}
@@ -540,7 +555,7 @@ function Header() {
         setIsShowRightBar={setIsShowRightBar}
       />
 
-      <div className="w-full l_hidden"t_hidden >
+      <div className="w-full l_hidden t_hidden">
         <RightBar isShowRightBar={isShowRightBar} />
       </div>
 
@@ -553,8 +568,14 @@ function Header() {
           className="flex-row-center gap-2 "
           classNames={`rounded-full p-2 hover:bg-gray-200 cursor-pointer ${styles.bgElement}`}
           onClickControlCenter={(index) => {
+            console.log('📱 [Header] Mobile ControlBar clicked, index:', index);
             if (index === 0) {
-              setIsShowChat((prev) => !prev);
+              console.log('💬 [Header] Chat icon clicked (mobile)');
+              toggleChat();
+            } else if (index === 1) {
+              console.log('👥 [Header] Friend requests icon clicked (mobile)');
+              console.log('🔧 [Debug] Setting isShowFriendRequests to true (mobile)');
+              setIsShowFriendRequests(true);
             } else {
               setActiveControlCenter(index);
             }
@@ -637,253 +658,14 @@ function Header() {
         )}
       </div>
 
-      {/* Nhắn tin - Chat */}
-      <div
-        className="fixed bottom-2 right-4 mc_addChatIcon m_hidden cursor-pointer"
-        onClick={() => setIsShowChat(!isShowChat)}
-      >
-        <img src={AddChat} width={60} height={60} alt="" />
-      </div>
-
-      {isShowChat && (
-        <div className="fixed bottom-0 lg:right-[100px] h-[400px] w-[350px] m_absolute m_top-full m_w-full m_h-screen z-50 t_h-849px bg-white lg:shadow-2xl rounded-tr-lg rounded-tl-lg border-[1px] border-gray-300 p-1 animate__animated animate__fadeIn">
-          <div className="flex-row-between ">
-            <div className="flex-row-center gap-1">
-              <div
-                className="hover:bg-gray-300 rounded-full p-2 cursor-pointer"
-                onClick={() => setIsShowChat(false)}
-              >
-                <img src={BackBlack} width={15} height={20} alt="" />
-              </div>
-              <h3 className="font-bold text-[16px] ">
-                Bắt đầu cuộc trò chuyện mới
-              </h3>
-            </div>
-            <div className="hover:bg-gray-300 rounded-full p-2 cursor-pointer">
-              <img src={AddGroup} width={30} height={20} alt="" />
-            </div>
-          </div>
-          <div
-            className="relative flex-row-center gap-1 px-2 cursor-pointer"
-            onClick={() => setIsShowListContact(true)}
-          >
-            <img src={Search2} width={20} height={20} alt="" />
-            <input
-              type="text"
-              placeholder="Tìm kiếm liên hệ"
-              className="w-full p-2 outline-none text-black placeholder:text-gray-500"
-              value={contactSearch}
-              onChange={(e) => setContactSearch(e.target.value)}
-            />
-          </div>
-          <div className="relative w-full h-[1px] bg-gray-300 my-2">
-            {isShowListContact && (
-              <div className="absolute top-full w-full overflow-y-scroll lg:max-h-[300px] m_max-h-screen mt-1 animate__animated animate__fadeIn">
-                {listFriends
-                  .filter((list) =>
-                    list.name
-                      .toLowerCase()
-                      .includes(contactSearch.toLowerCase())
-                  )
-                  .map((list, index) => (
-                    <div
-                      key={index}
-                      className="flex-row-start gap-2  mx-1 cursor-pointer hover:bg-gray-200 rounded-md p-2"
-                      onClick={() => handleContactChat(list.id)}
-                    >
-                      <img
-                        src={list.image}
-                        width={40}
-                        height={40}
-                        className="rounded-full m_w-h-30"
-                        alt=""
-                      />
-                      <span>{list.name}</span>
-                    </div>
-                  ))}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {selectedFriend && (
-        <div className="fixed bottom-0 lg:right-[100px] h-[420px] w-[350px] m_absolute m_top-full m_w-full m_h-82vh bg-white lg:shadow-2xl rounded-tr-lg rounded-tl-lg border-[1px] border-gray-300 animate__animated animate__fadeIn">
-          <div className="sticky top-0 right-0 left-0 flex-row-between  border-b-[1px] border-gray-300 p-2 shadow-md">
-            <div className="flex-row-center gap-2">
-              <div className="relative">
-                <img
-                  src={selectedFriend.image}
-                  width={40}
-                  height={20}
-                  className="rounded-full"
-                  alt=""
-                />
-                <img
-                  className="absolute bottom-0 right-0 shadow-xl"
-                  src={Circle}
-                  width={12}
-                  height={12}
-                  alt=""
-                />
-              </div>
-              <div className="flex-column-start m_flex-row">
-                <div className="flex-row-center m_flex-row gap-1">
-                  <h3 className="text-left font-bold text-[15px] text-ellipsis overflow-hidden whitespace-nowrap max-w-[120px]">
-                    {selectedFriend.name}
-                  </h3>
-                  <img src={Edit} width={15} alt="" />
-                </div>
-                <span className="text-gray-500 text-xs">Vừa mới truy cập</span>
-              </div>
-            </div>
-            <div className="flex-row-between m_flex-row gap-2">
-              <img src={Call} width={25} height={20} alt="" />
-              <img src={VideoCall} width={25} height={20} alt="" />
-              <img
-                src={Minimize}
-                width={25}
-                height={20}
-                alt=""
-                onClick={() => {
-                  setSelectedFriendId(false);
-                  setIsShowChat(true);
-                }}
-              />
-              <img
-                src={CloseBlue}
-                width={25}
-                height={20}
-                alt=""
-                onClick={() => setSelectedFriendId(false)}
-              />
-            </div>
-          </div>
-          {/* <div className="w-full h-[1px] bg-gray-300 "></div> */}
-          {/* {messages.map((message, index) => (
-            <div key={index} className="flex justify-end">
-              <span className=" px-4 py-2 bg-blue-600 text-white m-2 rounded-full inline-block ">
-                {message}
-              </span>
-            </div>
-          ))} */}
-          <div className="overflow-y-scroll max-h-[300px] m_max-h-screen p-2">
-            <div className="flex-column-center gap-1">
-              <div className="relative inline-block">
-                <img
-                  src={selectedFriend.image}
-                  width={70}
-                  height={70}
-                  alt=""
-                  className="rounded-full"
-                />
-                <img
-                  src={Circle}
-                  width={15}
-                  height={15}
-                  alt=""
-                  className="absolute bottom-0 right-0"
-                />
-              </div>
-              <h3 className="font-bold text-lg">{selectedFriend.name}</h3>
-              <p>Các bạn là bạn bè trên Facebook</p>
-              <p>Sống tại Thành Phố Hồ Chí Minh</p>
-              <button className="outline-none bg-gray-100 hover:bg-gray-100">
-                Xem trang cá nhân
-              </button>
-            </div>
-            {messages.map((message, index) => (
-              <div
-                key={message.id}
-                className={`flex   ${
-                  message.from === "user"
-                    ? "m_flex-row justify-end"
-                    : "m_flex-row justify-start items-center"
-                } animate__animated animate__fadeIn`}
-              >
-                {message.from === "bot" && (
-                  <img
-                    src={message.image}
-                    className=" w-[35px] h-[35px] rounded-full"
-                    alt=""
-                  />
-                )}
-                <span
-                  className={`px-4 py-2 ${
-                    message.from === "user"
-                      ? "bg-blue-500 text-gray-400"
-                      : "bg-gray-300 text-white "
-                  } text-left max-w-[210px] m-1 rounded-xl`}
-                >
-                  {message.text}
-                </span>
-              </div>
-            ))}
-            <div ref={messageEndRef} />
-          </div>
-          <div className="absolute bottom-0 right-0 left-0 flex-row-between gap-2 p-2 border-t-[1px] shadow_chatBar border-gray-300">
-            {isShowMedia && input.trim() === "" ? (
-              <div className="flex-row-center gap-2 cursor-pointer">
-                <img src={Microphone} width={25} height={30} alt="" />
-                <img src={ImageColorful} width={25} height={30} alt="" />
-                <img src={File} width={25} height={30} alt="" />
-                <img src={Gif} width={25} height={30} alt="" />
-              </div>
-            ) : (
-              <div>
-                <img src={Add} width={25} height={25} alt="" />
-              </div>
-            )}
-
-            <div
-              className={`flex items-center relative ${
-                isShowMedia ? "" : "w-full"
-              } transition-all duration-300 ease-in-out `}
-            >
-              <input
-                ref={inputRef}
-                type="text"
-                value={input}
-                className="border-[1px] shadow-md rounded-full  w-full p-2 outline-none break-words"
-                onChange={(e) => {
-                  setInput(e.target.value);
-                  handleToggleMedia(e);
-                }}
-                onKeyDown={(e) => e.key === "Enter" && handleSend()}
-              />
-              <img
-                src={Emotion}
-                className={`absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer`}
-                width={25}
-                height={20}
-                alt=""
-              />
-            </div>
-            {isShowMedia && input.trim() === "" ? (
-              <div>
-                <img
-                  src={Heart}
-                  width={25}
-                  height={30}
-                  alt=""
-                  className="cursor-pointer"
-                />
-              </div>
-            ) : (
-              <div>
-                <img
-                  src={Send}
-                  width={25}
-                  height={30}
-                  alt=""
-                  className="cursor-pointer"
-                  onClick={handleSend}
-                />
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      {/* Chat Container - Modern chat UI */}
+      <ChatContainer />
+      
+      {/* Friend Requests Modal */}
+      <FriendRequestsList 
+        isOpen={isShowFriendRequests}
+        onClose={() => setIsShowFriendRequests(false)}
+      />
     </div>
   );
 }

@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Comment, HeartEmpty, HeartFill } from "../../assets/icons/main/main";
 import { TranThanh } from "../../assets/icons/rightbar/rightbar";
-const defaultCover = `${import.meta.env.VITE_API_URL}/uploads/cover/default_cover.png`;
-const defaultAvatar = `${import.meta.env.VITE_API_URL}/uploads/avatar/default.png`;
+const defaultCover = `${
+  import.meta.env.VITE_API_URL
+}/uploads/cover/default_cover.png`;
+const defaultAvatar = `${
+  import.meta.env.VITE_API_URL
+}/uploads/avatar/default.png`;
 
 function Comments({
   posts,
@@ -26,20 +30,24 @@ function Comments({
     return comments.reduce((acc, comment) => {
       // Kiểm tra comment và comment._id tồn tại
       if (comment && comment._id) {
-        const storedIsLiked = localStorage.getItem(`isLikedComment_${comment._id}`);
-        const storedLikeCount = localStorage.getItem(`randomLikeComment_${comment._id}`);
+        const storedIsLiked = localStorage.getItem(
+          `isLikedComment_${comment._id}`
+        );
+        const storedLikeCount = localStorage.getItem(
+          `randomLikeComment_${comment._id}`
+        );
 
         acc[comment._id] = {
           isLiked: storedIsLiked ? JSON.parse(storedIsLiked) : false,
           // Thay đổi ở đây: Nếu không có giá trị, mặc định là 0
-          likeCount: storedLikeCount ? parseInt(storedLikeCount, 10) : 0
+          likeCount: storedLikeCount ? parseInt(storedLikeCount, 10) : 0,
         };
       }
       return acc;
     }, {});
   });
-  
-  const API_URL = import.meta.env.VITE_API_URL
+
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     Object.entries(likeStates).forEach(
@@ -52,8 +60,6 @@ function Comments({
       }
     );
   }, [likeStates]);
-
-  
 
   const toggleComments = (postId) => {
     setOpenComments((prev) => ({
@@ -98,7 +104,10 @@ function Comments({
         `isLikedComment_${commentId}`,
         JSON.stringify(isLiked)
       );
-      localStorage.setItem(`randomLikeComment_${commentId}`, likeCount.toString());
+      localStorage.setItem(
+        `randomLikeComment_${commentId}`,
+        likeCount.toString()
+      );
 
       return {
         ...prev,
@@ -125,8 +134,7 @@ function Comments({
     }
 
     return comment.postId === posts._id;
-  }
-);
+  });
 
   const formatTime = (dateString) => {
     const date = new Date(dateString);
@@ -166,7 +174,11 @@ function Comments({
                     <div className="flex-row-center gap-2">
                       <div className="min-h-[80px]">
                         <img
-                          src={posts.author.avatar ? `${API_URL}${posts.author.avatar}` : defaultAvatar}
+                          src={
+                            posts.author.avatar
+                              ? `${API_URL}${posts.author.avatar}`
+                              : defaultAvatar
+                          }
                           alt=""
                           className="rounded-full w-[50px] h-[50px] object-cover"
                         />
@@ -207,7 +219,7 @@ function Comments({
                     <button
                       onClick={() => onDeleteComment(comment._id)}
                       className="bg-red-500 shadow-xl hover:bg-[rgb(255,0,0)]"
-                      style={{color: "white"}}
+                      style={{ color: "white" }}
                     >
                       Xoá
                     </button>
@@ -264,8 +276,8 @@ function Comments({
                                 }
                                 className={
                                   isLiked
-                                  ? "animate__animated animate__rubberBand"
-                                  : ""
+                                    ? "animate__animated animate__rubberBand"
+                                    : ""
                                 }
                               />
                               <span>
@@ -303,9 +315,13 @@ function Comments({
               placeholder="Viết bình luận ..."
               className="w-full border-2 border-gray-300 outline-none p-2 rounded-lg"
             />
-            <button onClick={() => handleAddComment(posts._id, comments.text)} className="bg-blue-600 hover:bg-blue-500"
-              style={{color: "white"}}
-              >Gửi</button>
+            <button
+              onClick={() => handleAddComment(posts._id, comments.text)}
+              className="bg-blue-600 hover:bg-blue-500"
+              style={{ color: "white" }}
+            >
+              Gửi
+            </button>
           </div>
         </div>
       </div>
@@ -314,5 +330,3 @@ function Comments({
 }
 
 export default Comments;
-
- 

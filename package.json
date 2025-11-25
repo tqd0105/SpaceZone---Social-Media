@@ -21,6 +21,7 @@
     "axios": "^1.8.3",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "lottie-react": "^2.4.1",
@@ -31,6 +32,7 @@
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.0",
     "sass": "^1.85.1",
+    "socket.io-client": "^4.8.1",
     "swiper": "^11.2.5"
   },
   "devDependencies": {

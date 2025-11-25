@@ -193,7 +193,14 @@ function EditProfile({
 
       // Close the modal
       setIsOpenEditProfile(false);
-      window.location.reload();
+      
+      // Dispatch custom event to notify other components
+      window.dispatchEvent(new Event('userUpdated'));
+      
+      // Reload after a short delay to ensure all components are updated
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (error) {
       console.error("Error saving profile:", error);
       alert(`Failed to save changes: ${error.message}`);

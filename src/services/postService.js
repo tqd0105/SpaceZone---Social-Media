@@ -5,7 +5,7 @@ export const createPost = async (formData) => {
   const token = localStorage.getItem("token");
   console.log("Token gửi đi:", token); // 🛠 Debug xem token có đúng không
 
-  if (!token) throw new Error("❌ Bạn chưa đăng nhập!");
+  // if (!token) throw new Error("❌ Bạn chưa đăng nhập!");
 
   const res = await fetch(`${API_URL}/posts`, {
     method: "POST",

@@ -32,7 +32,7 @@ function ControlBar({ icons, size = "30", className, classNames, active, onClick
             `}
             onClick={() => {
               onClickControlCenter(index)
-              setIsShowRightBar(false)
+              // setIsShowRightBar(false)
             }}
           >
             <img src={item.icon} alt={`Control Bar Icon ${index}`} width={size} height={size} />

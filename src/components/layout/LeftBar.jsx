@@ -8,13 +8,14 @@ import { Icon, Text } from "../common/UIElement";
 // import styles from './Leftbar.module.scss';
 const defaultAvatar = `${import.meta.env.VITE_API_URL}/uploads/avatar/default.png`;
 import { Link, NavLink } from "react-router-dom";
+import { useRealTimeUser } from "../../hooks/useRealTimeUser";
 import '../../styles/responsive.scss';
-const API_URL = import.meta.env.VITE_API_URL 
+const API_URL = import.meta.env.VITE_API_URL
 
-function Leftbar({user,isOpenLeftBar, setIsOpenLeftBar}) {
-  const fullAvatarURL = user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatar;
+function LeftBar({user,isOpenLeftBar, setIsOpenLeftBar}) {
+  const currentUser = useRealTimeUser(user);
   
-  return (
+  const fullAvatarURL = currentUser?.avatar ? `${API_URL}${currentUser.avatar}` : defaultAvatar;  return (
     <div className={`sticky top-[72px] h-[calc(100vh-72px)] t_w-fit sm:w-1/4 md:w-1/5 lg:w-1/6 xl:w-[25%] t_border-right  t_pt-10px ${isOpenLeftBar  ? "m_fixed m_top-62px m_left-0 m_bg-white m_w-full animate__animated animate__fadeInLeft" : "m_hidden"}`} onClick={()=>setIsOpenLeftBar(false)}>
       <div className="flex flex-col m_flex-row  m_justify-between m_pb-50px h-full"> {/* Thêm container flex để quản lý layout */}
         <div className="flex-grow flex flex-col m_flex-row m_justify-between align-center justify-between  overflow-y-auto">
@@ -38,15 +39,15 @@ function Leftbar({user,isOpenLeftBar, setIsOpenLeftBar}) {
         </div>
         <div className="h-[1px] bg-gray-200 "></div>
         {/* Profile section at bottom */}
-        <Link to={`/${user?.username}`} className="mt-auto"> 
+        <Link to={`/${currentUser?.username || user?.username}`} className="mt-auto"> 
           <TwoColumns
             left={
               <TwoColumns
                 left={<img src={fullAvatarURL} width={50} height={50} className="rounded-full w-[50px] h-[50px] object-cover"/>}
                 right={
                   <TwoColumns
-                    left={<Text children={user?.name} className="font-bold text-black text-left text-base" size="18px"/>}
-                    right={<Text children={`@${user?.username}`} className="text-gray-500 text-left font-medium"/>}
+                    left={<Text children={currentUser?.name || user?.name} className="font-bold text-black text-left text-base" size="18px"/>}
+                    right={<Text children={`@${currentUser?.username || user?.username}`} className="text-gray-500 text-left font-medium"/>}
                     className="flex-col-start t_hidden gap-2"
                   />
                 }
@@ -64,4 +65,4 @@ function Leftbar({user,isOpenLeftBar, setIsOpenLeftBar}) {
 }
 
 
-export default Leftbar;
+export default LeftBar;

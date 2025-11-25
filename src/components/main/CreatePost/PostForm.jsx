@@ -5,6 +5,7 @@ import Button from "../../common/Button";
 import { Close, Photo } from "../../../assets/icons/main/main";
 const defaultAvatar = `${import.meta.env.VITE_API_URL}/uploads/avatar/default.png`;
 import { useAuth } from "../../../context/AuthProvider"; // ✅ Sử dụng hook useAuth
+import { useRealTimeUser } from "../../../hooks/useRealTimeUser";
 import { Link } from "react-router-dom";
 import styled from "../../../pages/Account.module.scss";
 
@@ -12,14 +13,15 @@ const API_URL = import.meta.env.VITE_API_URL
 
 function PostForm({ onUpload, setIsShowNewPostNoti }) {
   const { user } = useAuth(); // ✅ Lấy user từ useAuth()
+  const currentUser = useRealTimeUser(user);
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const fullAvatarURL = user?.avatar
-    ? `${API_URL}${user.avatar}`
+  const fullAvatarURL = currentUser?.avatar
+    ? `${API_URL}${currentUser.avatar}`
     : defaultAvatar;
 
   useEffect(() => {

@@ -27,6 +27,7 @@ const defaultAvatar = `${import.meta.env.VITE_API_URL}/uploads/avatar/default.pn
 // import Comments from "../Comments";
 import CommentDetail from "../CreatePost/CommentDetail";
 import { Link } from "react-router-dom";
+import { useRealTimeUser } from "../../../hooks/useRealTimeUser";
 const API_URL = import.meta.env.VITE_API_URL
 
 function PostList({
@@ -42,6 +43,7 @@ function PostList({
   setComments
 }) {
   
+  const currentUser = useRealTimeUser(user);
   const [likePosts, setLikePosts] = useState({});
   const randomShares = useMemo(() => Math.floor(Math.random() * 100), []);
   const [showEmotions, setShowEmotions] = useState(false);

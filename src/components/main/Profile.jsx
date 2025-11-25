@@ -23,16 +23,20 @@ const API_URL = import.meta.env.VITE_API_URL
 function Profile() {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
+  const [profileUser, setProfileUser] = useState(null); // User của profile đang xem
   const { username } = useParams();
   const navigate = useNavigate();
-  const { user, setUser } = useAuth();
+  const { user, setUser } = useAuth(); // User hiện tại đang đăng nhập và hàm setUser
   const [isOpenEditProfile, setIsOpenEditProfile] = useState(false);
   const [isShowImageDetail, setIsShowImageDetail] = useState(null);
+
+  // Kiểm tra xem có phải profile của chính mình không
+  const isOwnProfile = user?.username === username;
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        console.log("🔍 Fetching user data for username:", username);
+        // console.log("🔍 Fetching user data for username:", username);
 
         const response = await fetch(`${API_URL}/users/${username}`);
         if (!response.ok) {
@@ -41,10 +45,10 @@ function Profile() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        setUser(data);
+        setProfileUser(data); // Chỉ set cho profileUser, không ghi đè user hiện tại
       } catch (error) {
         console.error("❌ Error fetching user data:", error);
-        setUser({});
+        setProfileUser({});
       }
     };
     fetchUser();
@@ -89,7 +93,7 @@ function Profile() {
 
   const handleUpload = async (e, type) => {
     const file = e.target.files[0];
-    if (!file || !user?._id) return;
+    if (!file || !user?._id || !isOwnProfile) return;
 
     const token = localStorage.getItem("token");
     const formData = new FormData();
@@ -110,14 +114,14 @@ function Profile() {
         }
       );
       const updated = await res.json();
-      setUser(updated);
+      setProfileUser(updated); // Cập nhật profileUser
     } catch (error) {
       console.error("Error uploading file:", error);
     }
   };
 
   const handleDelete = async (type) => {
-    if (!user?._id) return;
+    if (!user?._id || !isOwnProfile) return;
 
     const token = localStorage.getItem("token");
 
@@ -129,28 +133,32 @@ function Profile() {
         },
       });
       const updated = await res.json();
-      setUser(updated);
+      setProfileUser(updated); // Cập nhật profileUser
     } catch (error) {
       console.error("Error deleting file:", error);
     }
   };
 
-  if (!user) {
+  if (!profileUser) {
     return <div>Loading...</div>;
   }
 
   const handleUpdateUser = async (updatedData) => {
-    setUser((prevUser) => ({
+    setProfileUser((prevUser) => ({
       ...prevUser,
       ...updatedData.user, // chú ý updatedData.user nếu response dạng {user, token}
     }));
 
-    // Cập nhật localStorage nếu có token mới
-    if (updatedData.token && updatedData.user) {
-      localStorage.setItem("token", updatedData.token);
+    // Chỉ cập nhật localStorage và context nếu đây là profile của chính mình
+    if (isOwnProfile && updatedData.user) {
       localStorage.setItem("user", JSON.stringify(updatedData.user));
-      // Nếu dùng context AuthProvider, gọi hàm cập nhật context ở đây
-      // Ví dụ: authContext.setUser(updatedData.user);
+      // Cập nhật context user hiện tại
+      const { setUser } = useAuth();
+      setUser(updatedData.user);
+      
+      if (updatedData.token) {
+        localStorage.setItem("token", updatedData.token);
+      }
     }
 
     if (updatedData.user?.username && updatedData.user.username !== username) {
@@ -264,13 +272,13 @@ function Profile() {
           <img src={BackBlack} width={20} height={20} alt="" />
         </div>
         <div className="flex-column-start">
-          <span className="font-bold text-lg ">{user?.name}</span>
+          <span className="font-bold text-lg ">{profileUser?.name}</span>
           <p className=" text-gray-500">Trang cá nhân</p>
         </div>
       </div>
       <div className="relative ">
         <img
-          src={user?.coverImage ? `${API_URL}${user.coverImage}` : defaultCover}
+          src={profileUser?.coverImage ? `${API_URL}${profileUser.coverImage}` : defaultCover}
           className=" object-cover cursor-pointer w-full h-[250px] "
           alt=""
           onClick={() => setIsShowImageDetail("cover")}
@@ -281,32 +289,44 @@ function Profile() {
             onClick={() => setIsShowImageDetail("avatar")}
           >
             <img
-              src={user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatar}
+              src={profileUser?.avatar ? `${API_URL}${profileUser.avatar}` : defaultAvatar}
               alt=""
               className="rounded-full border-4  border-white w-[160px] h-[160px] m_w-h-120px object-cover"
             />
           </div>
           {isShowImageDetail && (
             <ImageDetail
-              user={user}
+              user={profileUser}
               isAvatar={isShowImageDetail === "avatar"}
               onClose={() => setIsShowImageDetail(false)}
             />
           )}
           <div className="flex-column-center gap-2 m-2">
             <div className="flex-row-center  ms_justify-end ms_w-full gap-2">
-              <button
-                className="hover:bg-gray-200 border-2 bg-white text-black border-gray-600"
-                onClick={() => setIsOpenEditProfile(!isOpenEditProfile)}
-              >
-                Chỉnh sửa <span className="ms_hidden">trang cá nhân</span>
-              </button>
+              {/* Chỉ hiển thị nút chỉnh sửa nếu là profile của chính mình */}
+              {isOwnProfile ? (
+                <button
+                  className="hover:bg-gray-200 border-2 bg-white text-black border-gray-600"
+                  onClick={() => setIsOpenEditProfile(!isOpenEditProfile)}
+                >
+                  Chỉnh sửa <span className="ms_hidden">trang cá nhân</span>
+                </button>
+              ) : (
+                <div className="flex gap-2">
+                  <button className="hover:bg-blue-600 bg-blue-500 text-white px-4 py-2 rounded">
+                    Theo dõi
+                  </button>
+                  <button className="hover:bg-gray-200 border-2 bg-white text-black border-gray-600">
+                    Nhắn tin
+                  </button>
+                </div>
+              )}
 
-              {isOpenEditProfile && (
+              {isOpenEditProfile && isOwnProfile && (
                 <EditProfile
                   isOpenEditProfile={isOpenEditProfile}
                   setIsOpenEditProfile={setIsOpenEditProfile}
-                  user={user}
+                  user={profileUser}
                   handleUpload={handleUpload}
                   handleDelete={handleDelete}
                   handleUpdateUser={handleUpdateUser}
@@ -337,13 +357,13 @@ function Profile() {
       </div>
       <div className="m_m-2">
         <div className="flex-row-start gap-2 ">
-          <h3 className="font-extrabold text-2xl">{user?.name}</h3>
+          <h3 className="font-extrabold text-2xl">{profileUser?.name}</h3>
           <div className="flex-row-center gap-2 text-gray-600 bg-gray-200 rounded-full px-3 py-1">
             <img src={Tick} width={20} height={20} alt="" />
             <span>Đã xác minh</span>
           </div>
         </div>
-        <span className="flex-row-start text-gray-500">@{user?.username}</span>
+        <span className="flex-row-start text-gray-500">@{profileUser?.username}</span>
         <p className="flex-row-start font-medium my-2">Tiểu sử</p>
         <div className="flex-row-between m_flex-col  gap-2 ">
           <div className="flex-column-start gap-1 w-3/5 m_w-full">
@@ -386,7 +406,9 @@ function Profile() {
         onAddComment={handleAddComment}
         onDeleteComment={handleDeleteComment}
         onDelete={handleDeletePost}
-        user={user}
+        user={profileUser}
+        currentUser={user}
+        isOwnProfile={isOwnProfile}
       />
     </div>
   );

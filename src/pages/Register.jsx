@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { register } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthProvider";
 import styled from "./Account.module.scss";
 import SuccessIcon from "../assets/icons/main/Account/check.png";
 import { Link } from "react-router-dom";
@@ -18,6 +19,7 @@ function Register() {
   const [countdown, setCountDown] = useState(3);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login: loginContext } = useAuth(); // 📌 Thêm context
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -47,6 +49,9 @@ function Register() {
       if (res.error) {
         setError(res.error);
       } else {
+        // 📌 Tự động đăng nhập sau khi đăng ký thành công
+        loginContext(res.user, localStorage.getItem("token"), localStorage.getItem("refreshToken"), localStorage.getItem("sessionExpiration"));
+        
         setModal(true);
         let countDownValue = 3;
         const timer = setInterval(() => {
@@ -56,7 +61,7 @@ function Register() {
           if (countDownValue <= 0) {
             clearInterval(timer);
             setModal(false);
-            navigate("/login");
+            navigate("/home"); // 📌 Chuyển thẳng đến home thay vì login
           }
         }, 1000);
       }
@@ -170,7 +175,7 @@ function Register() {
             <p>Bạn đã đăng ký thành công!</p>
             <div className="w-full h-[1px] bg-gray-300 my-2"></div>
             <p className="text-gray-400 text-xs">
-              Chuyển hướng đến trang đăng nhập sau {countdown} giây.
+              Chuyển hướng đến trang chủ sau {countdown} giây.
             </p>
           </div>
         </div>

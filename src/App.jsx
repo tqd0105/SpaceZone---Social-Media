@@ -1,4 +1,4 @@
-import { HashRouter as Router, Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from "react-router-dom";
 
 
 import Header from "./components/layout/Header";
@@ -10,42 +10,50 @@ import Register from "./pages/Register";
 import "./App.css";
 import "./styles/dark-mode.scss";
 import { AuthProvider, useAuth } from "./context/AuthProvider";
+import { DarkModeProvider } from "./context/DarkModeContext.jsx";
+import ChatProvider from "./context/ChatProvider.jsx";
 import PostForm from "./components/main/CreatePost/PostForm";
 import Profile from "./components/main/Profile";
-import { DarkModeProvider } from "./context/DarkModeContext.jsx";
 // import RightBarPage from "./components/main/RightBarPage";
 
 function App() {
-  const {user} = useAuth();
   return (
     <DarkModeProvider>
-
-    <AuthProvider>
-      <Router >
-        <Routes>
-          {/* 🟢 Layout dành cho người chưa đăng nhập */}
-          <Route element={<LoginLayout />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Route>
-
-          {/* 🟢 Layout dành cho người đã đăng nhập */}
-          <Route element={<RequireAuth />}>
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<Navigate to="/home" />} />
-              <Route path="/home" element={<Main />} />
-              <Route path="/post" element={<PostForm />} />
-              <Route path="/:username" element={<Profile />} />
-            </Route>
-          </Route>
-
-          {/* 🟢 Mặc định chuyển hướng về /login nếu chưa đăng nhập */}
-          <Route path="*" element={<Navigate to="/login" />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
-
+      <AuthProvider>
+        <ChatProvider>
+          <AppRoutes />
+        </ChatProvider>
+      </AuthProvider>
     </DarkModeProvider>
+  );
+}
+
+function AppRoutes() {
+  const { user } = useAuth();
+  
+  return (
+    <Router >
+      <Routes>
+        {/* 🟢 Layout dành cho người chưa đăng nhập */}
+        <Route element={<LoginLayout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
+
+        {/* 🟢 Layout dành cho người đã đăng nhập */}
+        <Route element={<RequireAuth />}>
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<Navigate to="/home" />} />
+            <Route path="/home" element={<Main />} />
+            <Route path="/post" element={<PostForm />} />
+            <Route path="/:username" element={<Profile />} />
+          </Route>
+        </Route>
+
+        {/* 🟢 Mặc định chuyển hướng về /login nếu chưa đăng nhập */}
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
+    </Router>
   );
 }
 

@@ -1,36 +1,77 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { logout as logoutService, checkSession, setAutoLogoutCallback } from "../services/authService";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [sessionExpiration, setSessionExpiration] = useState(null);
+  
+  // 📌 Auto-logout function
+  const handleAutoLogout = async () => {
+    console.log("🚪 Tự động đăng xuất do hết session");
+    await logoutService();
+    setUser(null);
+    setSessionExpiration(null);
+    
+    // Hiển thị thông báo cho user
+    alert("Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại!");
+    
+    // Redirect to login
+    window.location.href = "/login";
+  };
   
   useEffect(() => {
-    const storedUser = sessionStorage.getItem("user");
-    const token = sessionStorage.getItem("token");
+    // 📌 Set callback cho authService
+    setAutoLogoutCallback(handleAutoLogout);
+    
+    const storedUser = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
+    const storedSessionExpiration = localStorage.getItem("sessionExpiration");
+    
     if (storedUser && token) {
       setUser(JSON.parse(storedUser));
+      setSessionExpiration(storedSessionExpiration);
+      
+      // 📌 Kiểm tra session còn hạn không
+      const isSessionValid = checkSession();
+      if (!isSessionValid) {
+        handleAutoLogout();
+        setIsLoading(false);
+        return;
+      }
     }
+    
     setIsLoading(false);
   }, []);
   
-  const login = (userData, token) => {
+  const login = (userData, token, refreshToken, expiration) => {
     setUser(userData);
-    sessionStorage.setItem("user", JSON.stringify(userData));
-    sessionStorage.setItem("token", token);
+    setSessionExpiration(expiration);
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("token", token);
+    if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
+    if (expiration) localStorage.setItem("sessionExpiration", expiration);
   };
   
-
-  const logout = () => {
+  const logout = async () => {
+    await logoutService();
     setUser(null);
-    sessionStorage.removeItem("user");
-    sessionStorage.removeItem("token");
+    setSessionExpiration(null);
   };
   
-
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoading, setUser }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      login, 
+      logout, 
+      isLoading, 
+      setUser,
+      sessionExpiration,
+      handleAutoLogout
+    }}>
       {children}
     </AuthContext.Provider>
   );

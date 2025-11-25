@@ -1,0 +1,236 @@
+.friends-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 100%;
+}
+
+.friends-list__search {
+  .search-bar {
+    width: 100%;
+  }
+}
+
+.friends-list__header {
+  h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary, #111827);
+  }
+}
+
+.friends-list__loading,
+.friends-list__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--text-secondary, #6b7280);
+}
+
+.friends-list__spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid var(--border-color, #e5e7eb);
+  border-top-color: var(--primary-color, #1877f2);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.friends-list__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+  color: var(--error-color, #ef4444);
+
+  .friends-list__retry {
+    padding: 0.5rem 1rem;
+    background: var(--primary-color, #1877f2);
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    font-weight: 500;
+
+    &:hover {
+      background: var(--primary-color-dark, #166fe5);
+    }
+  }
+}
+
+.friends-list__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.friends-list__card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--card-background, #ffffff);
+  border: 1px solid var(--border-color, #e1e8ed);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--border-hover, #d0d7de);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+  }
+}
+
+.friends-list__avatar {
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--avatar-background, #f3f4f6);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.friends-list__info {
+  flex: 1;
+  min-width: 0;
+
+  .friends-list__name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary, #111827);
+    margin: 0 0 0.25rem 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .friends-list__full-name {
+    font-size: 0.875rem;
+    color: var(--text-secondary, #6b7280);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.friends-list__actions {
+  flex-shrink: 0;
+}
+
+.friends-list__remove {
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 50%;
+  background: var(--error-color, #ef4444);
+  color: white;
+  font-size: 0.875rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: var(--error-color-dark, #dc2626);
+    transform: scale(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.friends-list__load-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.friends-list__load-btn {
+  padding: 0.75rem 2rem;
+  background: var(--primary-color, #1877f2);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: var(--primary-color-dark, #166fe5);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .friends-list__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .friends-list__card {
+    padding: 0.75rem;
+  }
+
+  .friends-list__avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .friends-list__card {
+    gap: 0.75rem;
+  }
+  
+  .friends-list__info {
+    .friends-list__name {
+      font-size: 0.875rem;
+    }
+    
+    .friends-list__full-name {
+      font-size: 0.8125rem;
+    }
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// Dark mode support
+.dark-mode .friends-list {
+  --card-background: #1f2937;
+  --border-color: #374151;
+  --border-hover: #4b5563;
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --avatar-background: #374151;
+  --primary-color: #4c9aff;
+  --primary-color-dark: #3a7bd5;
+  --error-color: #f87171;
+  --error-color-dark: #ef4444;
+}

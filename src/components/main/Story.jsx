@@ -16,15 +16,17 @@ import styled from "./Main.module.scss";
 import Button from "../common/Button.jsx";
 const defaultAvatar = `${import.meta.env.VITE_API_URL}/uploads/avatar/default.png`;
 import { useAuth } from "../../context/AuthProvider.jsx";
+import { useRealTimeUser } from "../../hooks/useRealTimeUser";
 const API_URL = import.meta.env.VITE_API_URL
 
 
 function Story() {
   const { user } = useAuth();
+  const currentUser = useRealTimeUser(user);
   const swiperRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
-  const fullAvatarURL = user?.avatar
-    ? `${API_URL}${user.avatar}`
+  const fullAvatarURL = currentUser?.avatar
+    ? `${API_URL}${currentUser.avatar}`
     : defaultAvatar;
 
   useEffect(() => {

@@ -3,14 +3,14 @@ import PostForm from "../main/CreatePost/PostForm";
 import PostList from "../main/CreatePost/PostList";
 import Story from "../main/Story";
 import Refresh from "../../assets/icons/main/CreatePost/refresh.png";
-const API_URL = import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Main = () => {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [deletingPostId, setDeletingPostId] = useState(null); 
-  const [isShowNewPostNoti, setIsShowNewPostNoti] = useState(false); 
+  const [deletingPostId, setDeletingPostId] = useState(null);
+  const [isShowNewPostNoti, setIsShowNewPostNoti] = useState(false);
 
   useEffect(() => {
     fetch(`${API_URL}/posts`)
@@ -28,7 +28,7 @@ const Main = () => {
 
   const handleUpload = async (formData) => {
     try {
-      const token = sessionStorage.getItem("token"); // 
+      const token = sessionStorage.getItem("token"); //
       if (!token) {
         console.log("❌ Không có token, hãy đăng nhập lại!");
         return;
@@ -96,7 +96,6 @@ const Main = () => {
     }
   };
 
-
   const handleAddComment = async (postId, text) => {
     try {
       const token = sessionStorage.getItem("token");
@@ -104,7 +103,7 @@ const Main = () => {
         console.log("❌ Không có token, hãy đăng nhập lại!");
         return;
       }
-  
+
       const res = await fetch(`${API_URL}/comments`, {
         method: "POST",
         headers: {
@@ -113,18 +112,20 @@ const Main = () => {
         },
         body: JSON.stringify({ postId, text }),
       });
-  
+
       if (!res.ok) {
         throw new Error("Lỗi khi thêm bình luận");
       }
-  
+
       const newComment = await res.json();
-  
+
       const updatedComments = [...comments, newComment];
       setComments(updatedComments);
-      sessionStorage.setItem(`comments_${postId}`, JSON.stringify(updatedComments)); // Lưu vào localStorage
+      sessionStorage.setItem(
+        `comments_${postId}`,
+        JSON.stringify(updatedComments)
+      ); // Lưu vào localStorage
       console.log("✅ Thêm bình luận thành công");
-  
     } catch (err) {
       console.log("❌ Lỗi thêm bình luận:", err.message);
     }
@@ -139,19 +140,18 @@ const Main = () => {
             return res.json();
           })
         );
-  
+
         const allCommentsArrays = await Promise.all(commentPromises);
         const allComments = allCommentsArrays.flat(); // Gộp thành 1 mảng duy nhất
-  
+
         setComments(allComments); // Cập nhật 1 lần
       } catch (err) {
         console.error("❌ Lỗi khi fetch bình luận:", err.message);
       }
     };
-  
+
     if (posts.length > 0) fetchAllComments();
   }, [posts]);
-  
 
   const handleDeleteComment = async (commentId) => {
     try {
@@ -161,15 +161,12 @@ const Main = () => {
         return;
       }
 
-      const res = await fetch(
-        `${API_URL}/comments/${commentId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`${API_URL}/comments/${commentId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!res.ok) {
         const errorData = await res.json();
@@ -185,26 +182,32 @@ const Main = () => {
 
   return (
     <div className="lg:w-[45%] t_w-60pc m_pb-80px bg-white text-black dark:bg-gray-900 dark:text-white">
-
-        {isShowNewPostNoti && (
-        <div className="fixed flex-row-center gap-2 top-24 left-1/2 cursor-pointer -translate-x-1/2  z-50 bg-gray-900 text-white p-4 rounded-lg shadow-2xl hover:bg-gray-700 animate__animated animate__fadeIn animate_slow" onClick={()=>window.location.reload()}>
-          <img src={Refresh} width={20} height={20} alt="Refresh" className="animate__animated animate__rubberBand animate_slow animate__infinite" />
+      {isShowNewPostNoti && (
+        <div
+          className="fixed flex-row-center gap-2 top-24 left-1/2 cursor-pointer -translate-x-1/2  z-50 bg-gray-900 text-white p-4 rounded-lg shadow-2xl hover:bg-gray-700 animate__animated animate__fadeIn animate_slow"
+          onClick={() => window.location.reload()}
+        >
+          <img
+            src={Refresh}
+            width={20}
+            height={20}
+            alt="Refresh"
+            className="animate__animated animate__rubberBand animate_slow animate__infinite"
+          />
           <span className="font-bold">Đã có cập nhật mới!</span>
         </div>
-
-         )}
-        <PostForm
-          onUpload={handleUpload}
-          setIsShowNewPostNoti={setIsShowNewPostNoti}
-        />
+      )}
+      <PostForm
+        onUpload={handleUpload}
+        setIsShowNewPostNoti={setIsShowNewPostNoti}
+      />
       <Story />
       <PostList
-      posts={posts}
-      comments={comments}
+        posts={posts}
+        comments={comments}
         onDeleteComment={handleDeleteComment}
         onAddComment={handleAddComment}
         onDelete={handleDelete}
-        
         loading={loading}
         deletingPostId={deletingPostId}
         setComments={setComments}
