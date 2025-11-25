@@ -55,7 +55,7 @@ function UserTabSwitcher ({posts, comments, onAddComment, onDeleteComment, onDel
             }
             </div>
             
-            <div className="mt-6 p-2 bg-white rounded-lg shadow-lg border-[1px] border-gray-300">
+            <div className="mt-6 mx-3 p-2 bg-white rounded-lg shadow-lg border-[1px] border-gray-300">
                 {UserTab.find((tab) => tab.id === activeTab)?.render(props)}
             </div>
         </div>

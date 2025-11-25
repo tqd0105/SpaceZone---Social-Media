@@ -18,18 +18,18 @@ function LeftBar({user,isOpenLeftBar, setIsOpenLeftBar}) {
   const fullAvatarURL = currentUser?.avatar ? `${API_URL}${currentUser.avatar}` : defaultAvatar;  return (
     <div className={`sticky top-[72px] h-[calc(100vh-72px)] t_w-fit sm:w-1/4 md:w-1/5 lg:w-1/6 xl:w-[25%] t_border-right  t_pt-10px ${isOpenLeftBar  ? "m_fixed m_top-62px m_left-0 m_bg-white m_w-full animate__animated animate__fadeInLeft" : "m_hidden"}`} onClick={()=>setIsOpenLeftBar(false)}>
       <div className="flex flex-col m_flex-row  m_justify-between m_pb-50px h-full"> {/* Thêm container flex để quản lý layout */}
-        <div className="flex-grow flex flex-col m_flex-row m_justify-between align-center justify-between  overflow-y-auto">
+        <div className="flex-grow flex flex-col m_flex-row m_justify-between align-center justify-between   overflow-y-auto">
           {leftbarItems.map((item, index) => (
             <div key={index}>
               <TwoColumns
                 left={<img src={item.icon} width={36} height={36} />}
                 right={<span className="text-base font-semibold text-black">{item.text}</span>}
-                className="flex-row-start t_justify-center gap-4 px-3 py-3 lg:rounded-lg cursor-pointer hover:bg-gray-200 "
+                className="flex-row-start text-white bg-white t_justify-center gap-4 px-3 py-3 lg:rounded-lg cursor-pointer hover:bg-gray-300 "
                 classNameRight="t_hidden"
               />
             </div>
           ))}
-          <NavLink to="/home" className={`flex-row-center `}>
+          <NavLink to="/home" className={`flex-row-center bg-white`}>
           <Text
             className="w-3/4 font-semibold py-3 rounded-full bg-black text-white cursor-pointer t_hidden hover:bg-gray-900 text-center mx-3 mb-3"
             size="16px"
@@ -39,7 +39,7 @@ function LeftBar({user,isOpenLeftBar, setIsOpenLeftBar}) {
         </div>
         <div className="h-[1px] bg-gray-200 "></div>
         {/* Profile section at bottom */}
-        <Link to={`/${currentUser?.username || user?.username}`} className="mt-auto"> 
+        <Link to={`/${currentUser?.username || user?.username}`} className="mt-auto bg-white"> 
           <TwoColumns
             left={
               <TwoColumns
