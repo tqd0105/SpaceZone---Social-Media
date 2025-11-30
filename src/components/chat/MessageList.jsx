@@ -1,19 +1,22 @@
 import { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import styles from './MessageList.module.scss';
+import ShareMessage from './ShareMessage';
+
+const API_URL = import.meta.env.VITE_API_URL;
+const defaultAvatar = `${API_URL}/uploads/avatar/default.png`;
 
 const MessageList = ({ 
-  messages, 
+  messages = [], 
   currentUserId, 
-  loading, 
-  typingUsers, 
-  onlineUsers 
+  loading = false, 
+  typingUsers = new Set(), 
+  onlineUsers = new Map() 
 }) => {
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
-
-  console.log(`[MessageList] Rendering ${messages.length} messages, typing: ${typingUsers.size}`);
 
   // Auto scroll to bottom when new messages arrive
   useEffect(() => {
@@ -37,17 +40,21 @@ const MessageList = ({
   };
 
   const isMessageFromCurrentUser = (message) => {
-    return message.sender._id === currentUserId;
+    return message?.sender?._id === currentUserId;
   };
 
   const renderMessage = (message, index) => {
+    // Validate message structure
+    if (!message || !message.sender || !message.content) {
+      console.warn('[MessageList] Invalid message:', message);
+      return null;
+    }
+
     const isOwn = isMessageFromCurrentUser(message);
     const prevMessage = index > 0 ? messages[index - 1] : null;
-    const nextMessage = index < messages.length - 1 ? messages[index + 1] : null;
     
     // Check if this message is from different sender than previous
-    const isFirstInGroup = !prevMessage || prevMessage.sender._id !== message.sender._id;
-    const isLastInGroup = !nextMessage || nextMessage.sender._id !== message.sender._id;
+    const isFirstInGroup = !prevMessage || prevMessage.sender?._id !== message.sender._id;
 
     return (
       <div
@@ -58,9 +65,17 @@ const MessageList = ({
         {!isOwn && isFirstInGroup && (
           <div className={styles.messageAvatar}>
             <img 
-              src={message.sender.avatar || '/default-avatar.png'} 
+              src={message.sender.avatar 
+                ? (message.sender.avatar.startsWith('http') 
+                    ? message.sender.avatar 
+                    : `${API_URL}${message.sender.avatar}`)
+                : defaultAvatar
+              } 
               alt={message.sender.name}
               className={styles.avatar}
+              onError={(e) => {
+                e.target.src = defaultAvatar;
+              }}
             />
           </div>
         )}
@@ -75,7 +90,7 @@ const MessageList = ({
           {!isOwn && isFirstInGroup && (
             <div className={styles.senderName}>
               {message.sender.name}
-              {onlineUsers.has(message.sender._id) && (
+              {onlineUsers?.has && onlineUsers.has(message.sender._id) && (
                 <span className={styles.onlineIndicator}>•</span>
               )}
             </div>
@@ -83,9 +98,20 @@ const MessageList = ({
           
           {/* Message bubble */}
           <div className={`${styles.messageBubble} ${isOwn ? styles.ownBubble : styles.otherBubble}`}>
-            <div className={styles.messageText}>
-              {message.content}
-            </div>
+            {/* Render different content based on message type */}
+            {message.type === 'share' && message.sharedPost ? (
+              <ShareMessage 
+                sharedPost={message.sharedPost}
+                onOpenPost={(postId) => {
+                  // Handle opening the shared post
+                  console.log('Opening shared post:', postId);
+                }}
+              />
+            ) : (
+              <div className={styles.messageText}>
+                {message.content}
+              </div>
+            )}
             
             {/* Message status and time */}
             <div className={styles.messageFooter}>
@@ -93,15 +119,28 @@ const MessageList = ({
                 {formatTime(message.createdAt)}
               </span>
               
-              {/* Read status for own messages */}
+              {/* Message status indicator */}
               {isOwn && (
-                <div className={styles.readStatus}>
-                  {message.readBy && message.readBy.length > 0 ? (
-                    <span className={styles.read}>✓✓</span>
-                  ) : (
-                    <span className={styles.sent}>✓</span>
+                <>
+                  {/* Show custom status if available (optimistic updates) */}
+                  {message.status && (message.status === 'sending' || message.status === 'failed') && (
+                    <span className={styles.messageStatus}>
+                      {message.status === 'sending' && '⏳'}
+                      {message.status === 'failed' && '❌'}
+                    </span>
                   )}
-                </div>
+                  
+                  {/* Show read status for normal messages (no custom status) */}
+                  {(!message.status || message.status === 'sent') && (
+                    <div className={styles.readStatus}>
+                      {message.readBy && message.readBy.length > 0 ? (
+                        <span className={styles.read}>✓✓</span>
+                      ) : (
+                        <span className={styles.sent}>✓</span>
+                      )}
+                    </div>
+                  )}
+                </>
               )}
               
               {/* Edited indicator */}
@@ -116,11 +155,11 @@ const MessageList = ({
   };
 
   const renderTypingIndicator = () => {
-    if (typingUsers.size === 0) return null;
+    if (!typingUsers?.size || typingUsers.size === 0) return null;
 
     const typingUsersList = Array.from(typingUsers)
       .map(userId => {
-        const user = onlineUsers.get(userId);
+        const user = onlineUsers?.get ? onlineUsers.get(userId) : null;
         return user?.name || 'Ai đó';
       })
       .filter(Boolean);
@@ -186,7 +225,15 @@ const MessageList = ({
         )}
 
         {/* Messages */}
-        {messages.map((message, index) => renderMessage(message, index))}
+        {messages.map((message, index) => {
+          // Skip invalid messages
+          if (!message || !message._id) {
+            console.warn(`[MessageList] Skipping invalid message at index ${index}:`, message);
+            return null;
+          }
+          
+          return renderMessage(message, index);
+        }).filter(Boolean)}
 
         {/* Typing indicator */}
         {renderTypingIndicator()}
@@ -196,6 +243,14 @@ const MessageList = ({
       </div>
     </div>
   );
+};
+
+MessageList.propTypes = {
+  messages: PropTypes.array,
+  currentUserId: PropTypes.string,
+  loading: PropTypes.bool,
+  typingUsers: PropTypes.object,
+  onlineUsers: PropTypes.object
 };
 
 export default MessageList;
