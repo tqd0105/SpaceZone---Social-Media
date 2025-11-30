@@ -28,10 +28,11 @@ const defaultAvatar = `${import.meta.env.VITE_API_URL}/uploads/avatar/default.pn
 import CommentDetail from "../CreatePost/CommentDetail";
 import { Link } from "react-router-dom";
 import { useRealTimeUser } from "../../../hooks/useRealTimeUser";
+import { FriendRequestsList } from "../../friends";
 const API_URL = import.meta.env.VITE_API_URL
 
 function PostList({
-  posts,
+  posts = [], // Add default empty array
   comments,
   onDelete,
   onAddComment,
@@ -52,13 +53,16 @@ function PostList({
   const [selectedReaction, setSelectedReaction] = useState({});
   const [isOpenCommentDetail, setIsOpenCommentDetail] = useState(null);
   const [isShowShare, setIsShowShare] = useState(false);
+  const [isShowFriendRequests, setIsShowFriendRequests] = useState(false);
   const postEndRef = useRef(null);
 
   useEffect(() => {
     // Lấy bình luận từ localStorage nếu có
-    const storedComments = localStorage.getItem(`comments_${posts[0]?.id}`);
-    if (storedComments) {
-      setComments(JSON.parse(storedComments)); // Set bình luận từ localStorage vào state
+    if (Array.isArray(posts) && posts.length > 0) {
+      const storedComments = localStorage.getItem(`comments_${posts[0]?.id}`);
+      if (storedComments) {
+        setComments(JSON.parse(storedComments)); // Set bình luận từ localStorage vào state
+      }
     }
   }, [posts, setComments]);
 
@@ -119,7 +123,7 @@ function PostList({
   // Khởi tạo số lượt thích ngẫu nhiên cho mỗi bài post
   const [randomLikes, setRandomLikes] = useState(() => {
     const storedLikes = localStorage.getItem("randomLikes");
-    const sessionLikes = sessionStorage.getItem("randomLikes");
+    const sessionLikes = localStorage.getItem("randomLikes");
 
     if (storedLikes) {
       return JSON.parse(storedLikes);
@@ -127,25 +131,27 @@ function PostList({
       return JSON.parse(sessionLikes);
     }
 
-    // Nếu localStorage và sessionStorage đều không có, tạo số like ngẫu nhiên
-    const initialLikes = posts.reduce((acc, post) => {
+    // Nếu localStorage và localStorage đều không có, tạo số like ngẫu nhiên
+    const initialLikes = Array.isArray(posts) ? posts.reduce((acc, post) => {
       acc[post._id] = Math.floor(Math.random() * 100);
       return acc;
-    }, {});
+    }, {}) : {};
 
-    // Lưu vào sessionStorage để tránh bị reset nếu xóa localStorage
-    sessionStorage.setItem("randomLikes", JSON.stringify(initialLikes));
+    // Lưu vào localStorage để tránh bị reset nếu xóa localStorage
+    localStorage.setItem("randomLikes", JSON.stringify(initialLikes));
     return initialLikes;
   });
 
   useEffect(() => {
     setRandomLikes((prevLikes) => {
       const newLikes = { ...prevLikes };
-      posts.forEach((post) => {
-        if (!newLikes[post._id]) {
-          newLikes[post._id] = Math.floor(Math.random() * 1000) + 100;
-        }
-      });
+      if (Array.isArray(posts)) {
+        posts.forEach((post) => {
+          if (!newLikes[post._id]) {
+            newLikes[post._id] = Math.floor(Math.random() * 1000) + 100;
+          }
+        });
+      }
       return newLikes;
     });
   }, [posts]);
@@ -192,8 +198,33 @@ function PostList({
 
   return (
     <div>
-      {posts.length === 0 ? (
-        <p className="font-bold p-2">Chưa có bài viết nào</p>
+      {!Array.isArray(posts) || posts.length === 0 ? (
+        <div className="bg-white rounded-lg shadow-md border border-gray-300 p-6 text-center my-4">
+          <div className="flex flex-col items-center gap-4">
+            <div className="text-6xl">👥</div>
+            <h3 className="text-lg font-bold text-gray-700">Chưa có bài viết nào</h3>
+            <p className="text-gray-500 max-w-md">
+              {!Array.isArray(posts) ? 
+                "Có lỗi khi tải bài viết. Vui lòng thử lại." :
+                "Bạn chưa có bạn bè nào hoặc bạn bè chưa đăng bài viết. Hãy kết bạn để xem bài viết của họ!"
+              }
+            </p>
+            <div className="flex gap-2 mt-2">
+              <button 
+                onClick={() => setIsShowFriendRequests(true)}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium"
+              >
+                Tìm bạn bè
+              </button>
+              <button 
+                onClick={() => window.location.reload()}
+                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-medium"
+              >
+                Làm mới
+              </button>
+            </div>
+          </div>
+        </div>
       ) : (
         posts.map((post) => {
           const fullAvatarURL = post.author?.avatar
@@ -229,7 +260,11 @@ function PostList({
 
               {isShowShare === post._id && (
                 <div>
-                  <ShareComponent onClose={() => setIsShowShare(null)} />
+                  <ShareComponent 
+                    onClose={() => setIsShowShare(null)} 
+                    postId={post._id}
+                    postData={post}
+                  />
                 </div>
               )}
 
@@ -481,6 +516,12 @@ function PostList({
           );
         })
       )}
+      
+      {/* Friend Requests Modal */}
+      <FriendRequestsList 
+        isOpen={isShowFriendRequests}
+        onClose={() => setIsShowFriendRequests(false)}
+      />
     </div>
   );
 }

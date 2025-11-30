@@ -52,13 +52,34 @@ function Profile() {
       }
     };
     fetchUser();
-  }, [username]);
+
+    // Lắng nghe event userUpdated từ EditProfile
+    const handleUserUpdated = () => {
+      const updatedUser = JSON.parse(localStorage.getItem("user"));
+      if (updatedUser && isOwnProfile) {
+        setProfileUser(updatedUser);
+      }
+    };
+
+    window.addEventListener('userUpdated', handleUserUpdated);
+    return () => window.removeEventListener('userUpdated', handleUserUpdated);
+  }, [username, isOwnProfile]);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.log("❌ Không có token, hãy đăng nhập lại!");
+          return;
+        }
+
         // 1. Lấy tất cả bài viết
-        const response = await fetch(`${API_URL}/posts`);
+        const response = await fetch(`${API_URL}/posts`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch posts');
         }

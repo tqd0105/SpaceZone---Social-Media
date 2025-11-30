@@ -193,8 +193,17 @@ function Header() {
 
     try {
       if (postCache.current.length === 0) {
-        const response = await fetch(`${API_URL}/posts`);
-        console.log(response);
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.log("❌ Không có token, hãy đăng nhập lại!");
+          return;
+        }
+
+        const response = await fetch(`${API_URL}/posts`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
 
         if (!response.ok) {
           throw new Error("Không thể tìm kiếm bài viết");
@@ -247,10 +256,9 @@ function Header() {
 
   const controlCenterIcons = [
     { icon: HomeIcon, link: "/home" },
-    { icon: FriendIcon, link: "/home" },
-    { icon: WatchIcon, link: "/home" },
-    { icon: GroupIcon, link: "/home" },
-    { icon: GameIcon, link: "/home" },
+    { icon: WatchIcon, link: "/watch" },
+    { icon: GroupIcon, link: "/groups" },
+    { icon: GameIcon, link: "/gaming" },
     { icon: Options }
   ];
 
@@ -445,16 +453,11 @@ function Header() {
             className="flex-row-center gap-2 "
             classNames={`rounded-full p-2 hover:bg-gray-200 cursor-pointer ${styles.bgElement}`}
             onClickControlCenter={(index) => {
-              console.log('🖥️ [Header] Desktop ControlBar clicked, index:', index);
               if (index === 0) {
-                console.log('💬 [Header] Chat icon clicked');
                 toggleChat();
               } else if (index === 1) {
-                console.log('👥 [Header] Friend requests icon clicked');
-                console.log('🔧 [Debug] Setting isShowFriendRequests to true');
                 setIsShowFriendRequests(true);
               } else {
-                console.log('🔧 [Debug] Other icon clicked, index:', index);
                 setActiveControlCenter(index);
               }
             }}
@@ -511,7 +514,7 @@ function Header() {
                   <div className="flex items-center justify-between m_flex-row py-2 cursor-pointer hover:bg-gray-100 rounded-md px-2">
                     <div className="flex items-center m_flex-row gap-2">
                       <Icon src={Help} width={25} height={25} />
-                      <span className="font-bold">Hỗ trợ</span>
+                      <span className="font-bold text-black">Hỗ trợ</span>
                     </div>
                     <Icon src={RightArrow} width={15} height={15} />
                   </div>
@@ -568,13 +571,9 @@ function Header() {
           className="flex-row-center gap-2 "
           classNames={`rounded-full p-2 hover:bg-gray-200 cursor-pointer ${styles.bgElement}`}
           onClickControlCenter={(index) => {
-            console.log('📱 [Header] Mobile ControlBar clicked, index:', index);
             if (index === 0) {
-              console.log('💬 [Header] Chat icon clicked (mobile)');
               toggleChat();
             } else if (index === 1) {
-              console.log('👥 [Header] Friend requests icon clicked (mobile)');
-              console.log('🔧 [Debug] Setting isShowFriendRequests to true (mobile)');
               setIsShowFriendRequests(true);
             } else {
               setActiveControlCenter(index);

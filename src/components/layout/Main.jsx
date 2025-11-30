@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import PostForm from "../main/CreatePost/PostForm";
 import PostList from "../main/CreatePost/PostList";
 import Story from "../main/Story";
+import { getPosts } from "../../services/postService";
 import Refresh from "../../assets/icons/main/CreatePost/refresh.png";
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -13,10 +14,17 @@ const Main = () => {
   const [isShowNewPostNoti, setIsShowNewPostNoti] = useState(false);
 
   useEffect(() => {
-    fetch(`${API_URL}/posts`)
-      .then((res) => res.json())
-      .then((data) => setPosts(data))
-      .catch((err) => console.log(err));
+    const loadPosts = async () => {
+      try {
+        const data = await getPosts();
+        setPosts(data);
+      } catch (error) {
+        console.log("❌ Lỗi tải bài viết:", error.message);
+        setPosts([]); // Set empty array on error
+      }
+    };
+    
+    loadPosts();
   }, []);
 
   useEffect(() => {
@@ -28,7 +36,7 @@ const Main = () => {
 
   const handleUpload = async (formData) => {
     try {
-      const token = sessionStorage.getItem("token"); //
+      const token = localStorage.getItem("token"); //
       if (!token) {
         console.log("❌ Không có token, hãy đăng nhập lại!");
         return;
@@ -60,7 +68,7 @@ const Main = () => {
     setDeletingPostId(postId);
 
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       console.log("🛠 Token:", token); // Log token
       if (!token) {
         console.log("❌ Không có token, hãy đăng nhập lại!");
@@ -71,7 +79,7 @@ const Main = () => {
       const res = await fetch(`${API_URL}/posts/${postId}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Authorization": `Bearer ${token}`,
         },
       });
       console.log("🛠 Phản hồi từ API:", res); // Log phản hồi
@@ -98,7 +106,7 @@ const Main = () => {
 
   const handleAddComment = async (postId, text) => {
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       if (!token) {
         console.log("❌ Không có token, hãy đăng nhập lại!");
         return;
@@ -121,7 +129,7 @@ const Main = () => {
 
       const updatedComments = [...comments, newComment];
       setComments(updatedComments);
-      sessionStorage.setItem(
+      localStorage.setItem(
         `comments_${postId}`,
         JSON.stringify(updatedComments)
       ); // Lưu vào localStorage
@@ -155,7 +163,7 @@ const Main = () => {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       if (!token) {
         console.log("❌ Không có token, hãy đăng nhập lại!");
         return;
@@ -181,7 +189,7 @@ const Main = () => {
   };
 
   return (
-    <div className="lg:w-[45%] t_w-60pc m_pb-80px bg-white text-black dark:bg-gray-900 dark:text-white">
+    <div className="lg:w-[45%]  t_w-60pc m_pb-80px bg-white text-black dark:bg-gray-900 dark:text-white">
       {isShowNewPostNoti && (
         <div
           className="fixed flex-row-center gap-2 top-24 left-1/2 cursor-pointer -translate-x-1/2  z-50 bg-gray-900 text-white p-4 rounded-lg shadow-2xl hover:bg-gray-700 animate__animated animate__fadeIn animate_slow"
