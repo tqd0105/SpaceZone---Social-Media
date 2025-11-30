@@ -40,7 +40,7 @@ function RightBar({isShowRightBar}) {
         <h3 className="bg-gradient-to-r from-pink-400 to-red-800 bg-clip-text text-transparent font-extrabold text-lg">Giải trí ngay</h3>
       </div>
       {gameSuggests.map((gameSuggest, index)=> (
-        <div className="flex-row-between gap-2 py-2 px-4 hover:bg-gray-100 rounded-lg cursor-pointer">
+        <div key={index} className="flex-row-between gap-2 py-2 px-4 hover:bg-gray-100 rounded-lg cursor-pointer">
           <div className="flex-row-start gap-2">
             <div>
               <img src={gameSuggest.image} width={60} height={100} className="rounded-xl shadow-lg border-2 border-black" alt="" />
@@ -103,7 +103,7 @@ function RightBar({isShowRightBar}) {
         </div>
       ))}
 
-      <div div className="h-[1px] bg-gray-200 my-4"></div>
+      <div className="h-[1px] bg-gray-200 my-4"></div>
 
       {/* Lời mời kết bạn */}
       <div >
@@ -133,6 +133,7 @@ function RightBar({isShowRightBar}) {
                                 key={index}
                                 src={friend}
                                 className="rounded-full w-5"
+                                alt={`Friend ${index + 1}`}
                               />
                             ))}
                           </div>
@@ -225,6 +226,7 @@ function RightBar({isShowRightBar}) {
       <div>
         {listFriends.map((friend, index) => (
           <TwoColumns
+            key={index}
             left={
               <img
                 key={index}
@@ -271,6 +273,7 @@ function RightBar({isShowRightBar}) {
       <div>
         {listGroups.map((group, index) => (
           <TwoColumns
+            key={index}
             left={
               <img
                 src={group.image}

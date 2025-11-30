@@ -15,10 +15,18 @@ const API_URL = import.meta.env.VITE_API_URL
 function LeftBar({user,isOpenLeftBar, setIsOpenLeftBar}) {
   const currentUser = useRealTimeUser(user);
   
-  const fullAvatarURL = currentUser?.avatar ? `${API_URL}${currentUser.avatar}` : defaultAvatar;  return (
-    <div className={`sticky top-[72px] h-[calc(100vh-72px)] t_w-fit sm:w-1/4 md:w-1/5 lg:w-1/6 xl:w-[25%] t_border-right  t_pt-10px ${isOpenLeftBar  ? "m_fixed m_top-62px m_left-0 m_bg-white m_w-full animate__animated animate__fadeInLeft" : "m_hidden"}`} onClick={()=>setIsOpenLeftBar(false)}>
+  const fullAvatarURL = currentUser?.avatar ? `${API_URL}${currentUser.avatar}` : defaultAvatar;
+  
+  const handleLeftBarClick = () => {
+    if (typeof setIsOpenLeftBar === 'function') {
+      setIsOpenLeftBar(false);
+    }
+  };
+  
+  return (
+    <div className={`sticky top-[72px] h-[calc(100vh-72px)] t_w-fit sm:w-1/4 md:w-1/5 lg:w-1/6 xl:w-[25%] t_border-right  t_pt-10px ${isOpenLeftBar  ? "m_fixed m_top-62px m_left-0 m_bg-white m_w-full animate__animated animate__fadeInLeft" : "m_hidden"}`} onClick={handleLeftBarClick}>
       <div className="flex flex-col m_flex-row  m_justify-between m_pb-50px h-full"> {/* Thêm container flex để quản lý layout */}
-        <div className="flex-grow flex flex-col m_flex-row m_justify-between align-center justify-between   overflow-y-auto">
+        <div className="flex-grow flex flex-col m_flex-row m_justify-between bg-white align-center justify-between   overflow-y-auto">
           {leftbarItems.map((item, index) => (
             <div key={index}>
               <TwoColumns
