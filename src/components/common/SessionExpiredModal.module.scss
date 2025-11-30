@@ -1,0 +1,262 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.sessionExpiredModal {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 420px;
+  max-height: 90vh;
+  overflow: hidden;
+  animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 1px solid #e0e0e0;
+
+  [data-theme="dark"] & {
+    background: #2c3e50;
+    border: 1px solid #34495e;
+    color: #ecf0f1;
+  }
+}
+
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  padding: 40px 30px 20px;
+  background: #fef9e7;
+
+  [data-theme="dark"] & {
+    background: #3e3024;
+  }
+}
+
+.warningIcon {
+  font-size: 64px;
+  animation: pulseWarning 2s infinite;
+}
+
+  svg {
+    filter: drop-shadow(0 2px 4px rgba(255, 107, 107, 0.3));
+  }
+
+
+.modalContent {
+  padding: 0 30px 20px;
+  text-align: center;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 20px;
+  letter-spacing: -0.5px;
+
+  [data-theme="dark"] & {
+    color: #ecf0f1;
+  }
+}
+
+.message {
+  margin-bottom: 25px;
+  
+  p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #5a6c7d;
+    margin: 0 0 12px;
+
+    [data-theme="dark"] & {
+      color: #bdc3c7;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+      font-weight: 500;
+      color: #34495e;
+
+      [data-theme="dark"] & {
+        color: #ecf0f1;
+      }
+    }
+  }
+}
+
+.securityInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border-left: 4px solid #3498db;
+
+  [data-theme="dark"] & {
+    background: #34495e;
+    border-left-color: #5dade2;
+  }
+}
+
+.securityItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #5a6c7d;
+
+  [data-theme="dark"] & {
+    color: #bdc3c7;
+  }
+}
+
+.securityIcon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.modalActions {
+  padding: 20px 30px 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.confirmButton {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+  min-width: 180px;
+  justify-content: center;
+
+  &:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3);
+  }
+}
+
+.buttonIcon {
+  font-size: 18px;
+}
+
+.modalFooter {
+  padding: 15px 30px;
+  background: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+  text-align: center;
+  font-size: 12px;
+  color: #7f8c8d;
+  font-weight: 500;
+
+  [data-theme="dark"] & {
+    background: #34495e;
+    border-top: 1px solid #4a5f7a;
+    color: #95a5a6;
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7) translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes pulseWarning {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+// Responsive
+@media (max-width: 480px) {
+  .sessionExpiredModal {
+    width: 95%;
+    margin: 20px;
+  }
+
+  .iconContainer {
+    padding: 30px 20px 15px;
+  }
+
+  .warningIcon {
+    font-size: 48px;
+  }
+
+  .modalContent {
+    padding: 0 20px 15px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .message p {
+    font-size: 14px;
+  }
+
+  .modalActions {
+    padding: 15px 20px 20px;
+  }
+
+  .confirmButton {
+    padding: 14px 24px;
+    font-size: 15px;
+    min-width: 160px;
+  }
+
+  .modalFooter {
+    padding: 12px 20px;
+    font-size: 11px;
+  }
+}
