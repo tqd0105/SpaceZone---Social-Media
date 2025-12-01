@@ -1,0 +1,223 @@
+/* OutgoingCallModal.module.scss */
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  padding: 3rem 2rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  min-width: 320px;
+  max-width: 400px;
+  position: relative;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  @media (max-width: 480px) {
+    margin: 1rem;
+    min-width: auto;
+    width: calc(100% - 2rem);
+    padding: 2rem 1.5rem;
+  }
+}
+
+.avatarContainer {
+  position: relative;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.recipientAvatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 480px) {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.callTypeIcon {
+  position: absolute;
+  bottom: 0;
+  right: calc(50% - 60px);
+  background: #007bff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  border: 3px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  @media (max-width: 480px) {
+    right: calc(50% - 50px);
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+}
+
+.callInfo {
+  margin-bottom: 2rem;
+}
+
+.recipientName {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
+  }
+}
+
+.callStatus {
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  min-height: 1.5rem;
+}
+
+.callType {
+  font-size: 0.95rem;
+  color: #95a5a6;
+  margin: 0;
+}
+
+.actions {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.endButton {
+  background: #e74c3c;
+  border: none;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+
+  &:hover {
+    background: #c0392b;
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(231, 76, 60, 0.6);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  .icon {
+    font-size: 1.5rem;
+    transform: rotate(135deg);
+    filter: invert(1);
+  }
+}
+
+.connectionStatus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.pulseIndicator {
+  width: 8px;
+  height: 8px;
+  background: #27ae60;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .modal {
+    background: rgba(45, 52, 54, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .recipientName {
+    color: #ecf0f1;
+  }
+
+  .callStatus {
+    color: #bdc3c7;
+  }
+
+  .callType {
+    color: #95a5a6;
+  }
+
+  .connectionStatus {
+    color: #bdc3c7;
+  }
+}
+
+/* Animation for modal entrance */
+.modal {
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

@@ -1,5 +1,5 @@
 // ChatWindow.module.scss
-@import '../../assets/styles/abstracts/variables';
+// @import '../../assets/styles/abstracts/variables';
 // @import '../../assets/styles/abstracts/mixins';
 
 .chatWindow {
@@ -116,15 +116,35 @@
   background: var(--warning-bg, #fff3cd);
   border-bottom: 1px solid var(--warning-border, #ffeaa7);
   
-  .offline {
+  .connectionMessage {
     color: var(--warning-text, #856404);
     font-size: 14px;
     display: flex;
     align-items: center;
     gap: 8px;
+  }
+
+  .connectionError {
+    margin-top: 8px;
+    padding: 8px;
+    background: var(--error-bg, #f8d7da);
+    border-radius: 4px;
+    color: var(--error-text, #721c24);
+    font-size: 13px;
     
-    &::before {
-      content: "⚠️";
+    .retryButton {
+      margin-left: 8px;
+      padding: 4px 8px;
+      background: var(--error-text, #721c24);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
 
@@ -132,8 +152,18 @@
     background: var(--warning-bg-dark, #3d3314);
     border-bottom-color: var(--warning-border-dark, #5a4a1a);
     
-    .offline {
+    .connectionMessage {
       color: var(--warning-text-dark, #ffd700);
+    }
+    
+    .connectionError {
+      background: var(--error-bg-dark, #2d1b1e);
+      color: var(--error-text-dark, #ff6b6b);
+      
+      .retryButton {
+        background: var(--error-text-dark, #ff6b6b);
+        color: white;
+      }
     }
   }
 }

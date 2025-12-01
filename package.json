@@ -26,6 +26,7 @@
     "express": "^4.21.2",
     "lottie-react": "^2.4.1",
     "lottie-web": "^5.12.2",
+    "lucide-react": "^0.555.0",
     "mongodb": "^6.16.0",
     "pm2": "^5.4.3",
     "react": "^19.0.0",

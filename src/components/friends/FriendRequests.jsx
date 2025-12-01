@@ -15,7 +15,6 @@ const FriendRequests = ({
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  console.log('📨 FriendRequests rendered with type:', initialType);
 
   // Load friend requests
   const loadRequests = useCallback(async (type = activeTab, newPage = 1, reset = false) => {
@@ -23,7 +22,6 @@ const FriendRequests = ({
       setLoading(true);
       setError(null);
 
-      console.log(`📥 Loading friend requests - type: ${type}, page: ${newPage}`);
 
       const response = await getFriendRequests({
         type,
@@ -42,7 +40,6 @@ const FriendRequests = ({
       setPage(newPage);
       setHasMore(newRequests.length === 20); // Assume more if we got full page
 
-      console.log(`✅ Loaded ${newRequests.length} friend requests (type: ${type}, page: ${newPage})`);
 
     } catch (error) {
       console.error('❌ Error loading friend requests:', error);
@@ -59,7 +56,6 @@ const FriendRequests = ({
 
   // Handle tab change
   const handleTabChange = (type) => {
-    console.log(`🔄 Switching to tab: ${type}`);
     setActiveTab(type);
     setPage(1);
     setHasMore(true);
@@ -67,7 +63,6 @@ const FriendRequests = ({
 
   // Handle request accepted
   const handleRequestAccepted = (request) => {
-    console.log(`✅ Request accepted:`, request);
     
     // Remove from requests list since it's now accepted
     setRequests(prev => prev.filter(req => req._id !== request._id));
@@ -78,7 +73,6 @@ const FriendRequests = ({
 
   // Handle request rejected
   const handleRequestRejected = (request) => {
-    console.log(`❌ Request rejected:`, request);
     
     // Remove from requests list since it's now rejected
     setRequests(prev => prev.filter(req => req._id !== request._id));

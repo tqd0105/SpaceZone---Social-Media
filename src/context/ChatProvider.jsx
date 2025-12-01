@@ -3,6 +3,7 @@ import { createContext, useReducer, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useChatSocket } from '../hooks/useChatSocket';
 import { chatService } from '../services/chatService';
+import { useAuth } from './AuthProvider';
 
 const ChatContext = createContext();
 
@@ -14,6 +15,7 @@ const CHAT_ACTIONS = {
   SET_ACTIVE_CONVERSATION: 'SET_ACTIVE_CONVERSATION',
   SET_MESSAGES: 'SET_MESSAGES',
   ADD_MESSAGE: 'ADD_MESSAGE',
+  REMOVE_MESSAGE: 'REMOVE_MESSAGE',
   UPDATE_MESSAGE: 'UPDATE_MESSAGE',
   SET_TYPING_USERS: 'SET_TYPING_USERS',
   SET_ONLINE_USERS: 'SET_ONLINE_USERS',
@@ -81,7 +83,10 @@ const chatReducer = (state, action) => {
 
     case CHAT_ACTIONS.ADD_MESSAGE: {
       const { conversationId, message } = action.payload;
-      return {
+      console.log(`📋 [Reducer] ADD_MESSAGE - ConversationId: ${conversationId}, Message:`, message);
+      console.log(`📋 [Reducer] Current messages for ${conversationId}:`, state.messages[conversationId]?.length || 0);
+      
+      const updatedState = {
         ...state,
         messages: {
           ...state.messages,
@@ -89,6 +94,22 @@ const chatReducer = (state, action) => {
             ...(state.messages[conversationId] || []),
             message,
           ],
+        },
+      };
+      
+      console.log(`📋 [Reducer] Updated messages for ${conversationId}:`, updatedState.messages[conversationId]?.length || 0);
+      return updatedState;
+    }
+
+    case CHAT_ACTIONS.REMOVE_MESSAGE: {
+      const messageId = action.payload;
+      const conversationId = state.activeConversationId;
+      
+      return {
+        ...state,
+        messages: {
+          ...state.messages,
+          [conversationId]: state.messages[conversationId]?.filter(msg => msg._id !== messageId) || [],
         },
       };
     }
@@ -170,27 +191,62 @@ const chatReducer = (state, action) => {
 export const ChatProvider = ({ children }) => {
   const [state, dispatch] = useReducer(chatReducer, initialState);
   const socket = useChatSocket();
-
-  console.log('📌 [ChatProvider] Current state:', {
-    conversations: state.conversations.length,
-    activeConversationId: state.activeConversationId,
-    isChatOpen: state.isChatOpen,
-    socketConnected: socket.isConnected,
-  });
+  const { user } = useAuth();
 
   // Socket event handlers
   useEffect(() => {
     if (!socket.socket || !socket.isConnected) return;
 
-    console.log('👂 [ChatProvider] Setting up socket listeners...');
 
     // Handle new messages
     const handleNewMessage = (message) => {
-      console.log('📬 [ChatProvider] New message received:', message);
+      
+      const currentUserId = user?.id || user?._id;
+      const conversationId = message.conversation || message.conversationId;
+      const conversationMessages = state.messages[conversationId] || [];
+      
+      // Check if this message already exists (to prevent duplicates)
+      const existingMessage = conversationMessages.find(msg => 
+        msg._id === message._id || 
+        (msg.content === message.content && 
+         msg.sender?._id === message.sender?._id &&
+         Math.abs(new Date(msg.createdAt) - new Date(message.createdAt)) < 5000) // Within 5 seconds
+      );
+      
+      if (existingMessage && !existingMessage._id.startsWith('temp-')) {
+        console.log('⚠️ [ChatProvider] Duplicate message detected, ignoring:', message._id);
+        return;
+      }
+      
+      // Check if this is a message from current user (to replace optimistic message)
+      if (message.sender._id === currentUserId) {
+                
+        const optimisticMsg = conversationMessages.find(msg => {
+          const isTemp = msg._id.startsWith('temp-');
+          const sameContent = msg.content === message.content;
+          const sameTime = Math.abs(new Date(msg.createdAt) - new Date(message.createdAt)) < 10000; // Within 10 seconds
+          return isTemp && sameContent && sameTime;
+        });
+        
+        if (optimisticMsg) {
+          console.log('🗑️ [ChatProvider] Removing optimistic message:', optimisticMsg._id);
+          dispatch({ 
+            type: CHAT_ACTIONS.REMOVE_MESSAGE, 
+            payload: optimisticMsg._id 
+          });
+        } else {
+          console.log('⚠️ [ChatProvider] No matching optimistic message found, but this is our message - skip adding');
+          return; // Don't add our own message if no optimistic message to replace
+        }
+      } else {
+        console.log('📬 [ChatProvider] This is a message from another user - showing immediately');
+      }
+      
+      console.log('📝 [ChatProvider] Adding real message to state');
       dispatch({
         type: CHAT_ACTIONS.ADD_MESSAGE,
         payload: {
-          conversationId: message.conversationId,
+          conversationId,
           message,
         },
       });
@@ -199,29 +255,42 @@ export const ChatProvider = ({ children }) => {
       dispatch({
         type: CHAT_ACTIONS.UPDATE_CONVERSATION,
         payload: {
-          _id: message.conversationId,
+          _id: conversationId,
           lastMessage: message,
           lastActivity: new Date(),
         },
       });
+      
+      // Force re-render by updating message count
+      console.log('📬 [ChatProvider] Message added, triggering UI update');
     };
 
-    // Handle typing indicators
-    const handleTyping = ({ conversationId, userId, isTyping, user }) => {
-      console.log(`⌨️ [ChatProvider] Typing event: ${user?.name} ${isTyping ? 'started' : 'stopped'} typing`);
+    // Handle user typing (server sends separate events)
+    const handleUserTyping = ({ conversationId, userId, user }) => {
+      console.log(`⌨️ [ChatProvider] User started typing: ${user?.name || userId} in conversation ${conversationId}`);
       
       dispatch({
         type: CHAT_ACTIONS.SET_TYPING_USERS,
         payload: {
           conversationId,
-          users: isTyping ? [{ userId, user }] : [],
+          users: [{ userId, user }],
+        },
+      });
+    };
+
+    const handleUserStopTyping = ({ conversationId, userId, user }) => {
+      
+      dispatch({
+        type: CHAT_ACTIONS.SET_TYPING_USERS,
+        payload: {
+          conversationId,
+          users: [],
         },
       });
     };
 
     // Handle message read receipts
     const handleMessageRead = ({ messageId, userId }) => {
-      console.log(`👁️ [ChatProvider] Message read: ${messageId} by ${userId}`);
       dispatch({
         type: CHAT_ACTIONS.MARK_MESSAGE_READ,
         payload: { messageId },
@@ -247,23 +316,24 @@ export const ChatProvider = ({ children }) => {
       });
     };
 
-    // Register event listeners
-    socket.on('new_message', handleNewMessage);
-    socket.on('typing', handleTyping);
-    socket.on('message_read', handleMessageRead);
-    socket.on('user_online', handleUserOnline);
-    socket.on('user_offline', handleUserOffline);
+    // Register event listeners với đúng event names từ server
+    socket.on('message:new', handleNewMessage);
+    socket.on('user:typing', handleUserTyping);
+    socket.on('user:stop_typing', handleUserStopTyping);
+    socket.on('message:read', handleMessageRead);
+    socket.on('user:online', handleUserOnline);
+    socket.on('user:offline', handleUserOffline);
 
     // Cleanup
     return () => {
-      console.log('🧹 [ChatProvider] Cleaning up socket listeners...');
-      socket.off('new_message', handleNewMessage);
-      socket.off('typing', handleTyping);
-      socket.off('message_read', handleMessageRead);
-      socket.off('user_online', handleUserOnline);
-      socket.off('user_offline', handleUserOffline);
+      socket.off('message:new', handleNewMessage);
+      socket.off('user:typing', handleUserTyping);
+      socket.off('user:stop_typing', handleUserStopTyping);
+      socket.off('message:read', handleMessageRead);
+      socket.off('user:online', handleUserOnline);
+      socket.off('user:offline', handleUserOffline);
     };
-  }, [socket, state.onlineUsers]);
+  }, [socket, state.onlineUsers, state.messages, user]);
 
   // API functions
   const loadConversations = useCallback(async () => {
@@ -324,20 +394,90 @@ export const ChatProvider = ({ children }) => {
   const sendMessage = useCallback(async (conversationId, content, type = 'text') => {
     try {
       console.log(`📋 [ChatProvider] Sending message to: ${conversationId}`);
+      console.log('📋 [ChatProvider] Current messages state:', state.messages[conversationId]?.length || 0);
       
-      // Send via Socket.IO for real-time delivery
-      if (socket.isConnected) {
-        await socket.sendMessage(conversationId, content, type);
-      } else {
-        // Fallback to REST API
-        await chatService.sendMessage(conversationId, content, type);
+      // Optimistic update - add message immediately to UI
+      const tempId = `temp-${Date.now()}-${Math.random()}`;
+      const optimisticMessage = {
+        _id: tempId,
+        conversationId,
+        content,
+        type,
+        sender: {
+          _id: user?.id || user?._id,
+          name: user?.name,
+          username: user?.username,
+          avatar: user?.avatar
+        },
+        createdAt: new Date().toISOString(),
+        status: 'sending' // Mark as sending
+      };
+      
+      console.log('📋 [ChatProvider] Adding optimistic message:', optimisticMessage);
+      
+      // Add to local state immediately
+      dispatch({ 
+        type: CHAT_ACTIONS.ADD_MESSAGE, 
+        payload: {
+          conversationId,
+          message: optimisticMessage
+        }
+      });
+      
+      try {
+        console.log('📋 [ChatProvider] Attempting to send message...');
+        
+        // Send via Socket.IO for real-time delivery
+        if (socket.isConnected) {
+          await socket.sendMessage(conversationId, content, type);
+          console.log('✅ [ChatProvider] Message sent via Socket.IO');
+        } else {
+          // Fallback to REST API
+          await chatService.sendMessage(conversationId, content, type);
+          console.log('✅ [ChatProvider] Message sent via REST API');
+        }
+        
+        // Message sent successfully - update status but don't remove
+        // Real message will come via socket and replace this one
+        dispatch({ 
+          type: CHAT_ACTIONS.UPDATE_MESSAGE, 
+          payload: { 
+            conversationId, 
+            messageId: tempId, 
+            updates: { status: 'sent' } 
+          } 
+        });
+        
+      } catch (sendError) {
+        console.error('❌ [ChatProvider] Send failed:', sendError);
+        
+        // Only remove optimistic message for actual send failures, not timeouts
+        if (sendError.message !== 'Message send timeout') {
+          dispatch({ 
+            type: CHAT_ACTIONS.REMOVE_MESSAGE, 
+            payload: tempId 
+          });
+        } else {
+          // For timeouts, just mark as failed but keep visible
+          dispatch({ 
+            type: CHAT_ACTIONS.UPDATE_MESSAGE, 
+            payload: { 
+              conversationId, 
+              messageId: tempId, 
+              updates: { status: 'failed' } 
+            } 
+          });
+        }
+        
+        throw sendError;
       }
+      
     } catch (error) {
       console.error('❌ [ChatProvider] Error sending message:', error);
       dispatch({ type: CHAT_ACTIONS.SET_ERROR, payload: error.message });
       throw error;
     }
-  }, [socket]);
+  }, [socket, user, dispatch]);
 
   const setActiveConversation = useCallback((conversationId) => {
     console.log(`📋 [ChatProvider] Setting active conversation: ${conversationId}`);

@@ -7,7 +7,7 @@ function ControlBar({ icons, size = "30", className, classNames, active, onClick
     <div className={`flex items-center justify-center ${className}`}>
       {icons.map((item, index) => {
         // 🟥 Nếu là icon thứ 6 → không dùng <Link>
-        if (index === 5) {
+        if (index === 4) {
           return (
             <div
               key={index}

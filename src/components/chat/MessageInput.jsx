@@ -1,19 +1,58 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { useCallContext } from '../../context/CallContext';
 import styles from './MessageInput.module.scss';
 
 const MessageInput = ({ 
   onSendMessage, 
   conversationId, 
   socket, 
-  disabled = false 
+  disabled = false,
+  recipient // Add recipient prop for calls
 }) => {
   const [message, setMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const inputRef = useRef(null);
   const typingTimeoutRef = useRef(null);
+  
+  // Call hook
+  const callHookState = useCallContext();
+  const { startCall } = callHookState;
 
-  console.log(`[MessageInput] Rendered for conversation: ${conversationId}`);
+
+  // Handle video call
+  const handleVideoCall = useCallback(async () => {
+    
+    if (!recipient) {
+      console.error('[MessageInput] No recipient provided for call');
+      alert('Không tìm thấy người nhận cuộc gọi');
+      return;
+    }
+    
+    try {
+      const result = await startCall(recipient._id, recipient, 'video');
+    } catch (error) {
+      console.error('[MessageInput] Error starting video call:', error);
+      console.error('[MessageInput] Error stack:', error.stack);
+    }
+  }, [recipient, startCall]);
+
+  // Handle audio call
+  const handleAudioCall = useCallback(async () => {
+    
+    if (!recipient) {
+      console.error('[MessageInput] No recipient provided for call');
+      alert('Không tìm thấy người nhận cuộc gọi');
+      return;
+    }
+    
+    try {
+      const result = await startCall(recipient._id, recipient, 'audio');
+    } catch (error) {
+      console.error('[MessageInput] Error starting audio call:', error);
+      console.error('[MessageInput] Error stack:', error.stack);
+    }
+  }, [recipient, startCall]);
 
   // Focus input when conversation changes
   useEffect(() => {
@@ -47,7 +86,6 @@ const MessageInput = ({
     if (value.trim() && !isTyping) {
       setIsTyping(true);
       socket.emit('typing:start', { conversationId });
-      console.log(`[MessageInput] Started typing in conversation: ${conversationId}`);
     }
 
     // Clear previous timeout
@@ -60,7 +98,6 @@ const MessageInput = ({
       if (isTyping) {
         setIsTyping(false);
         socket.emit('typing:stop', { conversationId });
-        console.log(`[MessageInput] Stopped typing in conversation: ${conversationId}`);
       }
     }, 1000); // Stop typing after 1 second of inactivity
   };
@@ -81,7 +118,6 @@ const MessageInput = ({
 
     try {
       setIsSending(true);
-      console.log(`[MessageInput] Sending message: "${trimmedMessage.substring(0, 50)}..."`);
 
       // Clear typing indicator immediately
       if (isTyping && socket) {
@@ -98,7 +134,6 @@ const MessageInput = ({
       // Send message
       await onSendMessage(trimmedMessage);
       
-      console.log('[MessageInput] Message sent successfully');
 
       // Focus back to input
       if (inputRef.current) {
@@ -143,6 +178,32 @@ const MessageInput = ({
 
       {/* Input area */}
       <div className={styles.inputContainer}>
+        {/* Call buttons */}
+        {recipient && (
+          <div className={styles.callButtons}>
+            <button
+              type="button"
+              className={styles.callButton}
+              onClick={handleAudioCall}
+              disabled={disabled}
+              aria-label="Gọi điện thoại"
+              title="Gọi điện thoại"
+            >
+              📞
+            </button>
+            {/* <button
+              type="button"
+              className={styles.callButton}
+              onClick={handleVideoCall}
+              disabled={disabled}
+              aria-label="Gọi video"
+              title="Gọi video"
+            >
+              📹
+            </button> */}
+          </div>
+        )}
+        
         <div className={styles.inputWrapper}>
           <textarea
             ref={inputRef}
@@ -205,11 +266,11 @@ const MessageInput = ({
       )}
 
       {/* Typing indicator for current user */}
-      {isTyping && (
+      {/* {isTyping && (
         <div className={styles.typingIndicator}>
           <span>Bạn đang nhập...</span>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

@@ -1,10 +1,15 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { formatDistanceToNow } from 'date-fns';
-import { vi } from 'date-fns/locale';
-import styles from './ConversationList.module.scss';
-import { UserSearchModal } from '../friends';
-import { startChatWithFriend } from '../../utils/friendChatIntegration';
+import { useState } from "react";
+import PropTypes from "prop-types";
+import { formatDistanceToNow } from "date-fns";
+import { vi } from "date-fns/locale";
+import styles from "./ConversationList.module.scss";
+import { UserSearchModal } from "../friends";
+import { startChatWithFriend } from "../../utils/friendChatIntegration";
+import { useAuth } from "../../context/AuthProvider";
+import Plus from "../../assets/icons/main/plus.png";
+
+const API_URL = import.meta.env.VITE_API_URL;
+const defaultAvatar = `${API_URL}/uploads/avatar/default.png`;
 
 const ConversationList = ({
   conversations,
@@ -12,90 +17,124 @@ const ConversationList = ({
   onSelectConversation,
   onCreateConversation,
   onlineUsers = new Set(),
-  loading
+  loading,
 }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const { user } = useAuth();
+  const [searchTerm, setSearchTerm] = useState("");
   const [showUserSearch, setShowUserSearch] = useState(false);
   const [showConversationSearch, setShowConversationSearch] = useState(true);
 
-  console.log(`[ConversationList] Rendering ${conversations.length} conversations`);
-
-  const filteredConversations = conversations.filter(conversation => {
+  const filteredConversations = conversations.filter((conversation) => {
     if (!searchTerm.trim()) return true;
-    
-    return conversation.participants.some(participant => 
-      participant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      participant.username.toLowerCase().includes(searchTerm.toLowerCase())
+
+    return conversation.participants.some(
+      (participant) =>
+        participant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        participant.username.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
 
   const formatLastMessageTime = (dateString) => {
-    if (!dateString) return '';
-    
+    if (!dateString) return "";
+
     try {
       const date = new Date(dateString);
       const now = new Date();
       const diffInHours = (now - date) / (1000 * 60 * 60);
-      
+
       if (diffInHours < 24) {
         return formatDistanceToNow(date, { addSuffix: true, locale: vi });
       } else {
-        return date.toLocaleDateString('vi-VN', { 
-          day: '2-digit', 
-          month: '2-digit' 
-        });
+        return date.toLocaleDateString("vi-VN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }).replace(" ", " • ");
       }
     } catch {
-      return '';
+      return "";
     }
   };
 
   const getOtherParticipant = (conversation, currentUserId) => {
-    return conversation.participants.find(p => p._id !== currentUserId);
+    return conversation.participants.find((p) => p._id !== currentUserId);
   };
 
   const renderConversationItem = (conversation) => {
-    const otherParticipant = getOtherParticipant(conversation, 'current-user-id'); // Will be replaced with actual user ID
+    const currentUserId = user?._id || user?.id;
+    const otherParticipant = getOtherParticipant(conversation, currentUserId);
     const isActive = activeConversation?._id === conversation._id;
     const isOnline = otherParticipant && onlineUsers.has(otherParticipant._id);
     const hasUnreadMessages = conversation.unreadCount > 0;
 
+    // Format avatar URL
+    const avatarUrl = otherParticipant?.avatar
+      ? otherParticipant.avatar.startsWith("http")
+        ? otherParticipant.avatar
+        : `${API_URL}${otherParticipant.avatar}`
+      : defaultAvatar;
+
     return (
       <div
         key={conversation._id}
-        className={`${styles.conversationItem} ${isActive ? styles.active : ''}`}
+        className={`${styles.conversationItem} ${
+          isActive ? styles.active : ""
+        }`}
         onClick={() => onSelectConversation(conversation)}
       >
         {/* Avatar */}
         <div className={styles.avatarContainer}>
           <img
-            src={otherParticipant?.avatar || '/default-avatar.png'}
-            alt={otherParticipant?.name || 'User'}
+            src={avatarUrl}
+            alt={otherParticipant?.name || otherParticipant?.username || "User"}
             className={styles.avatar}
+            onError={(e) => {
+              e.target.src = defaultAvatar;
+            }}
           />
+          {hasUnreadMessages && (
+              <div className={styles.unreadBadge}>
+                {conversation.unreadCount > 99
+                  ? "99+"
+                  : conversation.unreadCount}
+              </div>
+            )}
           {isOnline && <div className={styles.onlineIndicator}></div>}
         </div>
 
         {/* Conversation Info */}
         <div className={styles.conversationInfo}>
           <div className={styles.conversationHeader}>
-            <span className={styles.participantName}>
-              {otherParticipant?.name || 'Người dùng'}
-            </span>
-            
+            <div className="flex items-center justify-start gap-1">
             {/* Friendship Status Indicator */}
             {conversation.friendshipStatus && (
-              <div className={`${styles.friendshipStatus} ${styles[`friendshipStatus--${conversation.friendshipStatus}`]}`}>
-                {conversation.friendshipStatus === 'accepted' && '🟢'}
-                {conversation.friendshipStatus === 'pending' && '⏳'}
-                {conversation.friendshipStatus === 'blocked' && '🚫'}
-                {conversation.friendshipStatus === 'none' && '⚠️'}
+              <div
+                className={`${styles.friendshipStatus} ${
+                  styles[`friendshipStatus--${conversation.friendshipStatus}`]
+                }`}
+              >
+                {conversation.friendshipStatus === "accepted" && (
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                )}
+                {conversation.friendshipStatus === "pending" && "⏳"}
+                {conversation.friendshipStatus === "blocked" && "🚫"}
+                {conversation.friendshipStatus === "none" && "⚠️"}
               </div>
             )}
-            
+
+            <span className={styles.participantName}>
+              {otherParticipant?.name ||
+                otherParticipant?.username ||
+                "Người dùng"}
+            </span>
+            </div>
+
             {conversation.lastMessage && (
               <span className={styles.lastMessageTime}>
-                {formatLastMessageTime(conversation.lastActivity)}
+                🕐{formatLastMessageTime(conversation.lastActivity)}
               </span>
             )}
           </div>
@@ -103,22 +142,21 @@ const ConversationList = ({
           <div className={styles.conversationPreview}>
             {conversation.lastMessage ? (
               <div className={styles.lastMessage}>
-                <span className={`${styles.messageText} ${hasUnreadMessages ? styles.unread : ''}`}>
+                <span
+                  className={`${styles.messageText} ${
+                    hasUnreadMessages ? styles.unread : ""
+                  }`}
+                >
                   {conversation.lastMessage.content.length > 50
                     ? `${conversation.lastMessage.content.substring(0, 50)}...`
-                    : conversation.lastMessage.content
-                  }
+                    : conversation.lastMessage.content}
                 </span>
               </div>
             ) : (
               <span className={styles.noMessages}>Chưa có tin nhắn</span>
             )}
 
-            {hasUnreadMessages && (
-              <div className={styles.unreadBadge}>
-                {conversation.unreadCount > 99 ? '99+' : conversation.unreadCount}
-              </div>
-            )}
+            
           </div>
         </div>
       </div>
@@ -128,23 +166,29 @@ const ConversationList = ({
   // Handle friend selected from search to start chat
   const handleFriendSelectedForChat = async (friend) => {
     try {
-      console.log(`💬 Starting chat with friend from search: ${friend.username}`);
-      
       await startChatWithFriend(
         friend,
         (conversation) => {
-          console.log(`✅ Chat created, selecting conversation:`, conversation);
-          setShowUserSearch(false);
-          setShowConversationSearch(true); // Show conversation list again
-          onSelectConversation(conversation);
+          // If we have onCreateConversation callback, call it to add conversation to list
+          if (onCreateConversation) {
+            onCreateConversation(conversation);
+          } else {
+            // Fallback: just select the conversation
+            onSelectConversation(conversation);
+            // Close the search modal
+            setShowUserSearch(false);
+            setShowConversationSearch(true);
+          }
         },
         (error) => {
-          console.error('❌ Failed to start chat:', error);
-          alert(error.message || 'Không thể tạo cuộc trò chuyện');
+          console.error("❌ Failed to start chat:", error);
+          alert(error.message || "Không thể tạo cuộc trò chuyện");
+          // Don't close search modal on error, user might want to try again
         }
       );
     } catch (error) {
-      console.error('❌ Error in chat creation:', error);
+      console.error("❌ Error in chat creation:", error);
+      alert("Có lỗi xảy ra khi tạo cuộc trò chuyện");
     }
   };
 
@@ -189,39 +233,35 @@ const ConversationList = ({
   return (
     <div className={styles.conversationList}>
       {/* Header */}
-      {
-        showConversationSearch && 
-        (
-          <div>
-        <div className={styles.conversationHeader}>
-        <h4>Cuộc trò chuyện</h4>
-        <button
-          className={styles.newChatButton}
-          onClick={() => {
-            setShowUserSearch(true)
-            setShowConversationSearch(false);
-          }
-          }
-          title="Tạo cuộc trò chuyện mới"
-        >
-          +
-        </button>
-      </div>
+      {showConversationSearch && (
+        <div>
+          {/* <div className={styles.conversationHeader}  > */}
+          {/* <h4>Cuộc trò chuyện</h4> */}
+          <button
+            className={styles.newChatButton}
+            className=" absolute bottom-4 right-6 rounded-full flex items-center justify-center p-0 m-0"
+            onClick={() => {
+              setShowUserSearch(true);
+              setShowConversationSearch(false);
+            }}
+            title="Tạo cuộc trò chuyện mới"
+          >
+            <img src={Plus} width={50} alt="" />
+          </button>
+          {/* </div> */}
 
-      {/* Search */}
-      <div className={styles.searchContainer}>
-        <input
-          type="text"
-          placeholder="Tìm kiếm cuộc trò chuyện..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className={styles.searchInput}
-        />
-      </div>
-      </div>
-      )
-      }
-      
+          {/* Search */}
+          <div className={styles.searchContainer}>
+            <input
+              type="text"
+              placeholder="Tìm kiếm cuộc trò chuyện..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={styles.searchInput}
+            />
+          </div>
+        </div>
+      )}
 
       {/* User Search Modal */}
       {showUserSearch && renderUserSearchResults()}
@@ -259,7 +299,7 @@ ConversationList.propTypes = {
   onSelectConversation: PropTypes.func.isRequired,
   onCreateConversation: PropTypes.func,
   onlineUsers: PropTypes.object,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
 };
 
 export default ConversationList;

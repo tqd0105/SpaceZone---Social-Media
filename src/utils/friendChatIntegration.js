@@ -13,9 +13,9 @@ export const startChatWithFriend = async (friend, onSuccess, onError) => {
     console.log(`💬 Starting chat with friend: ${friend.username}`);
 
     // Create or get conversation with the friend
-    const response = await chatService.createOrGetConversation(friend._id);
+    const response = await chatService.createConversation(friend._id);
     
-    if (response.success) {
+    if (response.success || response.conversation) {
       console.log(`✅ Chat conversation ready:`, response.conversation);
       
       // Call success callback with conversation data
@@ -67,9 +67,9 @@ export const canUsersChat = async (userId1, userId2) => {
     console.log(`🔐 Checking if users can chat: ${userId1} <-> ${userId2}`);
     
     // Try to create a conversation (this will check friendship)
-    const response = await chatService.createOrGetConversation(userId2);
+    const response = await chatService.createConversation(userId2);
     
-    return response.success;
+    return response.success || !!response.conversation;
     
   } catch (error) {
     console.log(`❌ Users cannot chat: ${error.message}`);
@@ -117,15 +117,6 @@ export const getConversationWarning = (friendshipStatus) => {
       return 'Trạng thái kết bạn không xác định.';
   }
 };
-
-// LOG: Friend-Chat integration utilities loaded
-console.log('🔗 Friend-Chat integration utilities loaded successfully');
-console.log('📋 Available functions:');
-console.log('   - startChatWithFriend: Start chat with a friend');
-console.log('   - canUsersChat: Check if users can chat');
-console.log('   - getFriendshipStatusFromConversation: Get friendship status');
-console.log('   - isConversationActive: Check if conversation is active');
-console.log('   - getConversationWarning: Get warning message for conversation');
 
 export default {
   startChatWithFriend,

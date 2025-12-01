@@ -2,11 +2,9 @@
 const API_URL = import.meta.env.VITE_API_URL;
 const CHAT_API_URL = `${API_URL}/chat`;
 
-console.log('📌 [ChatService] API_URL:', API_URL);
-
 // Helper function to get auth headers
 const getAuthHeaders = () => {
-  const token = sessionStorage.getItem('token');
+  const token = localStorage.getItem('token'); // Changed from sessionStorage to localStorage
   return {
     'Content-Type': 'application/json',
     'Authorization': token ? `Bearer ${token}` : '',
@@ -77,6 +75,11 @@ export const chatService = {
       console.log(`✅ [ChatService] ${data.isNew ? 'Created' : 'Found'} conversation: ${data.conversation?._id}`);
       return data;
     });
+  },
+
+  // Alias for backward compatibility
+  createOrGetConversation: function(recipientId) {
+    return this.createConversation(recipientId);
   },
 
   // Get messages in a conversation
@@ -188,6 +191,7 @@ export const chatService = {
 export const {
   getConversations,
   createConversation,
+  createOrGetConversation,
   getMessages,
   sendMessage,
   markMessageAsRead,

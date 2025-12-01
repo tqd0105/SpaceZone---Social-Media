@@ -15,7 +15,6 @@ const createAuthenticatedRequest = () => {
 };
 
 // LOG: Friend service initialization
-console.log('👥 Initializing Friend Service...');
 
 /**
  * Send friend request to user
@@ -160,9 +159,6 @@ export const getFriendSuggestions = async (limit = 10) => {
     throw error.response?.data || { error: 'Failed to get friend suggestions' };
   }
 };
-
-// LOG: Friend service loaded successfully
-console.log('✅ Friend Service loaded successfully');
 
 export default {
   sendFriendRequest,

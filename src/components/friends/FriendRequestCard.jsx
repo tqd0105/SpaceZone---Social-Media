@@ -12,21 +12,18 @@ const FriendRequestCard = ({
   const [isLoading, setIsLoading] = useState(false);
   const [actionTaken, setActionTaken] = useState(null); // 'accepted', 'rejected'
 
-  console.log(`📨 FriendRequestCard rendered:`, request);
 
   const handleAccept = async () => {
     if (isLoading || actionTaken) return;
 
     try {
       setIsLoading(true);
-      console.log(`✅ Accepting friend request: ${request._id}`);
 
       await acceptFriendRequest(request._id);
       
       setActionTaken('accepted');
       onAccept(request);
       
-      console.log(`✅ Friend request accepted: ${request._id}`);
 
     } catch (error) {
       console.error('❌ Error accepting friend request:', error);
@@ -39,14 +36,12 @@ const FriendRequestCard = ({
 
     try {
       setIsLoading(true);
-      console.log(`❌ Rejecting friend request: ${request._id}`);
 
       await rejectFriendRequest(request._id);
       
       setActionTaken('rejected');
       onReject(request);
       
-      console.log(`✅ Friend request rejected: ${request._id}`);
 
     } catch (error) {
       console.error('❌ Error rejecting friend request:', error);

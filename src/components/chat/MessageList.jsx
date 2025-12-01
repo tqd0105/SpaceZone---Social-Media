@@ -80,6 +80,7 @@ const MessageList = ({
           </div>
         )}
         
+        
         {/* Message content */}
         <div 
           className={`${styles.messageContent} ${

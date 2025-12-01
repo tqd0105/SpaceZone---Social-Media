@@ -1,16 +1,20 @@
 import { useState, useEffect } from 'react';
 
 /**
- * Custom hook to get real-time user updates from sessionStorage
+ * Custom hook to get real-time user updates from localStorage
  * @param {Object} initialUser - Initial user data
  * @returns {Object} Current user data that updates in real-time
  */
 export const useRealTimeUser = (initialUser) => {
-  const [currentUser, setCurrentUser] = useState(initialUser);
+  const [currentUser, setCurrentUser] = useState(() => {
+    // Initialize with localStorage data if available
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : initialUser;
+  });
   
   useEffect(() => {
     const handleStorageChange = () => {
-      const updatedUser = JSON.parse(sessionStorage.getItem('user') || '{}');
+      const updatedUser = JSON.parse(localStorage.getItem('user') || '{}');
       setCurrentUser(updatedUser);
     };
     
@@ -24,9 +28,9 @@ export const useRealTimeUser = (initialUser) => {
     
     // Check for updates periodically within same tab
     const interval = setInterval(() => {
-      const sessionUser = JSON.parse(sessionStorage.getItem('user') || '{}');
-      if (JSON.stringify(sessionUser) !== JSON.stringify(currentUser)) {
-        setCurrentUser(sessionUser);
+      const localUser = JSON.parse(localStorage.getItem('user') || '{}');
+      if (JSON.stringify(localUser) !== JSON.stringify(currentUser)) {
+        setCurrentUser(localUser);
       }
     }, 1000);
     

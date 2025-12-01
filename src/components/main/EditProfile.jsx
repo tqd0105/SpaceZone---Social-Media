@@ -95,7 +95,7 @@ function EditProfile({
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({
             name: tempUser.name,
@@ -129,7 +129,7 @@ function EditProfile({
       }
   
       // Handle remaining operations
-      await Promise.all([
+      const uploadResults = await Promise.all([
         ...Object.entries(tempFiles).map(async ([type, file]) => {
           if (file) {
             const formData = new FormData();
@@ -137,58 +137,54 @@ function EditProfile({
             const response = await fetch(`${API_URL}/users/${user._id}/${type}`, {
               method: "PUT",
               headers: {
-                Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
               },
               body: formData,
             });
             if (!response.ok) {
               throw new Error(`Failed to upload ${type}`);
             }
+            return await response.json();
           }
+          return null;
         }),
         ...Object.entries(deletedItems).map(async ([type, isDeleted]) => {
           if (isDeleted) {
             const response = await fetch(`${API_URL}/users/${user._id}/${type}`, {
               method: "DELETE",
               headers: {
-                Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
               },
             });
             if (!response.ok) {
               throw new Error(`Failed to delete ${type}`);
             }
+            return await response.json();
           }
+          return null;
         })
       ]);
 
-      // Sau khi upload avatar/cover xong, gọi lại /auth/me để lấy user mới nhất
-      try {
-        const token = sessionStorage.getItem("token");
-        const res = await fetch(`${API_URL}/auth/me`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (res.ok) {
-          const userData = await res.json();
-          // Lưu lại user mới vào sessionStorage
-          sessionStorage.setItem("user", JSON.stringify({
-            id: userData.id || userData._id,
-            name: userData.name,
-            email: userData.email,
-            avatar: userData.avatar,
-            username: userData.username
-          }));
-          // Nếu có hàm setUser từ context, gọi để cập nhật context
-          if (typeof handleUpdateUser === "function") {
-            handleUpdateUser(userData);
-          }
-          setUser(userData); // Cập nhật context AuthProvider
+      // Lấy kết quả cuối cùng từ upload/delete operations
+      const finalUserData = uploadResults.find(result => result !== null) || updatedUserData?.user;
+
+      // Cập nhật localStorage và context với dữ liệu mới nhất
+      if (finalUserData) {
+        localStorage.setItem("user", JSON.stringify({
+          id: finalUserData.id || finalUserData._id,
+          name: finalUserData.name,
+          email: finalUserData.email,
+          avatar: finalUserData.avatar,
+          username: finalUserData.username
+        }));
+        
+        // Cập nhật context AuthProvider
+        setUser(finalUserData);
+        
+        // Gọi handleUpdateUser để cập nhật parent component
+        if (typeof handleUpdateUser === "function") {
+          handleUpdateUser({ user: finalUserData });
         }
-      } catch (err) {
-        // Nếu lỗi thì bỏ qua, không làm crash FE
       }
 
       // Close the modal
@@ -196,11 +192,6 @@ function EditProfile({
       
       // Dispatch custom event to notify other components
       window.dispatchEvent(new Event('userUpdated'));
-      
-      // Reload after a short delay to ensure all components are updated
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
     } catch (error) {
       console.error("Error saving profile:", error);
       alert(`Failed to save changes: ${error.message}`);
@@ -216,7 +207,7 @@ function EditProfile({
     if (!isConfirmed) return;
 
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       
       if (!token) {
         alert("Vui lòng đăng nhập lại!");
@@ -238,8 +229,8 @@ function EditProfile({
 
       console.log("Account deleted successfully, clearing storage...");
       
-      sessionStorage.removeItem("token");
-      sessionStorage.removeItem("user");
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
 
       // Đóng modal và chuyển về trang login
       setIsOpenEditProfile(false);
