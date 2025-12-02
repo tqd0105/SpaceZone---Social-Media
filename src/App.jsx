@@ -38,9 +38,10 @@ function App() {
 
 function AppRoutes() {
   const { user } = useAuth();
+  const basename = process.env.NODE_ENV === 'production' ? '/SpaceZone---Social-Media' : '';
   
   return (
-    <Router >
+    <Router basename={basename}>
       <Routes>
         {/* 🟢 Layout dành cho người chưa đăng nhập */}
         <Route element={<LoginLayout />}>
