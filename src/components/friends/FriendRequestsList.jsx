@@ -10,8 +10,11 @@ import {
   removeFriend,
 } from "../../services/friendService";
 import { useRealTimeUser } from "../../hooks/useRealTimeUser";
+import { useChat } from "../../hooks/useChat";
+import { startChatWithFriend } from "../../utils/friendChatIntegration";
 import twoPeople from "../../assets/icons/main/two-people.png";
 import UserSearchModal from "./UserSearchModal";
+import Chat from "../../assets/icons/main/chat.png";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const defaultAvatar = `${API_URL}/uploads/avatar/default.png`;
@@ -161,8 +164,10 @@ FriendRequestCard.propTypes = {
 };
 
 // Component cho friend card trong danh sách bạn bè
-const FriendCard = ({ friend, onRemove, onRefreshList }) => {
+const FriendCard = ({ friend, onRemove, onRefreshList, onClose }) => {
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isChatting, setIsChatting] = useState(false);
+  const { toggleChat, setActiveConversation, loadMessages } = useChat();
 
   const handleRemoveFriend = useCallback(async () => {
     if (isProcessing) return;
@@ -199,6 +204,50 @@ const FriendCard = ({ friend, onRemove, onRefreshList }) => {
       setIsProcessing(false);
     }
   }, [friend, onRemove, isProcessing, onRefreshList]);
+
+  // Handle start chat
+  const handleStartChat = useCallback(async () => {
+    if (isChatting) return;
+
+    try {
+      setIsChatting(true);
+      console.log('🚀 [FriendCard] Starting chat with friend:', friend);
+      
+      // Prepare chat context with actual functions
+      const chatContext = { 
+        setActiveConversation, 
+        loadMessages 
+      };
+      
+      await startChatWithFriend(
+        friend,
+        (conversation) => {
+          console.log('\u2705 [FriendCard] Chat started successfully:', conversation);
+          // Set active conversation immediately to show the specific conversation
+          setActiveConversation(conversation._id);
+          // Load messages for this conversation
+          loadMessages(conversation._id);
+          // Open chat window
+          toggleChat();
+          // Close the FriendRequestsList modal
+          if (onClose) {
+            console.log('\ud83d\udd12 [FriendCard] Closing FriendRequestsList modal');
+            onClose();
+          }
+        },
+        (error) => {
+          console.error('❌ [FriendCard] Failed to start chat:', error);
+          alert(error.message || 'Không thể tạo cuộc trò chuyện');
+        },
+        chatContext
+      );
+    } catch (error) {
+      console.error('❌ [FriendCard] Error in chat creation:', error);
+      alert('Có lỗi xảy ra khi tạo cuộc trò chuyện');
+    } finally {
+      setIsChatting(false);
+    }
+  }, [friend, isChatting, toggleChat, setActiveConversation, loadMessages, onClose]);
 
   const user = friend;
 
@@ -242,6 +291,19 @@ const FriendCard = ({ friend, onRemove, onRefreshList }) => {
         </div>
         <div className="flex gap-2">
           <button
+            className="bg-gray-200 hover:bg-gray-300 rounded-full text-white p-3 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+            onClick={handleStartChat}
+            disabled={isChatting || isProcessing}
+            title="Nhắn tin với bạn bè"
+          >
+            {isChatting ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            ) : (
+              <img src={Chat} width={16} alt="Chat" />
+            )}
+            {/* <span className="hidden sm:inline">Nhắn tin</span> */}
+          </button>
+          <button
             className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
             onClick={handleRemoveFriend}
             disabled={isProcessing}
@@ -276,6 +338,7 @@ FriendCard.propTypes = {
   friend: PropTypes.object.isRequired,
   onRemove: PropTypes.func.isRequired,
   onRefreshList: PropTypes.func,
+  onClose: PropTypes.func, // Add onClose prop
 };
 
 const FriendRequestsList = ({ isOpen, onClose, title = "Quản lý bạn bè" }) => {
@@ -728,6 +791,7 @@ const FriendRequestsList = ({ isOpen, onClose, title = "Quản lý bạn bè" })
                     friend={friend}
                     onRemove={handleRemoveFriend}
                     onRefreshList={handleRefreshFriendsList}
+                    onClose={handleClose}
                   />
                 ))}
               </div>

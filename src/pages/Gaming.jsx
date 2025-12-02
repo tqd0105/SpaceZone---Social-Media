@@ -238,11 +238,11 @@ function Gaming() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-5">
+    <div className="min-h-screen bg-gray-50 md:py-5 pb-24">
       <div className="max-w-5xl mx-auto px-4 ">
         {/* Header */}
-        <div className="bg-white mb-6 p-6 rounded-lg shadow-md flex flex-col justify-center items-center ">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-2 ">
+        <div className="bg-white mb-6 p-6 rounded-lg shadow-md flex flex-col justify-center items-center " style={{display: "flex"}}>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-2 " style={{display: "flex",justifyContent: "center"}}>
             <Gamepad2 className="w-8 h-8 text-blue-500" />
             GAMING
           </h1>
@@ -251,16 +251,17 @@ function Gaming() {
 
         {/* Navigation Tabs */}
         <div className="mb-6 overflow-x-auto">
-          <div className="flex justify-center gap-2 min-w-max">
+          <div className="flex justify-center gap-2 min-w-max"  >
             {tabs.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center justify-center w-full gap-2 px-6 py-4 border-2 border-gray-400 rounded-lg font-medium transition-colors whitespace-nowrap ${
+                className={`flex items-center justify-center w-full gap-2 py-6 py-4 my-3 md:m-auto md:px-6 md:py-4 border-2 border-gray-400 rounded-lg font-medium transition-colors whitespace-nowrap ${
                   activeTab === tab.id 
                     ? 'bg-green-500 text-white' 
                     : 'bg-white text-gray-700 hover:bg-gray-100'
                 }`}
+                style={{display: "flex"}}
               >
                 {tab.icon}
                 <span>{tab.label}</span>
@@ -274,18 +275,18 @@ function Gaming() {
           <div className="space-y-8">
             {/* Featured Game */}
             <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl p-8 text-white">
-              <div className="flex flex-col lg:flex-row items-center gap-6">
+              <div className="flex flex-col lg:flex-row items-center gap-6" style={{display: "flex"}}>
                 <img 
                   src={games[0]?.image} 
                   alt="Featured Game"
-                  className="w-32 h-48 rounded-lg object-cover"
+                  className="md:w-32 md:h-48 w-full h-96 rounded-lg object-cover"
                 />
                 <div className="flex-1 text-center lg:text-left">
                   <h2 className="text-3xl font-bold mb-2 uppercase ">Game of the Month</h2>
                   <h3 className="text-xl mb-4">{games[0]?.name}</h3>
                   <p className="text-lg mb-6">{games[0]?.description}</p>
                   <div className="flex flex-wrap justify-center lg:justify-start gap-4">
-                    <button className="bg-white text-blue-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition-colors">
+                    <button className="bg-white text-blue-600 px-6 py-3 md:m-0 mx-4 rounded-lg font-bold hover:bg-gray-100 transition-colors">
                       {/* <Play className="inline w-5 h-5 mr-2" /> */}
                       ▶️ Chơi ngay
                     </button>
@@ -373,8 +374,8 @@ function Gaming() {
                 <div className="p-4">
                   <div className="flex flex-col items-center justify-between mb-2">
                     <h3 className="text-2xl font-bold text-gray-800 mb-1">{game.name}</h3>
-                    <div className="text-right flex gap-4 ">
-                      <div className="flex items-center gap-1 " >
+                    <div className="text-right flex gap-4 " style={{display: "flex", justifyContent:"center"}}>
+                      <div className="flex items-center gap-1 " style={{display: "flex"}}   >
                         <Star className="w-4 h-4 text-yellow-500 fill-current" />
                         <span className="text-md font-medium font-bold">{game.rating}</span>
                       </div>
@@ -395,8 +396,8 @@ function Gaming() {
                     ))}
                   </div>
 
-                  <div className="flex gap-2">
-                    <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                  <div className="flex gap-2" style={{display: "flex"}}>
+                    <button className="flex-1 w-full  bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2" style={{display: "flex"}}>
                       <Play className="w-4 h-4" />
                       <span>{game.price === 'Free' ? 'Chơi ngay' : 'Mua ngay'}</span>
                     </button>
@@ -424,7 +425,7 @@ function Gaming() {
                       className="w-full  md:w-80 bg-gray-100 p-3  object-cover"
                     />
                     <div className="p-6 flex-1">
-                      <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center justify-between mb-4" style={{display: "flex", flexDirection: "column", gap: "10px"}} >
                         <div>
                           <h3 className="text-2xl font-bold text-gray-800 mb-1">{tournament.name}</h3>
                           <p className="text-gray-600">{tournament.description}</p>
@@ -435,7 +436,7 @@ function Gaming() {
                       </div>
 
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                        <div className="flex flex-col items-center ">
+                        <div className="flex flex-col items-center " style={{display: "flex"}}>
                           <img src={rankingIcon} width={35} alt="" />
                           <div className="font-bold text-red-600">{tournament.ranking}</div>
                         </div>
@@ -480,7 +481,7 @@ function Gaming() {
             </div>
             <div className="divide-y divide-gray-200">
               {leaderboard.map(player => (
-                <div key={player.id} className={`p-6 flex items-center gap-4 ${player.isCurrentUser ? 'bg-blue-50 border-l-4 border-l-blue-500' : ''}`}>
+                <div key={player.id} className={`p-6 flex items-center gap-4 ${player.isCurrentUser ? 'bg-blue-50 border-l-4 border-l-blue-500' : ''}`} style={{display: "flex"}}>
                   <div className="flex-shrink-0">
                     {player.rank === 1 && <img src={goldMedal} alt="Gold Medal" className="w-10 h-10" /> }
                     {player.rank === 2 && <img src={silverMedal} alt="Silver Medal" className="w-10 h-10" />}
@@ -542,16 +543,16 @@ function Gaming() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {achievements.map(achievement => (
                 <div key={achievement.id} className={`bg-white rounded-lg shadow-lg p-6 border-1 ${getRarityColor(achievement.rarity)} ${achievement.earned ? 'opacity-100' : 'opacity-60'}`}>
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="text-4xl border-2 rounded-full py-2 px-1 border-gray-400">{achievement.icon}</div>
+                  <div className="flex items-center gap-2 mb-4" style={{display: "flex", justifyContent:"center"}}> 
+                    <div className="text-4xl border-2 rounded-xl w-fit md:rounded-full py-2 px-1 border-gray-400">{achievement.icon}</div>
                     <div>
                       <h3 className="font-bold text-lg uppercase text-gray-800">{achievement.name}</h3>
                       <p className="text-sm font-bold text-gray-400">{achievement.description}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-between" style={{display: "flex"}}>
+                    <div className="flex items-center gap-2" style={{display: "flex", justifyContent:"center"}}>
                       <Zap className="w-6 h-6 text-yellow-500" />
                       <span className="text-md font-bold">{achievement.points} điểm</span>
                     </div>
@@ -581,7 +582,7 @@ function Gaming() {
                   )}
 
                   {achievement.earned && (
-                    <div className="bg-green-400 p-3 rounded-lg mt-3 flex justify-center w-full items-center gap-1 cursor-pointer text-gray-900 font-bold text-sm">
+                    <div className="bg-green-400 p-3 rounded-lg mt-3 flex justify-center w-full items-center gap-1 cursor-pointer text-gray-900 font-bold text-sm" style={{display: "flex"}}>
                       <Star className="w-4 h-4 fill-current " color='white'/>
                       <span>Đã đạt được</span>
                     </div>

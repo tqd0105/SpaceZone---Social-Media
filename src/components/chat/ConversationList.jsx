@@ -35,29 +35,39 @@ const ConversationList = ({
   });
 
   const formatLastMessageTime = (dateString) => {
-    if (!dateString) return "";
+  if (!dateString) return "";
 
-    try {
-      const date = new Date(dateString);
-      const now = new Date();
-      const diffInHours = (now - date) / (1000 * 60 * 60);
+  try {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMinutes = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMinutes / 60);
 
-      if (diffInHours < 24) {
-        return formatDistanceToNow(date, { addSuffix: true, locale: vi });
-      } else {
-        return date.toLocaleDateString("vi-VN", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      }).replace(" ", " • ");
-      }
-    } catch {
-      return "";
+    if (diffHours < 24) {
+      if (diffHours >= 1) return `${diffHours} giờ `;
+      if (diffMinutes >= 1) return `${diffMinutes} phút `;
+      return `Vừa xong`;
     }
-  };
+
+    const time = date.toLocaleTimeString("vi-VN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    });
+
+    const day = date.toLocaleDateString("vi-VN", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    });
+
+    return `${time} - ${day}`;
+  } catch {
+    return "";
+  }
+};
+
 
   const getOtherParticipant = (conversation, currentUserId) => {
     return conversation.participants.find((p) => p._id !== currentUserId);
@@ -110,6 +120,14 @@ const ConversationList = ({
           <div className={styles.conversationHeader}>
             <div className="flex items-center justify-start gap-1">
             {/* Friendship Status Indicator */}
+            
+
+            <span className={styles.participantName}>
+              {otherParticipant?.name ||
+                otherParticipant?.username ||
+                "Người dùng"}
+            </span>
+
             {conversation.friendshipStatus && (
               <div
                 className={`${styles.friendshipStatus} ${
@@ -124,12 +142,6 @@ const ConversationList = ({
                 {conversation.friendshipStatus === "none" && "⚠️"}
               </div>
             )}
-
-            <span className={styles.participantName}>
-              {otherParticipant?.name ||
-                otherParticipant?.username ||
-                "Người dùng"}
-            </span>
             </div>
 
             {conversation.lastMessage && (
@@ -147,16 +159,21 @@ const ConversationList = ({
                     hasUnreadMessages ? styles.unread : ""
                   }`}
                 >
-                  {conversation.lastMessage.content.length > 50
-                    ? `${conversation.lastMessage.content.substring(0, 50)}...`
+                  <span className={styles.senderName}>
+                    {(() => {
+                      // Find sender info from participants
+                      const sender = conversation.participants.find(p => p._id === conversation.lastMessage.sender);
+                      return `${sender?.name || sender?.username || 'Người dùng'}: `;
+                    })()}
+                  </span>
+                  {conversation.lastMessage.content.length > 40
+                    ? `${conversation.lastMessage.content.substring(0, 40)}...`
                     : conversation.lastMessage.content}
                 </span>
               </div>
             ) : (
               <span className={styles.noMessages}>Chưa có tin nhắn</span>
             )}
-
-            
           </div>
         </div>
       </div>
@@ -238,7 +255,7 @@ const ConversationList = ({
           {/* <div className={styles.conversationHeader}  > */}
           {/* <h4>Cuộc trò chuyện</h4> */}
           <button
-            className={styles.newChatButton}
+            // className={styles.newChatButton}
             className=" absolute bottom-4 right-6 rounded-full flex items-center justify-center p-0 m-0"
             onClick={() => {
               setShowUserSearch(true);

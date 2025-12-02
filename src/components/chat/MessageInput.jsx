@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useCallContext } from '../../context/CallContext';
 import styles from './MessageInput.module.scss';
+import Send from '../../assets/icons/main/send.png';
 
 const MessageInput = ({ 
   onSendMessage, 
@@ -156,7 +157,7 @@ const MessageInput = ({
     }
   };
 
-  const commonEmojis = ['😀', '😂', '❤️', '👍', '👏', '🎉', '🔥', '💯'];
+  const commonEmojis = ['😀', '😂', '❤️', '👍', '👏', '🎉', '💯', '🤡'];
 
   return (
     <div className={styles.messageInput}>
@@ -214,7 +215,7 @@ const MessageInput = ({
             placeholder={
               disabled 
                 ? "Đang kết nối lại..." 
-                : "Nhập tin nhắn... (Enter để gửi, Shift+Enter để xuống dòng)"
+                : "Nhập tin nhắn..."
             }
             disabled={disabled || isSending}
             rows={1}
@@ -244,14 +245,7 @@ const MessageInput = ({
           {isSending ? (
             <div className={styles.sendingSpinner}></div>
           ) : (
-            <svg 
-              className={styles.sendIcon} 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-            </svg>
+            <img src={Send} width={25} alt="" />
           )}
         </button>
       </div>

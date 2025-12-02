@@ -6,6 +6,7 @@ import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 import ConversationList from './ConversationList';
 import ChatBubble from '../../assets/icons/main/chat-bubble.png';
+import Delete from '../../assets/icons/main/delete.png';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const defaultAvatar = `${API_URL}/uploads/avatar/default.png`;
@@ -147,13 +148,14 @@ const ChatWindow = ({ isOpen, onClose }) => {
             {activeConversation && !showConversations ? (
               <>
                 <button 
-                  className="p-1 hover:bg-white hover:bg-opacity-20 rounded-full transition-colors duration-200"
+                  className="px-3 py-2  bg-gray-300 hover:bg-white hover:bg-opacity-20 rounded-full transition-colors duration-200"
                   onClick={handleBackToConversations}
                 >
-                  <span className="text-sm">←</span>
+                  <span className="text-md">←</span>
                 </button>
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-gray-200">
+                  <div className='flex justify-center items-center gap-2'>
+                  <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-gray-200">
                     {(() => {
                       const otherUser = activeConversation.participants?.find(p => p._id !== (user?._id || user?.id));
                       const avatarUrl = otherUser?.avatar 
@@ -174,10 +176,12 @@ const ChatWindow = ({ isOpen, onClose }) => {
                       );
                     })()} 
                   </div>
+                  
                   <div>
                     <h3 className="font-semibold text-sm truncate max-w-32">
                       {activeConversation.participants?.find(p => p._id !== (user?._id || user?.id))?.name || 'Unknown'}
                     </h3>
+                    <div className='flex items-center'>
                     <div className="flex items-center space-x-1">
                       {socket.isConnected ? (
                         <div className="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
@@ -188,18 +192,23 @@ const ChatWindow = ({ isOpen, onClose }) => {
                         {socket.isConnected ? 'Online' : 'Connecting...'}
                       </span>
                     </div>
-                  </div>
-                </div>
-                {/* Clear messages button */}
-                {messages[activeConversationId]?.length > 0 && (
+                    {messages[activeConversationId]?.length > 0 && (
                   <button
                     onClick={handleClearAllMessages}
-                    className="p-1 hover:bg-red-100 text-red-500 hover:text-red-700 rounded-full transition-colors duration-200 ml-2"
+                    className="hover:bg-red-100 text-red-500 hover:text-red-700 rounded-full transition-colors duration-200 m-0 p-0 ml-2"
                     title="Xóa tất cả tin nhắn"
                   >
-                    <span className="text-sm">🗑️</span>
+                  <img src={Delete} width={25} alt="Clear all messages" />
                   </button>
                 )}
+                </div>
+                  </div>
+                  
+                </div>
+                
+                </div>
+                {/* Clear messages button - only show when in specific conversation */}
+                
               </>
             ) : (
               <>
@@ -207,16 +216,18 @@ const ChatWindow = ({ isOpen, onClose }) => {
                   <img src={ChatBubble} alt="Chat Bubble" />
                 </div>
                 <h3 className="font-semibold text-sm uppercase">Messages</h3>
+                
               </>
             )}
           </div>
-          
+          <div className='flex items-center gap-2'>
           <button 
-            className="px-3 py-1 hover:bg-white bg-gray-300 text-black hover:bg-opacity-20 rounded-full transition-colors duration-200"
+            className="px-3 py-1 shadow-xl hover:bg-white bg-gray-200 text-black hover:bg-opacity-20 rounded-full transition-colors duration-200"
             onClick={onClose}
           >
             <span className="text-lg font-bold">×</span>
           </button>
+          </div>
         </div>
 
         {/* Body */}
@@ -225,8 +236,8 @@ const ChatWindow = ({ isOpen, onClose }) => {
           {!socket.isConnected && (
             <div className="bg-yellow-50 dark:bg-yellow-900 border-b border-yellow-200 dark:border-yellow-700 px-3 py-2">
               <div className="flex items-center space-x-2">
-                <span className="text-sm animate-pulse">📶</span>
-                <p className="text-xs text-yellow-800 dark:text-yellow-200">
+                {/* <span className="text-sm animate-pulse">📶</span> */}
+                <p className="text-xs text-center text-yellow-800 dark:text-yellow-200">
                   Đang kết nối...
                 </p>
                 {socket.error && (
@@ -277,7 +288,13 @@ const ChatWindow = ({ isOpen, onClose }) => {
             ) : (
               <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 dark:bg-gray-800">
                 {/* Messages */}
-                <div className="flex-1 overflow-hidden">
+                <div 
+                  className="flex-1 overflow-y-scroll bg-white"
+                  style={{
+                    scrollbarWidth: 'thin',
+                    scrollbarColor: '#197ce6ff #f1f5f9'
+                  }}
+                >
                   <MessageList
                     messages={messages[activeConversationId] || []}
                     currentUserId={user?._id || user?.id}

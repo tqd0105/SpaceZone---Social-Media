@@ -14,7 +14,7 @@
 }
 
 .conversationHeader {
-  padding: 4px 0px;
+  padding: 1px 0px;
   // border-bottom: 1px solid var(--border-color, #929292);
   display: flex;
   align-items: center;
@@ -333,13 +333,14 @@
 .conversationPreview {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 8px;
 }
 
 .lastMessage {
-  flex: 1;
+  // flex: 1;
   min-width: 0;
+  
 }
 
 .messageText {
@@ -351,7 +352,7 @@
   text-overflow: ellipsis;
   width: 100%;
   color: #0454ea !important;
-  margin-left: 6px;
+  // margin-left: 0px;
 
   &.unread {
     font-weight: 600;
@@ -365,6 +366,15 @@
     &.unread {
       color: var(--text-primary, #e4e6ea);
     }
+  }
+}
+
+.senderName {
+  font-weight: 600;
+  color: var(--text-primary, #050505);
+  
+  [data-theme="dark"] & {
+    color: var(--text-primary, #e4e6ea);
   }
 }
 
@@ -465,6 +475,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 20px;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -486,6 +497,7 @@
   margin: 0 0 8px 0;
   color: var(--text-primary, #050505);
   font-size: 16px;
+  font-weight: 700;
 
   [data-theme="dark"] & {
     color: var(--text-primary, #e4e6ea);

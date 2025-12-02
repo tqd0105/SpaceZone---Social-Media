@@ -7,19 +7,34 @@ import { chatService } from '../services/chatService';
  * @param {Object} friend - Friend object from friends list
  * @param {Function} onSuccess - Callback when chat is successfully created
  * @param {Function} onError - Callback when error occurs
+ * @param {Object} chatContext - Optional chat context with setActiveConversation
  */
-export const startChatWithFriend = async (friend, onSuccess, onError) => {
+export const startChatWithFriend = async (friend, onSuccess, onError, chatContext = null) => {
   try {
-    console.log(`💬 Starting chat with friend: ${friend.username}`);
+    console.log(`💬 [friendChatIntegration] Starting chat with friend: ${friend.username} (ID: ${friend._id})`);
 
     // Create or get conversation with the friend
     const response = await chatService.createConversation(friend._id);
+    console.log('🚀 [friendChatIntegration] Chat service response:', response);
     
     if (response.success || response.conversation) {
-      console.log(`✅ Chat conversation ready:`, response.conversation);
+      console.log(`✅ [friendChatIntegration] Chat conversation ready:`, response.conversation);
+      
+      // If chat context provided, set the active conversation
+      if (chatContext && chatContext.setActiveConversation) {
+        console.log('🎯 [friendChatIntegration] Setting active conversation:', response.conversation._id);
+        chatContext.setActiveConversation(response.conversation._id);
+        
+        // Load messages for the conversation
+        if (chatContext.loadMessages) {
+          console.log('📋 [friendChatIntegration] Loading messages for conversation');
+          chatContext.loadMessages(response.conversation._id);
+        }
+      }
       
       // Call success callback with conversation data
       if (onSuccess) {
+        console.log('🎯 [friendChatIntegration] Calling onSuccess callback...');
         onSuccess(response.conversation, friend);
       }
       
@@ -29,11 +44,11 @@ export const startChatWithFriend = async (friend, onSuccess, onError) => {
     }
     
   } catch (error) {
-    console.error('❌ Error starting chat with friend:', error);
+    console.error('❌ [friendChatIntegration] Error starting chat with friend:', error);
     
     // Handle specific friendship errors
     if (error.message?.includes('bạn bè') || error.message?.includes('friends')) {
-      console.log('🚫 Friendship required for chat');
+      console.log('🚫 [friendChatIntegration] Friendship required for chat');
       
       if (onError) {
         onError({

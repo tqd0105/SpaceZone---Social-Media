@@ -178,7 +178,7 @@ const AddFriendButton = ({
 
   return (
     <button
-      className={getButtonClass()}
+      // className={getButtonClass()}
       className="bg-blue-600 text-white hover:bg-blue-500"
       onClick={handleSendRequest}
       disabled={disabled || isLoading || friendshipStatus !== 'none'}

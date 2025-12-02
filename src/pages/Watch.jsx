@@ -16,8 +16,8 @@ function Watch() {
     const mockVideos = [
       {
         id: 1,
-        title: 'Amazing Space Documentary',
-        creator: 'Space Explorer',
+        title: 'FPT vs FW | ONE vs PSG | QUARTER FINALS | AIC 2025 (30/11)',
+        creator: 'Garena Liên Quân Mobile',
         avatar: `${import.meta.env.VITE_API_URL}/uploads/avatar/default.png`,
         thumbnail: 'https://i.ytimg.com/vi/DDcZMK1GC78/hq720.jpg?v=692bd81b&sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLAgOrTjkYuuXe1Hp36f2f5wXT0fNg',
         videoUrl: 'https://www.youtube.com/watch?v=H6pzruub5hc',
@@ -26,13 +26,13 @@ function Watch() {
         likes: '150K',
         comments: '12K',
         shares: '5.2K',
-        description: 'Khám phá những bí ẩn của vũ trụ trong video documentary tuyệt vời này...',
-        category: 'education'
+        description: 'FPT vs FW | ONE vs PSG | QUARTER FINALS | AIC 2025 (30/11)',
+        category: 'esports'
       },
       {
         id: 2,
-        title: 'Funny Cat Compilation',
-        creator: 'Pet Lover',
+        title: '2 Ngày 1 Đêm Việt Nam | Tập 1: Trường Giang chơi chiêu, Kiều Minh Tuấn rớt hết "sĩ diện" vì miếng ăn',
+        creator: 'ĐÔNG TÂY PROMOTION OFFICIAL',
         avatar: `${import.meta.env.VITE_API_URL}/uploads/avatar/default.png`,
         thumbnail: 'https://i.ytimg.com/vi/T6uymZbt4eA/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLAs438neH8mjLCZOkNE5s60lRkhKg',
         videoUrl: 'https://www.youtube.com/watch?v=T6uymZbt4eA&pp=ygUYMiBuZ2F5IDEgZGVtIHRhcCAxIG11YSAx',
@@ -41,13 +41,13 @@ function Watch() {
         likes: '320K',
         comments: '25K',
         shares: '15.8K',
-        description: 'Những khoảnh khắc hài hước nhất của những chú mèo đáng yêu...',
+        description: '2 Ngày 1 Đêm Việt Nam | Tập 1 FULL: Trường Giang chơi chiêu, Kiều Minh Tuấn rớt hết sĩ diện vì miếng ăn Tập đầu tiên của #2Ngay1DemVietNam đã chính thức lên sóng. Điểm đến cho chuyến đi đầu tiên Tự Do Tự Lo #2Ngay1Dem chính là Hà Tiên - một thành phố ven biển được ví như thiên đường nơi hạ giới thuộc tỉnh Kiên Giang. Cùng xem màn chạm trán đầu tiên của các thành viên trong biệt đội 2N1Đ sẽ lầy lội thế nào nhé!',
         category: 'entertainment'
       },
       {
         id: 3,
-        title: 'Cooking Masterclass',
-        creator: 'Chef Master',
+        title: '🔴Trực tiếp: Thái Lan - Việt Nam | Chung kết lượt về ASEAN Mitsubishi Electric Cup™ 2024',
+        creator: 'BÓNG ĐÁ VIỆT NAM',
         avatar: `${import.meta.env.VITE_API_URL}/uploads/avatar/default.png`,
         thumbnail: 'https://i.ytimg.com/vi/MpmqnBpXHTA/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCIsQLpz4KNT_r8mNN2xrAru-LqMA',
         videoUrl: 'https://www.youtube.com/watch?v=MpmqnBpXHTA&pp=ygUOdm4gdnMgdGhhaWxhbmQ%3D',
@@ -56,7 +56,7 @@ function Watch() {
         likes: '95K',
         comments: '8.5K',
         shares: '3.2K',
-        description: 'Học cách nấu món ăn ngon từ những đầu bếp chuyên nghiệp...',
+        description: '🔴Trực tiếp: Thái Lan - Việt Nam | Chung kết lượt về ASEAN Mitsubishi Electric Cup™ 2024',
         category: 'lifestyle'
       }
     ];
@@ -106,7 +106,7 @@ function Watch() {
     : videos.filter(video => video.category === selectedCategory);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 md:py-8 pb-24 ">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         {/* <div className="mb-6">
@@ -117,7 +117,7 @@ function Watch() {
         <div className="flex gap-6">
           {/* Sidebar Categories */}
           <div className="hidden lg:block w-80 bg-white rounded-lg p-4 h-fit shadow-md h-[calc(100vh-5rem)] sticky top-20">
-            <h2 className="text-xl font-bold text-gray-800 mb-9">Watch Video</h2>
+            <h2 className="text-xl font-bold text-gray-800 mb-3">Watch Video</h2>
             <div className="space-y-2">
               {categories.map(category => (
                 <button
@@ -155,7 +155,7 @@ function Watch() {
                   <button
                     key={category.id}
                     onClick={() => setSelectedCategory(category.id)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-colors ${
+                    className={`flex w-full my-2 items-center gap-2 md:px-4 md:py-2 rounded-full whitespace-nowrap transition-colors ${
                       selectedCategory === category.id 
                         ? 'bg-blue-500 text-white' 
                         : 'bg-white text-gray-700 hover:bg-gray-100'
@@ -169,7 +169,7 @@ function Watch() {
             </div>
 
             {/* Videos Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-1 gap-6">
               {filteredVideos.map(video => (
                 <div key={video.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                   {/* Video Thumbnail */}
@@ -181,7 +181,7 @@ function Watch() {
                     />
                     
                     {/* Video Controls Overlay */}
-                    <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                    <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity" style={{display: "flex"}}>
                       <button
                         onClick={() => handlePlayPause(video.id)}
                         className="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-4 hover:bg-opacity-30 transition-colors"
@@ -215,7 +215,7 @@ function Watch() {
                   {/* Video Info */}
                   <div className="p-4">
                     {/* Creator Info */}
-                    <div className="flex items-center gap-3 mb-3">
+                    <div className="flex items-center text-center gap-3 mb-3" style={{display: "flex"}}>
                       <img 
                         src={video.avatar} 
                         alt={video.creator}
@@ -236,7 +236,7 @@ function Watch() {
 
                     {/* Interaction Buttons */}
                     <div className="flex items-center justify-between border-t border-gray-200 pt-3">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2" style={{display: "flex", justifyContent: "space-between"}} > 
                         <button className="flex items-center gap-1 text-gray-600 hover:text-red-500 transition-colors">
                           <Heart className="w-5 h-5" />
                           {/* <span className="text-sm">{video.likes}</span> */}

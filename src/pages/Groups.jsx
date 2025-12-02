@@ -140,7 +140,7 @@ function Groups() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-5">
+    <div className="min-h-screen bg-gray-50 md:py-5 pb-24">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         {/* <div className="mb-6">
@@ -148,10 +148,10 @@ function Groups() {
           <p className="text-gray-600">Kết nối và chia sẻ với những người có cùng sở thích</p>
         </div> */}
 
-        <div className="flex gap-6">
+        <div className="flex gap-6 relative">
           {/* Sidebar */}
-          <div className="hidden lg:block w-80 space-y-4">
-          <h1 className="text-3xl font-bold text-gray-800  bg-white rounded-lg p-2 shadow-xl">NHÓM </h1>
+          <div className="sticky top-20 h-[calc(100vh-6rem)] overflow-y-auto hidden lg:block w-80 space-y-4">
+          <h1 className="text-3xl font-bold text-gray-800 bg-white rounded-lg p-2 shadow-xl">NHÓM </h1>
 
             {/* Navigation Tabs */}
             <div className="bg-white rounded-lg p-4 shadow-md">
@@ -225,16 +225,17 @@ function Groups() {
           <div className="flex-1">
             {/* Mobile Tabs */}
             <div className="lg:hidden mb-4">
-              <div className="flex overflow-x-auto gap-2 pb-2">
+              <div className="flex overflow-x-auto gap-2 pb-2" style={{display: "flex"}}>
                 {tabs.map(tab => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-colors ${
+                    className={`flex items-center py-4 px-2 w-full gap-2 md:px-4 md:py-2 rounded-xl md:rounded-full whitespace-nowrap transition-colors ${
                       activeTab === tab.id 
                         ? 'bg-blue-500 text-white' 
                         : 'bg-white text-gray-700 hover:bg-gray-100'
                     }`}
+                    style={{display: "flex", justifyContent: "center"}}
                   >
                     {tab.icon}
                     <span className="text-sm font-medium">{tab.label}</span>
@@ -264,14 +265,14 @@ function Groups() {
               <div className="space-y-4">
                 {filteredMyGroups.map(group => (
                   <div key={group.id} className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
-                    <div className="flex items-center justify-content gap-4">
+                    <div className="flex flex-col items-center justify-content gap-4">
                       <img 
                         src={group.image} 
                         alt={group.name}
-                        className="w-20 h-20 rounded-lg object-cover flex-shrink-0"
+                        className="w-full h-full rounded-lg object-cover flex-shrink-0"
                       />
                       <div className="flex-1 flex flex-col justify-start">
-                        <div className="flex items-start justify-between mb-2">
+                        <div className="flex items-start justify-between mb-2" >
                           <div>
                             <h3 className="text-lg font-bold text-gray-800 hover:text-blue-600 cursor-pointer">
                               {group.name}
@@ -284,7 +285,7 @@ function Groups() {
                               <span className="capitalize">{group.role}</span>
                             </div>
                           </div>
-                          <button className="p-2 hover:bg-gray-100 rounded-full">
+                          <button className="hidden md:block p-2 hover:bg-gray-100 rounded-full">
                             <MoreHorizontal className="w-5 h-5 text-gray-500" />
                           </button>
                         </div>
@@ -294,7 +295,7 @@ function Groups() {
                             <span>🔵 {group.lastActivity}</span>
                             
                           </div>
-                          <div className="flex items-center justify-center gap-2">
+                          <div className="flex items-center justify-center gap-2 mt-2 md:mt-0" style={{display: "flex"}}>
                             <div>
                               {group.newPosts > 0 && (
                               <span className="bg-blue-100 text-blue-700 px-3 py-3 rounded-full">
@@ -347,7 +348,7 @@ function Groups() {
               <div>
                 {/* Mobile Categories */}
                 <div className="lg:hidden mb-4">
-                  <div className="flex overflow-x-auto gap-2 pb-2">
+                  <div className="flex overflow-x-auto gap-2 pb-2" style={{display: "flex"}}>
                     {categories.map(category => (
                       <button
                         key={category.id}
@@ -365,7 +366,7 @@ function Groups() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-1 gap-6">
                   {filteredSuggestedGroups.map(group => (
                     <div key={group.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                       <img 
@@ -394,6 +395,7 @@ function Groups() {
                         <button 
                           onClick={() => joinGroup(group.id)}
                           className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition-colors"
+                        style={{display: "flex"}}
                         >
                           <UserPlus className="w-4 h-4" />
                           <span>Tham gia nhóm</span>

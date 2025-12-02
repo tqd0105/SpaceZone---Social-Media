@@ -4,6 +4,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import styles from './MessageList.module.scss';
 import ShareMessage from './ShareMessage';
+import ChatBubble from '../../assets/icons/main/chat-bubble.png';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const defaultAvatar = `${API_URL}/uploads/avatar/default.png`;
@@ -205,7 +206,7 @@ const MessageList = ({
     return (
       <div className={styles.messageList}>
         <div className={styles.emptyState}>
-          <div className={styles.emptyIcon}>💬</div>
+          <img src={ChatBubble} width={50} alt="" />
           <h4>Chưa có tin nhắn nào</h4>
           <p>Hãy bắt đầu cuộc trò chuyện bằng cách gửi tin nhắn đầu tiên</p>
         </div>
