@@ -140,22 +140,22 @@ const ChatWindow = ({ isOpen, onClose }) => {
   }
 
   return (
-    <div className="fixed bottom-0 right-16 z-50 flex flex-col">
-      <div className="w-96 h-96 bg-white dark:bg-gray-900 rounded-t-lg shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col">
+    <div className="fixed md:bottom-0 md:right-16 right-0 bottom-1/2 md:translate-y-0 translate-y-1/2 md:w-fit w-full z-50 flex flex-col">
+      <div className="h-[330px] md:w-96 md:h-96 bg-white dark:bg-gray-900 rounded-t-lg shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col md:mx-0 mx-4">
         {/* Header */}
-        <div className="bg-white text-black border-b-2 border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+        <div className="bg-white dark:bg-gray-800 text-black dark:text-white border-b-2 border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between" style={{display: "flex"}}>
+          <div className="flex items-center space-x-3" style={{display: "flex"}}>
             {activeConversation && !showConversations ? (
               <>
                 <button 
-                  className="px-3 py-2  bg-gray-300 hover:bg-white hover:bg-opacity-20 rounded-full transition-colors duration-200"
+                  className="px-3 py-2 text-black dark:text-white bg-gray-100 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 rounded-full transition-colors duration-200"
                   onClick={handleBackToConversations}
                 >
                   <span className="text-md">←</span>
                 </button>
-                <div className="flex items-center space-x-2">
-                  <div className='flex justify-center items-center gap-2'>
-                  <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-gray-200">
+                <div className="flex items-center space-x-2" >
+                  <div className='flex justify-center items-center gap-2' style={{display: "flex"}}>
+                  <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-gray-200 dark:bg-gray-700" >
                     {(() => {
                       const otherUser = activeConversation.participants?.find(p => p._id !== (user?._id || user?.id));
                       const avatarUrl = otherUser?.avatar 
@@ -178,17 +178,17 @@ const ChatWindow = ({ isOpen, onClose }) => {
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-sm truncate max-w-32">
+                    <h3 className="font-semibold text-sm text-gray-900 dark:text-gray-100 truncate max-w-32">
                       {activeConversation.participants?.find(p => p._id !== (user?._id || user?.id))?.name || 'Unknown'}
                     </h3>
-                    <div className='flex items-center'>
-                    <div className="flex items-center space-x-1">
+                    <div className='flex items-center' style={{display: "flex"}}>
+                    <div className="flex items-center space-x-1" style={{display: "flex"}}>
                       {socket.isConnected ? (
                         <div className="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
                       ) : (
                         <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse"></div>
                       )}
-                      <span className="text-xs opacity-75">
+                      <span className="text-xs opacity-75 text-gray-600 dark:text-gray-400">
                         {socket.isConnected ? 'Online' : 'Connecting...'}
                       </span>
                     </div>
@@ -212,17 +212,17 @@ const ChatWindow = ({ isOpen, onClose }) => {
               </>
             ) : (
               <>
-                <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-white dark:bg-gray-600 bg-opacity-20 dark:bg-opacity-20 rounded-full flex items-center justify-center">
                   <img src={ChatBubble} alt="Chat Bubble" />
                 </div>
-                <h3 className="font-semibold text-sm uppercase">Messages</h3>
+                <h3 className="font-semibold text-sm text-gray-900 dark:text-gray-100 uppercase">Messages</h3>
                 
               </>
             )}
           </div>
           <div className='flex items-center gap-2'>
           <button 
-            className="px-3 py-1 shadow-xl hover:bg-white bg-gray-200 text-black hover:bg-opacity-20 rounded-full transition-colors duration-200"
+            className="px-3 py-1 text-black dark:text-white shadow-xl bg-gray-100 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 rounded-full transition-colors duration-200"
             onClick={onClose}
           >
             <span className="text-lg font-bold">×</span>
@@ -289,10 +289,13 @@ const ChatWindow = ({ isOpen, onClose }) => {
               <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 dark:bg-gray-800">
                 {/* Messages */}
                 <div 
-                  className="flex-1 overflow-y-scroll bg-white"
+                  className="flex-1 overflow-y-auto bg-white dark:bg-gray-900" 
                   style={{
                     scrollbarWidth: 'thin',
-                    scrollbarColor: '#197ce6ff #f1f5f9'
+                    scrollbarColor: '#197ce6ff #f1f5f9',
+                    maxHeight: '30px',
+                    minHeight: '200px',
+                    // width: '100%'
                   }}
                 >
                   <MessageList

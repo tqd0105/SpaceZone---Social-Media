@@ -160,14 +160,14 @@ const MessageInput = ({
   const commonEmojis = ['😀', '😂', '❤️', '👍', '👏', '🎉', '💯', '🤡'];
 
   return (
-    <div className={styles.messageInput}>
+    <div className={`${styles.messageInput} bg-white dark:bg-gray-900`}>
       {/* Emoji picker */}
       <div className={styles.emojiPicker}>
         {commonEmojis.map(emoji => (
           <button
             key={emoji}
             type="button"
-            className={styles.emojiButton}
+            className={`${styles.emojiButton} bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200`}
             onClick={() => handleEmojiClick(emoji)}
             disabled={disabled}
             aria-label={`Thêm emoji ${emoji}`}
@@ -184,7 +184,7 @@ const MessageInput = ({
           <div className={styles.callButtons}>
             <button
               type="button"
-              className={styles.callButton}
+              className={`${styles.callButton} bg-gray-100 hover:bg-blue-500 dark:bg-gray-700 dark:hover:bg-blue-600 text-gray-800 dark:text-gray-200`}
               onClick={handleAudioCall}
               disabled={disabled}
               aria-label="Gọi điện thoại"
@@ -208,7 +208,7 @@ const MessageInput = ({
         <div className={styles.inputWrapper}>
           <textarea
             ref={inputRef}
-            className={styles.textInput}
+            className={`${styles.textInput} bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400`}
             value={message}
             onChange={handleInputChange}
             onKeyDown={handleKeyPress}
@@ -224,8 +224,8 @@ const MessageInput = ({
           
           {/* Character counter */}
           {message.length > 800 && (
-            <div className={styles.charCounter}>
-              <span className={message.length > 950 ? styles.warning : ''}>
+            <div className={`${styles.charCounter} text-gray-600 dark:text-gray-400`}>
+              <span className={`${message.length > 950 ? styles.warning : ''} ${message.length > 950 ? 'text-red-600 dark:text-red-400' : ''}`}>
                 {message.length}/1000
               </span>
             </div>
@@ -236,7 +236,9 @@ const MessageInput = ({
         <button
           type="button"
           className={`${styles.sendButton} ${
-            !message.trim() || disabled || isSending ? styles.disabled : styles.active
+            !message.trim() || disabled || isSending 
+              ? `${styles.disabled} bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400` 
+              : `${styles.active} bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white`
           }`}
           onClick={handleSendMessage}
           disabled={!message.trim() || disabled || isSending}
@@ -252,8 +254,8 @@ const MessageInput = ({
 
       {/* Connection status */}
       {disabled && (
-        <div className={styles.statusBar}>
-          <span className={styles.disconnected}>
+        <div className={`${styles.statusBar} bg-yellow-50 dark:bg-yellow-900 border border-yellow-200 dark:border-yellow-700`}>
+          <span className={`${styles.disconnected} text-yellow-800 dark:text-yellow-200`}>
             Mất kết nối - Đang thử kết nối lại...
           </span>
         </div>

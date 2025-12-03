@@ -209,7 +209,7 @@ function PostList({
                 "Bạn chưa có bạn bè nào hoặc bạn bè chưa đăng bài viết. Hãy kết bạn để xem bài viết của họ!"
               }
             </p>
-            <div className="flex gap-2 mt-2">
+            <div className="flex gap-2 mt-2" style={{display: "flex", justifyContent: "center"}}>
               <button 
                 onClick={() => setIsShowFriendRequests(true)}
                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium"

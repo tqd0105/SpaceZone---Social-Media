@@ -90,16 +90,20 @@ const MessageList = ({
         >
           {/* Sender name (only for first message in group from others) */}
           {!isOwn && isFirstInGroup && (
-            <div className={styles.senderName}>
+            <div className={`${styles.senderName} text-gray-900 dark:text-gray-300`}>
               {message.sender.name}
               {onlineUsers?.has && onlineUsers.has(message.sender._id) && (
-                <span className={styles.onlineIndicator}>•</span>
+                <span className={`${styles.onlineIndicator} text-green-500`}>•</span>
               )}
             </div>
           )}
           
           {/* Message bubble */}
-          <div className={`${styles.messageBubble} ${isOwn ? styles.ownBubble : styles.otherBubble}`}>
+          <div className={`${styles.messageBubble} ${isOwn ? styles.ownBubble : styles.otherBubble} ${
+            isOwn 
+              ? 'bg-blue-500 text-white' 
+              : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+          }`}>
             {/* Render different content based on message type */}
             {message.type === 'share' && message.sharedPost ? (
               <ShareMessage 
@@ -117,7 +121,9 @@ const MessageList = ({
             
             {/* Message status and time */}
             <div className={styles.messageFooter}>
-              <span className={styles.messageTime}>
+              <span className={`${styles.messageTime} ${
+                isOwn ? 'text-white/80' : 'text-gray-600 dark:text-gray-400'
+              }`}>
                 {formatTime(message.createdAt)}
               </span>
               
@@ -169,15 +175,15 @@ const MessageList = ({
     if (typingUsersList.length === 0) return null;
 
     return (
-      <div className={styles.typingIndicator}>
+      <div className={`${styles.typingIndicator} animate-pulse`}>
         <div className={styles.typingAvatar}>
-          <div className={styles.typingDots}>
+          <div className={`${styles.typingDots} bg-gray-600 dark:bg-gray-400`}>
             <span></span>
             <span></span>
             <span></span>
           </div>
         </div>
-        <div className={styles.typingText}>
+        <div className={`${styles.typingText} text-gray-600 dark:text-gray-400`}>
           <span>
             {typingUsersList.length === 1 
               ? `${typingUsersList[0]} đang nhập...`
@@ -193,9 +199,9 @@ const MessageList = ({
 
   if (loading && messages.length === 0) {
     return (
-      <div className={styles.messageList}>
-        <div className={styles.loadingState}>
-          <div className={styles.loadingSpinner}></div>
+      <div className={`${styles.messageList} bg-white dark:bg-gray-800`}>
+        <div className={`${styles.loadingState} text-gray-600 dark:text-gray-400`}>
+          <div className={`${styles.loadingSpinner} border-gray-200 dark:border-gray-600 border-t-blue-500`}></div>
           <span>Đang tải tin nhắn...</span>
         </div>
       </div>
@@ -204,10 +210,10 @@ const MessageList = ({
 
   if (messages.length === 0) {
     return (
-      <div className={styles.messageList}>
-        <div className={styles.emptyState}>
-          <img src={ChatBubble} width={50} alt="" />
-          <h4>Chưa có tin nhắn nào</h4>
+      <div className={`${styles.messageList} bg-white dark:bg-gray-800`}>
+        <div className={`${styles.emptyState} text-gray-600 dark:text-gray-400`}>
+          <img src={ChatBubble} width={50} alt="" className="opacity-50" />
+          <h4 className="text-gray-900 dark:text-gray-100">Chưa có tin nhắn nào</h4>
           <p>Hãy bắt đầu cuộc trò chuyện bằng cách gửi tin nhắn đầu tiên</p>
         </div>
       </div>
@@ -215,12 +221,12 @@ const MessageList = ({
   }
 
   return (
-    <div className={styles.messageList} ref={messagesContainerRef}>
-      <div className={styles.messagesContainer}>
+    <div className={`${styles.messageList} bg-white dark:bg-gray-800`} ref={messagesContainerRef}>
+      <div className={`${styles.messagesContainer} scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent`}>
         {/* Load more button (for pagination in future) */}
         {messages.length >= 50 && (
           <div className={styles.loadMoreContainer}>
-            <button className={styles.loadMoreButton}>
+            <button className={`${styles.loadMoreButton} bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600`}>
               Tải thêm tin nhắn cũ
             </button>
           </div>

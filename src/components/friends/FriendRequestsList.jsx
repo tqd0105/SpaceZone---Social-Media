@@ -68,9 +68,9 @@ const FriendRequestCard = ({ request, onAccept, onReject }) => {
   const displayUsername = sender?.username;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-      <div className="flex flex-col items-center gap-3">
-        <div className="flex justify-center items-center gap-4">
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow" >
+      <div className="flex flex-col items-center gap-3" style={{display: "flex"}}>
+        <div className="flex justify-center items-center gap-4" style={{display: "flex"}}>
           <div className="relative">
             <img
               src={sender?.avatar ? `${API_URL}${sender.avatar}` : defaultAvatar}
@@ -83,28 +83,28 @@ const FriendRequestCard = ({ request, onAccept, onReject }) => {
             <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
           </div>
 
-          <div className="flex-1 min-w-0">
-            <h4 className="font-bold text-base text-gray-900 truncate">
+          <div className="flex-1 min-w-0" >
+            <h4 className="font-bold text-base text-gray-900 dark:text-gray-100 truncate">
               {displayName}
             </h4>
             {displayUsername && (
-              <p className="text-sm font-bold text-gray-400 truncate">
+              <p className="text-sm font-bold text-gray-400 dark:text-gray-500 truncate">
                 @{displayUsername}
               </p>
             )}
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-gray-400 dark:text-gray-500">
               🕛{new Date(
                 request.createdAt || request.requestedAt
               ).toLocaleDateString("vi-VN")}
             </p>
           </div>
         </div>
-        <div className="flex justify-center items-center w-full gap-2 mt-2">
+        <div className="flex justify-center items-center w-full gap-2 mt-2" style={{display: "flex"}}>
           <button
-            className="bg-blue-500 w-full hover:bg-blue-600 text-white px-3 py-3 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-1"
+            className="bg-blue-500 text-black w-full hover:bg-blue-600 text-white px-3 py-3 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-1"
             onClick={handleAccept}
             disabled={isProcessing}
-            title="Chấp nhận lời mời kết bạn"
+            title="Chấp nhận lời mời kết bạn" style={{display: "flex"}}
           >
             {isProcessing ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -127,13 +127,13 @@ const FriendRequestCard = ({ request, onAccept, onReject }) => {
           </button>
 
           <button
-            className="bg-gray-500 w-full hover:bg-gray-600 text-white px-3 py-3 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-1"
+            className="bg-white text-black w-full hover:bg-gray-600 text-white px-3 py-3 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-1"
             onClick={handleReject}
             disabled={isProcessing}
-            title="Từ chối lời mời kết bạn"
+            title="Từ chối lời mời kết bạn" style={{display: "flex"}}
           >
             {isProcessing ? (
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
             ) : (
               <svg
                 className="w-4 h-4"
@@ -257,9 +257,9 @@ const FriendCard = ({ friend, onRemove, onRefreshList, onClose }) => {
   const displayUsername = user?.username;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex justify-center items-center gap-4">
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow">
+      <div className="flex items-center justify-between gap-3" style={{display: "flex"}}>
+        <div className="flex justify-center items-center gap-4" style={{display: "flex"}}>
           <div className="relative">
             <img
               src={user?.avatar ? `${API_URL}${user.avatar}` : defaultAvatar}
@@ -272,12 +272,12 @@ const FriendCard = ({ friend, onRemove, onRefreshList, onClose }) => {
             <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
           </div>
 
-          <div className="flex-1 min-w-0 text-left">
+          <div className="flex-1 min-w-0 text-left" >
             <div className="flex justify-start items-center gap-2">
-              <h4 className="font-bold text-gray-900 truncate">{displayName}</h4>
+              <h4 className="font-bold text-gray-900 dark:text-gray-100 truncate">{displayName}</h4>
             </div>
             {displayUsername && (
-              <p className="text-sm text-gray-500 truncate">
+              <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
                 @{displayUsername}
               </p>
             )}
@@ -286,12 +286,12 @@ const FriendCard = ({ friend, onRemove, onRefreshList, onClose }) => {
                 {displayEmail}
               </p>
             )} */}
-            <p className="text-xs text-green-600 font-medium">Bạn bè</p>
+            <p className="text-xs text-green-600 dark:text-green-400 font-medium">Bạn bè</p>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2" style={{display: "flex"}}>
           <button
-            className="bg-gray-200 hover:bg-gray-300 rounded-full text-white p-3 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+            className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500 rounded-full text-white p-3 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
             onClick={handleStartChat}
             disabled={isChatting || isProcessing}
             title="Nhắn tin với bạn bè"
@@ -544,17 +544,17 @@ const FriendRequestsList = ({ isOpen, onClose, title = "Quản lý bạn bè" })
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      className="fixed inset-0  bg-opacity-100 flex items-center justify-center z-50 p-4"
       onClick={handleBackdropClick}
     >
       <div
-        className="bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[80vh] overflow-hidden transform transition-all duration-300 scale-100"
+        className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl md:max-w-md w-full md:max-h-[80vh] overflow-hidden transform transition-all duration-300 scale-100 md:translate-y-0 translate-y-1/2"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="bg-white text-black p-4 ">
-          <div className="flex items-center justify-between">
+        <div className="bg-white dark:bg-gray-800 text-black dark:text-white p-4 ">
+          <div className="flex items-center justify-between" style={{display: "flex"}}>
             <h3 className="text-xl font-bold uppercase text-center">{title}</h3>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2" style={{display: "flex"}}>
               <button
                 className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
                 onClick={() => setShowUserSearch(true)}
@@ -576,7 +576,7 @@ const FriendRequestsList = ({ isOpen, onClose, title = "Quản lý bạn bè" })
                 <span className="hidden sm:inline">Tìm bạn</span>
               </button>
               <button
-                className="text-black hover:text-gray-200 transition-colors p-1 rounded-full hover:bg-white hover:bg-opacity-20"
+                className="text-black dark:text-white bg-gray-100 hover:text-gray-200 dark:hover:text-gray-300 transition-colors p-1 rounded-full hover:bg-white hover:bg-opacity-20 dark:hover:bg-gray-700"
                 onClick={handleClose}
                 aria-label="Đóng"
               >
@@ -599,29 +599,29 @@ const FriendRequestsList = ({ isOpen, onClose, title = "Quản lý bạn bè" })
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-gray-200">
+        <div className="flex border-b border-gray-200 dark:border-gray-700" style={{display: "flex"}}>
           <button
-            className={`flex-1 py-3 px-4 text-sm font-medium transition-colors rounded-none  ${
+            className={`flex-1 bg-white py-3 px-4 text-sm font-medium transition-colors rounded-none  ${
               activeTab === "requests"
-                ? "text-blue-600 border-b-4 border-blue-600 bg-blue-50"
-                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                ? "text-blue-600 border-b-4 border-blue-600 bg-blue-100 dark:bg-blue-900 dark:text-blue-400"
+                : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
             }`}
-            onClick={() => handleTabChange("requests")}
+            onClick={() => handleTabChange("requests")} 
           >
-            <span className="flex items-center justify-center font-bold gap-2">
-              <img src={friendRequest} width={25} alt="Friend Requests" />
+            <span className="flex items-center justify-center font-bold gap-2" style={{display: "flex"}}>
+              <img src={friendRequest} width={25} alt="Friend Requests"  />
               Lời mời ({requests.length})
             </span>
           </button>
           <button
-            className={`flex-1 py-3 px-4 text-sm font-medium transition-colors rounded-none  ${
+            className={`flex-1 bg-white py-3 px-4 text-sm font-medium transition-colors rounded-none  ${
               activeTab === "friends"
-                ? "text-blue-600 border-b-2 border-blue-600 bg-blue-50"
-                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                ? "text-blue-600 border-b-2 border-blue-600 bg-blue-50 dark:bg-blue-900 dark:text-blue-400"
+                : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
             }`}
             onClick={() => handleTabChange("friends")}
           >
-            <span className="flex items-center justify-center font-bold gap-2">
+            <span className="flex items-center justify-center font-bold gap-2" style={{display: "flex"}}>
               <img src={twoPeople} width={25} alt="Friends" />
               Bạn bè ({friends.length})
             </span>
@@ -629,11 +629,11 @@ const FriendRequestsList = ({ isOpen, onClose, title = "Quản lý bạn bè" })
         </div>
 
         {/* Search Bar */}
-        <div className="p-4 bg-gray-50 border-b border-gray-200">
+        <div className="p-4 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none" style={{display: "flex"}}>
               <svg
-                className="h-5 w-5 text-gray-400"
+                className="h-5 w-5 text-gray-400 dark:text-gray-500"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -648,7 +648,7 @@ const FriendRequestsList = ({ isOpen, onClose, title = "Quản lý bạn bè" })
             </div>
             <input
               type="text"
-              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
+              className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:placeholder-gray-400 dark:focus:placeholder-gray-500 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
               placeholder={activeTab === "requests" ? "Tìm kiếm lời mời kết bạn..." : "Tìm kiếm bạn bè..."}
               value={searchTerm}
               onChange={(e) => handleSearch(e.target.value)}
@@ -676,11 +676,11 @@ const FriendRequestsList = ({ isOpen, onClose, title = "Quản lý bạn bè" })
           </div>
         </div>
 
-        <div className="p-4 max-h-[60vh] overflow-y-auto">
+        <div className="p-4 max-h-[60vh] overflow-y-auto bg-white dark:bg-gray-900">
           {loading && (
             <div className="flex flex-col items-center justify-center py-8">
               <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-3"></div>
-              <p className="text-gray-600">Đang tải...</p>
+              <p className="text-gray-600 dark:text-gray-400">Đang tải...</p>
             </div>
           )}
 
@@ -704,10 +704,10 @@ const FriendRequestsList = ({ isOpen, onClose, title = "Quản lý bạn bè" })
                 <div className="text-4xl mb-3">
                   {searchTerm ? "🔍" : "👥"}
                 </div>
-                <p className="text-gray-600 font-medium">
+                <p className="text-gray-600 dark:text-gray-400 font-medium">
                   {searchTerm ? "Không tìm thấy kết quả" : "Chưa có lời mời kết bạn"}
                 </p>
-                <p className="text-gray-400 text-sm mt-1">
+                <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">
                   {searchTerm 
                     ? `Không có lời mời nào khớp với "${searchTerm}"`
                     : "Các lời mời kết bạn sẽ hiển thị tại đây"
