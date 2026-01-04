@@ -50,11 +50,6 @@ export const leftbarItems = [
     {
         icon: Save,
         text: "Saved"
-    },
-    
-    {
-        icon: Page,
-        text: "Pages"
     }
     
     
