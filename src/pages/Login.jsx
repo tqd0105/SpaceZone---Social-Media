@@ -99,7 +99,7 @@ const Login = () => {
     >
       <h2 className="font-bold text-2xl mb-4 text-black">Đăng nhập tài khoản</h2>
 
-      
+
 
       <form onSubmit={handleLogin} className="ms_w-full min-w-[320px]">
         <div className="flex-column-center gap-2 ">
@@ -169,17 +169,17 @@ const Login = () => {
           </Link>
         </div>
 
-        
+
       </form>
 
-        <div className="w-full h-[1px] bg-gray-100 my-2"></div>
+      <div className="w-full h-[1px] bg-gray-100 my-2"></div>
 
       {/* Demo Accounts Button */}
       <h2 className="text-black font-bold mb-1">Hoặc sử dụng tài khoản demo</h2>
       <button
         type="button"
         onClick={() => setShowDemoAccounts(true)}
-        className=" flex items-center justify-center gap-2 py-2 px-4 shadow-lg bg-gray-900 text-white rounded-lg hover:bg-gray-700 transition-all duration-300 font-semibold text-sm" style={{display: "flex"}}
+        className=" flex items-center justify-center gap-2 py-2 px-4 shadow-lg bg-gray-900 text-white rounded-lg hover:bg-gray-700 transition-all duration-300 font-semibold text-sm" style={{ display: "flex" }}
       >
         <img src={User2} width={25} alt="User Icon" />
         <span>Tài khoản Demo</span>
@@ -188,7 +188,7 @@ const Login = () => {
       {/* Demo Accounts Modal */}
       {showDemoAccounts && (
         <div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" style={{display: "flex"}}
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" style={{ display: "flex" }}
           onClick={() => setShowDemoAccounts(false)}
         >
           <div
@@ -196,8 +196,8 @@ const Login = () => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="bg-gray-900 px-8 py-4 flex items-center justify-between" style={{display: "flex"}}>
-              <h3 className="text-white font-bold text-xl flex items-center gap-2" style={{display: "flex"}}>
+            <div className="bg-gray-900 px-8 py-4 flex items-center justify-between" style={{ display: "flex" }}>
+              <h3 className="text-white font-bold text-xl flex items-center gap-2" style={{ display: "flex" }}>
                 <img src={User} width={40} alt="User Icon" /> Chọn tài khoản Demo
               </h3>
               <button
@@ -220,16 +220,16 @@ const Login = () => {
                     key={index}
                     type="button"
                     onClick={() => handleSelectDemoAccount(account)}
-                    className="w-full px-4 py-3 bg-gray-50 hover:bg-blue-50 rounded-lg transition-colors duration-200 flex items-center gap-3 border border-gray-100 hover:border-blue-200" style={{display: "flex"}}
+                    className="w-full px-4 py-3 bg-gray-50 hover:bg-blue-50 rounded-lg transition-colors duration-200 flex items-center gap-3 border border-gray-100 hover:border-blue-200" style={{ display: "flex" }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold" style={{display: "flex"}}>
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold" style={{ display: "flex" }}>
                       {account.name.charAt(0)}
                     </div>
                     <div className="flex-1 text-left" >
                       <p className="font-bold text-gray-800">{account.name}</p>
                       <p className="text-xs text-gray-400">{account.email}</p>
                     </div>
-                    <span className="flex flex-col items-center justify-center  text-blue-600 text-sm font-bold" style={{display: "flex"}}>Chọn <img src={Next} width={25} alt="Next Icon" /></span>
+                    <span className="flex flex-col items-center justify-center  text-blue-600 text-sm font-bold" style={{ display: "flex" }}>Chọn <img src={Next} width={25} alt="Next Icon" /></span>
                   </button>
                 ))}
               </div>
