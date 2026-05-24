@@ -56,26 +56,15 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Hàm chọn tài khoản demo
-  const handleSelectDemoAccount = (account) => {
-    setFormData({
-      email: account.email,
-      password: account.password,
-    });
-    setShowDemoAccounts(false);
-  };
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const loginWithCredentials = async (email, password) => {
     setError("");
     setLoading(true);
 
     try {
-      const res = await loginService(formData.email, formData.password);
+      const res = await loginService(email, password);
       if (res.error) {
         setError(res.error);
       } else {
-        // 📌 Cập nhật để hỗ trợ session timeout
         loginContext(res.user, res.token, res.refreshToken, res.sessionExpiration);
         navigate("/home", { replace: true });
       }
@@ -84,6 +73,21 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Hàm chọn tài khoản demo
+  const handleSelectDemoAccount = (account) => {
+    setFormData({
+      email: account.email,
+      password: account.password,
+    });
+    setShowDemoAccounts(false);
+    loginWithCredentials(account.email, account.password);
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    loginWithCredentials(formData.email, formData.password);
   };
 
 
